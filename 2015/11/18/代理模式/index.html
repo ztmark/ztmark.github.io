@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>singleton-pattern | Mark&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="Mark">
+  
+  
+    <meta name="description" content="单例模式能够保证类只有一个实例对象。在Java中可以使用多种方式来实现单例模式。">
+  
+  <meta name="description" content="单例模式能够保证类只有一个实例对象。在Java中可以使用多种方式来实现单例模式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="singleton-pattern">
+<meta property="og:url" content="http://yoursite.com/2015/11/18/代理模式/index.html">
+<meta property="og:site_name" content="Mark's Notes">
+<meta property="og:description" content="单例模式能够保证类只有一个实例对象。在Java中可以使用多种方式来实现单例模式。">
+<meta property="og:updated_time" content="2015-11-18T11:51:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="singleton-pattern">
+<meta name="twitter:description" content="单例模式能够保证类只有一个实例对象。在Java中可以使用多种方式来实现单例模式。">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/fancybox/logo.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">Mark&#39;s Notes</a></h1>
+    <p><a href="/">I think therefore I am</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/11/18/代理模式/">
+  <time datetime="2015-11-18T11:38:21.000Z">
+    2015-11-18
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">singleton-pattern</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p><a href="http://zh.wikipedia.org/zh/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F" target="_blank" rel="external">单例模式</a>能够保证类只有一个实例对象。在<code>Java</code>中可以使用多种方式来实现单例模式。</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=30953009&auto=0&height=66"></iframe>
+
+<h2 id="Eager_initialization">Eager initialization</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonEagerInit</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> SingletonEagerInit instance = <span class="keyword">new</span> SingletonEagerInit();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonEagerInit</span> <span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonEagerInit <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// other methods</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该方式在类加载的时候就对实例进行初始化。然后每次调用<code>getInstance</code>都会返回这个实例对象。</p>
+<p>该方式是有缺点，如果这个类的对象非常大，在加载该类后却没有调用<code>getInstance</code>方法，即加载了类，但没有使用该类的对象。但是这个对象已经被实例化，会占用一部分内存，如果我们用不着这个对象，这些内存就浪费了。</p>
+<h2 id="Lazy_initialization">Lazy initialization</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonLazyInit</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SingletonLazyInit instance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonLazyInit</span> <span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> SingletonLazyInit <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> SingletonLazyInit();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// other methods</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>延迟初始化的方式能够在真正用到实例对象的时候才对其进行初始化。</p>
+<p>对整个方法进行<code>synchronized</code>，避免了多线程下的同步问题，但是对整个方法进行<code>synchronized</code>效率会下降。</p>
+<h2 id="double_checked_locking">double checked locking</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonDoubleChecked</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> SingletonDoubleChecked instance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonDoubleChecked</span> <span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// effective java : 第71条</span></span><br><span class="line">    <span class="comment">// 使用局部变量可以提供性能</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonDoubleChecked <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        SingletonDoubleChecked result = instance;</span><br><span class="line">        <span class="keyword">if</span> (result == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span>(SingletonDoubleChecked.class) &#123;</span><br><span class="line">                result = instance;</span><br><span class="line">                <span class="keyword">if</span> (result == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    instance = result = <span class="keyword">new</span> SingletonDoubleChecked();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// other methods</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该方法并为整个方法进行<code>synchronized</code>,尽可能的缩小了同步块的范围。</p>
+<p>字段<code>instance</code>用<code>volatile</code>修饰是为了可见性，一致性，顺序性，可见性就是指当对一个临界资源进行修改后，其他线程就能马上觉察到该修改，所有线程看到这个变量的值是一致的,而且编译器也不会对其进行指令重排。</p>
+<p><code>getInstance</code>方法中使用局部变量<code>result</code>的原因可以见<code>Effective Java</code>第二版的第71条。</p>
+<blockquote>
+<p>这个变量的作用是确保实例变量只在已经被初始化的情况下读取一次。虽然这不是严格要求，但是可以提升性能。</p>
+</blockquote>
+<p>我的理解是<code>instance</code>这个实例变量是在堆内存中分配的，而局部变量<code>result</code>是在栈中分配的，栈的读取速度要快于堆的读取速度。</p>
+<p>如果该单例的类需要实现序列化，那么在加上<code>implements Serializable</code>后，还需要添加<code>readResolve</code>方法。该类的实例域都要声明为<code>transient</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Object <span class="title">readResolve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> instance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对与<code>clone</code>方法，可以直接抛出异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> CloneNotSupportedException();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Initialization-on-demand_holder_idiom">Initialization-on-demand holder idiom</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonByHolder</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonByHolder <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonByHolder</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// other methods</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonHolder</span> </span>&#123;</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">final</span> SingletonByHolder instance = <span class="keyword">new</span> SingletonByHolder();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种方式也是只有在第一次调用<code>getInstance</code>方法时才进行初始化。在加载<code>SingletonByHolder</code>类时并不会加载<code>SingletonHolder</code>类，所以就不会对<code>instance</code>进行初始化，只有在<code>getInstance</code>方法中调用<code>SingletonHolder.instance</code>才会加载<code>SingletonHolder</code>类，然后进行初始化。</p>
+<h2 id="The_enum_way">The enum way</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Singleton &#123;</span><br><span class="line"></span><br><span class="line">    INSTANCE;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// other methods</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用枚举来实现单例模式是被推荐的。</p>
+<blockquote>
+<p>这种方法在功能上与公有域方法相近，但是它更加简洁，无偿地提供了序列化机制，绝对防止多次实例化，即使是在面对复杂的序列化或者反射攻击的时候。虽然这种方法还没有广泛采用，但是单元素的枚举类型已经成为实现Singleton的最佳方法。</p>
+</blockquote>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/Java/">Java</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-title="singleton-pattern">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">Mark</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'ztmark' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>
