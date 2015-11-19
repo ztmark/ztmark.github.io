@@ -1,0 +1,237 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>git basics | Mark&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="Mark">
+  
+  
+    <meta name="description" content="记录Git的安装过程、常用的命令和GitHub的使用。">
+  
+  <meta name="description" content="记录Git的安装过程、常用的命令和GitHub的使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git basics">
+<meta property="og:url" content="http://yoursite.com/2015/11/19/git-basics/index.html">
+<meta property="og:site_name" content="Mark's Notes">
+<meta property="og:description" content="记录Git的安装过程、常用的命令和GitHub的使用。">
+<meta property="og:image" content="http://7u2r8z.com1.z0.glb.clouddn.com/git+github.jpg">
+<meta property="og:updated_time" content="2015-11-19T07:34:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git basics">
+<meta name="twitter:description" content="记录Git的安装过程、常用的命令和GitHub的使用。">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/fancybox/logo.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">Mark&#39;s Notes</a></h1>
+    <p><a href="/">I think therefore I am</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/11/19/git-basics/">
+  <time datetime="2015-11-19T05:06:55.000Z">
+    2015-11-19
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">git basics</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>记录<code>Git</code>的安装过程、常用的命令和<code>GitHub</code>的使用。</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=26113988&auto=0&height=66"></iframe>
+
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/git+github.jpg" alt="git+github"></p>
+<h2 id="安装">安装</h2><p>去<a href="http://git-scm.com/" target="_blank" rel="external">官网</a>下载<br>双击安装，默认选项就行。</p>
+<p>在Mac下，Xcode内置了Git，只要装Command Line Tools就可以了，安装命令<code>xcode-select --install</code>，查看是否安装了的命令是<code>xcode-select -p</code>,如果出现了<code>/Applications/Xcode.app/Contents/Developer</code>就表示已经安装了。</p>
+<h3 id="设置">设置</h3><p>设置用户名和邮箱</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user<span class="class">.name</span> <span class="string">"Mark"</span></span><br><span class="line">git config --global user<span class="class">.email</span> <span class="string">"shuyumark@gmail.com"</span></span><br></pre></td></tr></table></figure>
+<p><code>global</code>选项表示这些设置信息是全局的，所有的项目默认使用这些设置。如果不想使用这些设置，只要在特定的项目去掉<code>--global</code>重新设置即可。</p>
+<p>设置命令的高亮显示</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global <span class="attribute">color</span><span class="class">.ui</span> true</span><br></pre></td></tr></table></figure>
+<h3 id="设置SSH">设置SSH</h3><p>如果通过<code>SSH</code>来链接远程仓库的话，需要设置<code>SSH</code>。使用<code>HTTPS</code>则不用设置，每次<code>push</code>会提示输入用户名和密码。</p>
+<p>在<code>Git</code>命令行下输入<br><figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -<span class="keyword">C</span> <span class="string">"shuyumark@gmail.com"</span></span><br></pre></td></tr></table></figure></p>
+<p>回车，会提示保存位置，原先没有生成过<code>SSH</code>密钥可以直接默认回车就好。然后提示输入<code>passphrase</code>,就是密码一样的东西，有这个会更加安全，但是我这里就直接空着了，回车完成。</p>
+<p>然后将<code>/Users/Mark/.ssh/id_rsa.pub</code>中的内容添加到<code>GitHub</code>中.</p>
+<p>然后测试</p>
+<p>输入<code>ssh -T git@github.com</code>回车</p>
+<p>一开始会有警告，输入<code>yes</code>回车就可以了。如果出现了自己的用户名和</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You've successfully authenticated, <span class="keyword">but</span> GitHub <span class="keyword">does</span> <span class="keyword">not</span> provide shell access.</span><br></pre></td></tr></table></figure>
+<p>就表明成功了。</p>
+<h2 id="命令">命令</h2><h3 id="git_init">git init</h3><p>用法</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">git</span> init</span><br></pre></td></tr></table></figure>
+<p>初始化一个本地仓库，在项目文件下会产生一个<code>.git</code>的隐藏目录。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-init.html" target="_blank" rel="external">git init</a></p>
+<h3 id="git_clone">git clone</h3><p>用法</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">clone</span> <span class="title">&lt;url</span>&gt; <span class="tag">&lt;dir&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>&lt;url&gt;</code>表示远程仓库的<code>URL</code>，<code>&lt;dir&gt;</code>表示将要拷贝到本地的目录名，可以省略，省略后本地目录名就是远程仓库的项目名称。</p>
+<p>将远程仓库拷贝到本地。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-clone.html" target="_blank" rel="external">git clone</a></p>
+<h3 id="git_add">git add</h3><p>用法</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add <span class="variable">&lt;filename&gt;</span>|<span class="string">.</span></span><br></pre></td></tr></table></figure>
+<p><code>&lt;filename&gt;</code>表示文件名，<code>.</code>表示所有文件。</p>
+<p>将文件添加到<code>stage area</code>或者说<code>index</code>。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-add.html" target="_blank" rel="external">git add</a></p>
+<h3 id="git_rm">git rm</h3><p>用法</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm <span class="string">[--cached]</span> &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+<p><code>[--cached]</code>加上该参数表示文件移出<code>Git</code>。不加该参数表示删除该文件，也从文件系统中删除该文件。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-rm.html" target="_blank" rel="external">git rm</a></p>
+<h3 id="git_commit">git commit</h3><p>用法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="operator"><span class="keyword">commit</span> -<span class="keyword">m</span> &lt;msg&gt;</span></span><br></pre></td></tr></table></figure>
+<p>将<code>index</code>中的文件提交到本地仓库，<code>&lt;msg&gt;</code>表示提交信息。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-commit.html" target="_blank" rel="external">git commit</a></p>
+<h3 id="git_status">git status</h3><p>用法</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">status</span></span><br></pre></td></tr></table></figure>
+<p>查看当前分支的仓库信息。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-status.html" target="_blank" rel="external">git status</a></p>
+<h3 id="git_branch">git branch</h3><p>用法</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch [-d] <span class="annotation">[&lt;branch-name&gt;]</span></span><br></pre></td></tr></table></figure>
+<p><code>git branch</code>不加任何参数，表示显示所有的分支，当前分支前会加<code>*</code>显示。<code>git branch &lt;branch-name&gt;</code>表示新建名为<code>branch-name</code>的分支。<code>git branch -d &lt;branch-name&gt;</code>表示删除名为<code>branch-name</code>的分支。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-branch.html" target="_blank" rel="external">git branch</a></p>
+<h3 id="git_checkout">git checkout</h3><p>用法</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout <span class="string">[-b]</span> &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
+<p>不加<code>-b</code>参数表示切换到<code>branch-name</code>分支。加上<code>-b</code>参数表示新建<code>branch-name</code>分支并切换到该分支。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-checkout.html" target="_blank" rel="external">git checkout</a></p>
+<h3 id="git_merge">git merge</h3><p>用法</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">merge</span> &lt;branch-<span class="constant">one</span>&gt; &lt;branch-<span class="constant">two</span>&gt; ...</span><br></pre></td></tr></table></figure>
+<p>将<code>branch-one</code>和<code>branch-two</code>分支合并到当前分支。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-merge.html" target="_blank" rel="external">git merge</a></p>
+<h3 id="git_reset">git reset</h3><p>用法</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset [--soft] [--hard] <span class="annotation">[&lt;commit&gt;]</span></span><br></pre></td></tr></table></figure>
+<p><code>git reset</code>表示将<code>index</code>恢复到上一次提交时的样子，此时，<code>index</code>是没有文件准备提交的。<code>git reset HEAD &lt;file&gt;</code>表示将<code>file</code>文件从<code>index</code>移到<code>working directory</code>。<code>git reset --soft &lt;commit&gt;</code>表示将<code>commit</code>这一次提交的内容恢复到<code>index</code>。<code>git reset --hard &lt;commit&gt;</code>将当前分支恢复到<code>commit</code>提交后的样子。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-reset.html" target="_blank" rel="external">git reset</a></p>
+<h3 id="git_rebase">git rebase</h3><p>用法</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git rebase &lt;branch&gt;</span><br><span class="line">git rebase <span class="comment">--continue</span></span><br><span class="line">git rebase <span class="comment">--skip</span></span><br><span class="line">git rebase <span class="comment">--abort</span></span><br></pre></td></tr></table></figure>
+<p>合并分支的另一种方式，表示将<code>branch</code>分支合并到当前分支。如果合并的时候出现冲突，可以解决冲突后<code>git rebase --continue</code>继续合并，或者跳过或者终止合并。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-rebase.html" target="_blank" rel="external">git rebase</a></p>
+<h3 id="git_stash">git stash</h3><p>用法</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git stash</span><br><span class="line">git stash list</span><br><span class="line">git stash drop <span class="tag">&lt;<span class="title">stash</span>&gt;</span></span><br><span class="line">git stash apply <span class="tag">&lt;<span class="title">stash</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>git stash</code>表示暂时保存未提交的修改，这样，就可以切换到其他分支了。<br><code>git stash apply &lt;stash&gt;</code>表示恢复到指定的<code>stash</code>，不加参数就默认恢复到最近的一次<code>stash</code>。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-stash.html" target="_blank" rel="external">git stash</a></p>
+<h3 id="git_tag">git tag</h3><p>用法</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">tag</span> <span class="title">[-a</span>] <span class="tag">&lt;tag-name&gt;</span> [-m <span class="tag">&lt;msg&gt;</span>]</span><br></pre></td></tr></table></figure>
+<p><code>git tag -a &lt;tag-name&gt; -m &lt;msg&gt;</code>表示建一个标签，会生成一个<code>tag</code>对象。<br><code>git tag &lt;tag-name&gt;</code>表示建一个标签，单不会生成一个<code>tag</code>对象。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-tag.html" target="_blank" rel="external">git tag</a></p>
+<h3 id="git_fetch">git fetch</h3><p>用法</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch <span class="tag">&lt;<span class="title">remote</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>表示从远程仓库获取更新。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-fetch.html" target="_blank" rel="external">git fetch</a></p>
+<h3 id="git_pull">git pull</h3><p>用法</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull <span class="tag">&lt;<span class="title">remote</span>&gt;</span> <span class="tag">&lt;<span class="title">branch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>将远程仓库的<code>branch</code>分支合并到本地当前分支。相当于<code>git fetch &lt;remote&gt;</code>和<code>git merge &lt;remote&gt;/&lt;branch&gt;</code>的组合。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-pull.html" target="_blank" rel="external">git pull</a></p>
+<h3 id="git_push">git push</h3><p>用法</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push <span class="annotation">[&lt;remote&gt;]</span> <span class="annotation">[&lt;branch&gt;]</span></span><br></pre></td></tr></table></figure>
+<p>将本地仓库推送到远程仓库。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-push.html" target="_blank" rel="external">git push</a></p>
+<h3 id="git_remote">git remote</h3><p>用法</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote <span class="string">[-v]</span> <span class="string">[add]</span> <span class="string">[rename]</span> <span class="string">[remove]</span> <span class="string">[set-url]</span></span><br></pre></td></tr></table></figure>
+<p>不加任何参数表示显示远程仓库。<code>-v</code>参数表示显示详细信息，<code>add</code>表示添加远程仓库，<code>rename</code>表示修改远程仓库的名字，<code>remove</code>表示删除远程仓库，<code>set-url</code>表示更改远程仓库的URL。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-remote.html" target="_blank" rel="external">git remote</a></p>
+<h3 id="git_log">git log</h3><p>用法</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="command">log</span></span><br></pre></td></tr></table></figure>
+<p>查看提交日志，有很详细配置参数。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-log.html" target="_blank" rel="external">git log</a></p>
+<h3 id="git_diff">git diff</h3><p>用法</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff <span class="string">[--cached]</span> <span class="string">[branch1..branch2]</span></span><br></pre></td></tr></table></figure>
+<p><code>git diff</code>表示<code>working directory</code>和<code>index</code>之间的差别。<br><code>git diff --cached</code>表示<code>index</code>与<code>last commit</code>直接的差别。<br><code>git diff HEAD</code>表示<code>working directory</code>和<code>last commit</code>之间的差别。<br><code>git diff branch1..branch2</code>表示<code>branch1</code>和<code>branch2</code>之间的差别。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-diff.html" target="_blank" rel="external">git diff</a></p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/Git/">Git</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-title="git basics">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">Mark</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'ztmark' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>
