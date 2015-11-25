@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="Mark's Notes">
 <meta property="og:description" content="记录Git的安装过程、常用的命令和GitHub的使用。">
 <meta property="og:image" content="http://7u2r8z.com1.z0.glb.clouddn.com/git+github.jpg">
-<meta property="og:updated_time" content="2015-11-19T07:34:18.000Z">
+<meta property="og:updated_time" content="2015-11-25T12:27:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git basics">
 <meta name="twitter:description" content="记录Git的安装过程、常用的命令和GitHub的使用。">
@@ -170,6 +170,16 @@
 <figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff <span class="string">[--cached]</span> <span class="string">[branch1..branch2]</span></span><br></pre></td></tr></table></figure>
 <p><code>git diff</code>表示<code>working directory</code>和<code>index</code>之间的差别。<br><code>git diff --cached</code>表示<code>index</code>与<code>last commit</code>直接的差别。<br><code>git diff HEAD</code>表示<code>working directory</code>和<code>last commit</code>之间的差别。<br><code>git diff branch1..branch2</code>表示<code>branch1</code>和<code>branch2</code>之间的差别。</p>
 <p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-diff.html" target="_blank" rel="external">git diff</a></p>
+<h2 id="Github">Github</h2><h3 id="在Github如何进行pull_request？">在<a href="https://github.com" target="_blank" rel="external">Github</a>如何进行<code>pull request</code>？</h3><p>首先要fork对方的项目，之后你就能看到一个在你名下的一个和对方项目一模一样的项目。</p>
+<p>然后，在本地clone你名下的那个项目</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">clone</span> <span class="title">your-git-repo</span></span><br></pre></td></tr></table></figure>
+<p>要从原仓库获得更新</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="label">git</span> remote <span class="keyword">add </span>upstream origin-git-repo</span><br></pre></td></tr></table></figure>
+<p>更新</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git fetch upstream</span><br><span class="line">git <span class="operator"><span class="keyword">merge</span> upstream/<span class="keyword">master</span></span></span><br></pre></td></tr></table></figure>
+<p>推送到自己的仓库</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="label">git</span> <span class="keyword">push </span>origin master</span><br></pre></td></tr></table></figure>
+<p>最后在建一个<code>pull request</code>。</p>
 
     
   </div>
