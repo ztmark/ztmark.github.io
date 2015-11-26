@@ -1,0 +1,161 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>Mac 下配置Scheme环境 | Mark&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="Mark">
+  
+  
+    <meta name="description" content="记录Scheme的安装和使用。">
+  
+  <meta name="description" content="记录Scheme的安装和使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac 下配置Scheme环境">
+<meta property="og:url" content="http://yoursite.com/2015/11/26/Mac 下安装Scheme环境/index.html">
+<meta property="og:site_name" content="Mark's Notes">
+<meta property="og:description" content="记录Scheme的安装和使用。">
+<meta property="og:updated_time" content="2015-11-26T09:21:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mac 下配置Scheme环境">
+<meta name="twitter:description" content="记录Scheme的安装和使用。">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/fancybox/logo.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">Mark&#39;s Notes</a></h1>
+    <p><a href="/">I think therefore I am</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/11/26/Mac 下安装Scheme环境/">
+  <time datetime="2015-11-25T16:00:00.000Z">
+    2015-11-26
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">Mac 下配置Scheme环境</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>记录Scheme的安装和使用。</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=28815250&auto=0&height=66"></iframe>
+
+<h2 id="安装">安装</h2><p>到<a href="http://www.gnu.org/software/mit-scheme/" target="_blank" rel="external">官网</a>下载对应的版本安装。</p>
+<h2 id="配置">配置</h2><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /<span class="constant">Applications</span>/<span class="constant">MIT</span>:<span class="constant">GNU</span>\ <span class="constant">Scheme</span>.app/<span class="constant">Contents</span>/<span class="constant">Resources</span> /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">mit</span>-<span class="title">scheme</span>-<span class="title">x86</span>-64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">mit</span>-<span class="title">scheme</span>-<span class="title">x86</span>-64/<span class="title">mit</span>-<span class="title">scheme</span> /<span class="title">usr</span>/<span class="title">bin</span>/<span class="title">scheme</span></span></span><br></pre></td></tr></table></figure>
+<p>这一步会出现<code>not permitted</code>错误，办法是不要链接到<code>/usr/bin</code>下，而是链接到<code>/usr/local/bin</code>下，命令如下：</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">mit</span>-<span class="title">scheme</span>-<span class="title">x86</span>-64/<span class="title">mit</span>-<span class="title">scheme</span> /<span class="title">usr</span>//<span class="title">local</span>/<span class="title">bin</span>/<span class="title">scheme</span></span></span><br></pre></td></tr></table></figure>
+<p>这样，在命令行中敲入<code>scheme</code>就会出现scheme的交互环境了。</p>
+<h2 id="运行">运行</h2><p>在命令中输入<code>scheme</code>打开交互环境。</p>
+<p>在Scheme的交互环境中可以通过</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">pwd</span>)</span></span><br></pre></td></tr></table></figure>
+<p>查看当前路径。</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">cd</span> <span class="string">"~/demo"</span>)</span></span><br></pre></td></tr></table></figure>
+<p>切换目录。</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword"><span class="built_in">load</span></span> <span class="string">"test.scm"</span>)</span></span><br></pre></td></tr></table></figure>
+<p>加载Scheme源文件，加载后会执行这个文件中的代码。</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">disk-save</span> <span class="string">"demo-env"</span>)</span></span><br></pre></td></tr></table></figure>
+<p>保存当前交互环境，在当前目录下会有一个名为demo-env的文件。</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">disk-restore</span> <span class="string">"demo-env"</span>)</span></span><br></pre></td></tr></table></figure>
+<p>加载之前保存的交互环境。</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">quit</span>)</span></span><br></pre></td></tr></table></figure>
+<p>退出交互环境。</p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/Scheme/">Scheme</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-title="Mac 下配置Scheme环境">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">Mark</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'ztmark' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>
