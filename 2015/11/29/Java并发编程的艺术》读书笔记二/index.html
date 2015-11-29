@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>《Java并发编程的艺术》读书笔记二 | Mark&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="Mark">
+  
+  
+    <meta name="description" content="《Java并发编程的艺术》读书笔记">
+  
+  <meta name="description" content="《Java并发编程的艺术》读书笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Java并发编程的艺术》读书笔记二">
+<meta property="og:url" content="http://yoursite.com/2015/11/29/Java并发编程的艺术》读书笔记二/index.html">
+<meta property="og:site_name" content="Mark's Notes">
+<meta property="og:description" content="《Java并发编程的艺术》读书笔记">
+<meta property="og:image" content="http://7u2r8z.com1.z0.glb.clouddn.com/reordering-table.png">
+<meta property="og:updated_time" content="2015-11-29T07:18:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《Java并发编程的艺术》读书笔记二">
+<meta name="twitter:description" content="《Java并发编程的艺术》读书笔记">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/fancybox/logo.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">Mark&#39;s Notes</a></h1>
+    <p><a href="/">I think therefore I am</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/11/29/Java并发编程的艺术》读书笔记二/">
+  <time datetime="2015-11-28T16:00:00.000Z">
+    2015-11-29
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">《Java并发编程的艺术》读书笔记二</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>《Java并发编程的艺术》读书笔记</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=5179544&auto=0&height=66"></iframe>
+
+
+<p>Java线程之间的通信是通过共享内存实现，每个线程也又自己的本地内存，这样多线程程序中就会出现可见性问题。</p>
+<p>在执行程序时，为了提供性能，编译器和处理器会对指令做重排序。</p>
+<p>为了多线程程序能正确执行，需要解决上面的两个问题。</p>
+<p>通过在指令中加入内存屏障和happends-before规则来解决以上问题。</p>
+<p>内存屏障有四种：</p>
+<ul>
+<li><p>LoadLoad Barriers</p>
+<p>  确保该指令之前的数据的装载先于之后的数据装载</p>
+</li>
+<li><p>StoreStore Barriers</p>
+<p>  确保该指令之前的数据对其他处理器的可见性（刷新到主存）先于之后的数据</p>
+</li>
+<li><p>LoadStore Barriers</p>
+<p>  确保该指令之前的数据加载先于之后数据的刷新</p>
+</li>
+<li><p>StoreLoad Barriers</p>
+<p>  确保该指令之前的数据刷新先于之后的数据加载</p>
+</li>
+</ul>
+<p>happens-before规则前后的操作不会进行重排序，规则有下面几条：</p>
+<ul>
+<li><p>程序次序规则</p>
+<p>  线程中的每个动作A都happens-before于该线程中的每一个动作B，其中，在程序中，所有动作B都能出现在A后面。</p>
+</li>
+<li><p>监视器锁规则</p>
+<p>  对于一个监视器锁的解锁happens-before于每一个后续对同一监视器锁的加锁。</p>
+</li>
+<li><p>volatile变量规则</p>
+<p>  对volatile域的写入操作happens-before于每一个后续对同一个域的读写操作。</p>
+</li>
+<li><p>线程启动规则</p>
+<p>  在一个线程里，对Thread.start的调用会happens-before于每个启动线程的动作。</p>
+</li>
+<li><p>线程终结规则</p>
+<p>  线程中的任何动作都happens-before于其他线程检测到这个线程已经终结、或者从Thread.join调用中成功返回，或Thread.isAlive返回false。</p>
+</li>
+<li><p>中断规则</p>
+<p>  一个线程调用另一个线程的interrupt happens-before于被中断的线程发现中断。</p>
+</li>
+<li><p>终结规则</p>
+<p>  一个对象的构造函数的结束happens-before于这个对象finalizer的开始。</p>
+</li>
+<li><p>传递性</p>
+<p>  如果A happens-before于B，且B happens-before于C，则A happens-before于C。</p>
+</li>
+</ul>
+<p>volatile和final的内存语义得到了增强，volatile的变量在某些情况下不会重排序，volatile的64位变量的读写是原子的。final成员变量的初始化在对象构造完成之前完成。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/reordering-table.png" alt="重排序"></p>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/Java/">Java</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-title="《Java并发编程的艺术》读书笔记二">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">Mark</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'ztmark' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>

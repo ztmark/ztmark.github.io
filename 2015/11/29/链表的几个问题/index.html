@@ -1,0 +1,209 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>链表的几个问题 | Mark&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="Mark">
+  
+  
+    <meta name="description" content="链表的几个问题和答案的代码实现。">
+  
+  <meta name="description" content="链表的几个问题和答案的代码实现。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="链表的几个问题">
+<meta property="og:url" content="http://yoursite.com/2015/11/29/链表的几个问题/index.html">
+<meta property="og:site_name" content="Mark's Notes">
+<meta property="og:description" content="链表的几个问题和答案的代码实现。">
+<meta property="og:image" content="http://7u2r8z.com1.z0.glb.clouddn.com/link1.jpg">
+<meta property="og:image" content="http://7u2r8z.com1.z0.glb.clouddn.com/link3.jpg">
+<meta property="og:image" content="http://7u2r8z.com1.z0.glb.clouddn.com/link4.jpg">
+<meta property="og:image" content="http://7u2r8z.com1.z0.glb.clouddn.com/link5.jpg">
+<meta property="og:image" content="http://7u2r8z.com1.z0.glb.clouddn.com/20150210174318.png">
+<meta property="og:image" content="http://7u2r8z.com1.z0.glb.clouddn.com/20150210175728.png">
+<meta property="og:image" content="http://7u2r8z.com1.z0.glb.clouddn.com/link7.png">
+<meta property="og:updated_time" content="2015-11-29T07:22:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="链表的几个问题">
+<meta name="twitter:description" content="链表的几个问题和答案的代码实现。">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/fancybox/logo.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">Mark&#39;s Notes</a></h1>
+    <p><a href="/">I think therefore I am</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/11/29/链表的几个问题/">
+  <time datetime="2015-11-28T16:00:00.000Z">
+    2015-11-29
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">链表的几个问题</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>链表的几个问题和答案的代码实现。</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=27902187&auto=0&height=66"></iframe>
+
+<ul>
+<li>给出单链表中一个节点的指针（不是最后的那个节点），删除该节点</li>
+<li>单链表的转置</li>
+<li>求单链表倒数第k个节点</li>
+<li>求链表的中间节点</li>
+<li>判断两个链表是否相交</li>
+<li>求两链表相交的交点</li>
+<li>判断单链表是否存在环</li>
+<li>找到环的入口</li>
+<li>链表有环，如何判断相交</li>
+</ul>
+<p>简单链表的结构</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LkList</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">        Node header;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">LkList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.header = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(T v)</span> </span>&#123;</span><br><span class="line">            Node n = <span class="keyword">new</span> Node(v, header);</span><br><span class="line">            header = n;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">            T item;</span><br><span class="line">            Node next;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(T item, Node next)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">this</span>.item = item;</span><br><span class="line">                <span class="keyword">this</span>.next = next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="给出单链表中一个节点的指针p（不是最后的那个节点），删除该节点">给出单链表中一个节点的指针p（不是最后的那个节点），删除该节点</h2><p>思路：由于是单链表，所以无法得到该节点的前一个节点，但是我们可以容易地得到该节点之后的节点。所以要是删除该节点之后的节点，我们是可以容易做到的。对于删除节点，其实就是将该节点的数据从链表中删除，而对于该节点本身在不在链表中我们并不关心。所以我们可以想到，为了删除本节点的数据，我们可以用其他数据覆盖掉本节点的数据，我们可以用该节点之后的节点的数据覆盖掉本节点的数据，然后将之后的那个节点删除，这样就相当于删除了本节点。就是下图显示的那样。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/link1.jpg" alt="link1"></p>
+<p>代码实现：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> LkList.<span class="function">Node <span class="title">deleteNode</span><span class="params">(LkList.Node p)</span> </span>&#123;</span><br><span class="line">    LkList.Node deleted = p.next; </span><br><span class="line">    p.item = deleted.item;</span><br><span class="line">    p.next = deleted.next;</span><br><span class="line">    deleted.next = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">return</span> deleted;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="单链表的转置">单链表的转置</h2><p>思路：对该单链表进行遍历，对于每个节点，进行头插法，插入到另一个链表，然后将该链表返回。</p>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> LkList&lt;Integer&gt; <span class="title">reverseList</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    LkList&lt;Integer&gt; nl = <span class="keyword">new</span> LkList&lt;&gt;();</span><br><span class="line">    LkList.Node p;</span><br><span class="line">    <span class="keyword">while</span> (list.header != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p = list.header.next;</span><br><span class="line">        list.header.next = nl.header;</span><br><span class="line">        nl.header = list.header;</span><br><span class="line">        list.header = p;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> nl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="求单链表倒数第k个节点">求单链表倒数第k个节点</h2><p>思路：</p>
+<ol>
+<li><p>求倒数第k个节点，就相当于第len-k+1(len是单链表的长度)个节点，所以可以先遍历一遍链表，求出链表的长度，然后再求第len-k+1个节点。</p>
+</li>
+<li><p>求倒数第k个节点，也就是说求一个节点，该节点距离链表的末尾k个距离，那么，问题就是如何测量这段距离，我们可以使用一个指针p1,从头遍历到第k+1个节点，那么从开始节点到p1指向的节点就的距离相差k，我们可以把这段距离当作一把尺来测试每个节点是否到链表末尾距离为k。所以，方法就是：可以使用两个指针p1,p2，先让p1遍历到第k+1个节点，然后p1，p2一起向后遍历，当p1遍历到末尾null时，p2指向的节点就是倒数第k个节点。</p>
+</li>
+</ol>
+<p>比如说想要求倒数第3个节点，我们可以先让p1遍历到第4个节点（节点6），然后p1,p2一起往后遍历，直到p1到null，此时，p2指向的节点就是倒数第3个节点。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/link3.jpg" alt="link2"></p>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * assume k is less than the size of list</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> LkList.<span class="function">Node <span class="title">lastKth</span><span class="params">(LkList&lt;Integer&gt; list, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    LkList.Node p1 = list.header;</span><br><span class="line">    LkList.Node p2 = list.header;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k &amp;&amp; p1 != <span class="keyword">null</span>; i++) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (p1 != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="求链表的中间节点">求链表的中间节点</h2><p>思路：看着与上面那题挺相似的，但是我们中间那个节点是第几个节点我们并不知道，单是中间节点是挺特殊的位置，正好是整个链表的一半。可以使用两个指针，一个一次遍历一个节点，另一个一次遍历两个节点。这样就能找到中间节点。需要的注意的是当链表中的节点是奇数个和偶数个的区别。</p>
+<p>奇数个的情况：<br><img src="http://7u2r8z.com1.z0.glb.clouddn.com/link4.jpg" alt="link3"></p>
+<p>偶数个的情况：<br><img src="http://7u2r8z.com1.z0.glb.clouddn.com/link5.jpg" alt="link4"></p>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> LkList.<span class="function">Node <span class="title">findMidNode</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    LkList.Node p1 = list.header;</span><br><span class="line">    LkList.Node p2;</span><br><span class="line">    <span class="keyword">if</span> (p1 == <span class="keyword">null</span>) &#123; <span class="comment">// 链表为空</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (p1.next == <span class="keyword">null</span>) &#123; <span class="comment">//链表只有一个节点</span></span><br><span class="line">        <span class="keyword">return</span> p1;</span><br><span class="line">    &#125;</span><br><span class="line">    p2 = p1.next;</span><br><span class="line">    <span class="keyword">while</span> (p2.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">        <span class="keyword">if</span> (p2.next == <span class="keyword">null</span>) &#123; <span class="comment">//链表有偶数个节点的时候，p2走到最后一个节点</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="判断两个链表是否相交">判断两个链表是否相交</h2><p>思路：判断两个链表的最后一个节点是否是同一个节点</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150210174318.png" alt="link6"></p>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isIntersect</span><span class="params">(LkList&lt;Integer&gt; lk1, LkList&lt;Integer&gt; lk2)</span> </span>&#123;</span><br><span class="line">    LkList.Node p1 = lk1.header;</span><br><span class="line">    LkList.Node p2 = lk2.header;</span><br><span class="line">    <span class="keyword">if</span> (p1 == <span class="keyword">null</span> || p2 == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">while</span> (p1.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (p2.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p1 == p2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="求两链表相交的交点">求两链表相交的交点</h2><p>思路：求出两个链表的长度差k，然长的链表先遍历k个节点，然后两个链表一起遍历，直到遍历到同一个节点，这个节点就是两个链表相交的交点。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150210175728.png" alt="link7"></p>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> LkList.<span class="function">Node <span class="title">findIntersect</span><span class="params">(LkList&lt;Integer&gt; lk1, LkList&lt;Integer&gt; lk2)</span> </span>&#123;</span><br><span class="line">    LkList.Node p1 = lk1.header;</span><br><span class="line">    LkList.Node p2 = lk2.header;</span><br><span class="line">    <span class="keyword">if</span> (p1 == <span class="keyword">null</span> || p2 == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">int</span> len1 = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> len2 = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (p1.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        len1++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (p2.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">        len2++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p1 != p2) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">int</span> k = Math.abs(len1 - len2);</span><br><span class="line">    p1 = lk1.header;</span><br><span class="line">    p2 = lk2.header;</span><br><span class="line">    <span class="keyword">if</span> (len1 &gt; len2) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">            p1 = p1.next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">            p2 = p2.next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (p1 != <span class="keyword">null</span> &amp;&amp; p2 != <span class="keyword">null</span> &amp;&amp; p1 != p2) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="判断单链表是否存在环">判断单链表是否存在环</h2><p>思路：</p>
+<ol>
+<li>使用<code>HashSet</code>来保存遍历过的节点，在遍历新节点的时候，进行查询是否之前遍历过，如果遍历过，就表示有环，能遍历完整个链表就表示没有环。</li>
+<li>使用两个指针，一个每次遍历一个几点，另一个每次遍历两个节点，如果有环，则，在某一次遍历后两个节点会相遇，如果没有环，快的那个节点会变为null。对于有环的链表，两个指针总会在环中循环遍历，遍历速度快的那个指针每次比慢的多遍历一个节点，在某一个时间点，快的指针会将慢的指针套圈（就像跑步一样，跑的快的会将跑的慢的套圈。），两个指针相遇。</li>
+</ol>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//两个指针的方式</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasCircle</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    LkList.Node p1 = list.header;</span><br><span class="line">    <span class="keyword">if</span> (p1 == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    LkList.Node p2 = list.header.next;</span><br><span class="line">    LkList.Node node = getMeetNode(p1, p2);</span><br><span class="line">    <span class="keyword">return</span> node != <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> LkList.<span class="function">Node <span class="title">getMeetNode</span><span class="params">(LkList.Node p1, LkList.Node p2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (p1 != <span class="keyword">null</span> &amp;&amp; p2 != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">        <span class="keyword">if</span> (p2 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            p2 = p2.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (p1 == p2) &#123;</span><br><span class="line">            <span class="keyword">return</span> p1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用HashSet</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasCircleUseSet</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    HashSet&lt;LkList.Node&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    LkList.Node p = list.header;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (set.contains(p)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        set.add(p);</span><br><span class="line">        p = p.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="找到环的入口">找到环的入口</h2><p>思路：</p>
+<ol>
+<li>与上一题的方法一一样，还是使用<code>HashSet</code>，第一个遍历过的节点就是入口。</li>
+<li>只有两个指针，先使用上面的方法二找到两个指针相遇的节点m，设入口节点为n,第一个节点为h,我们使用一个指针p1,从h遍历到m,计算出h到m的长度x,然后使用指针p2从m节点开始遍历，遍历一圈环，计算出环的长度y,计算出|x-y|,这个差值就是hn与mn的长度差，如果hn较长，则p1从h开始先遍历|x-y|个节点，然后p1和p2（指向m）开始一起遍历，当p1和p2遍历到同一个节点时，这个节点就是环的入口，对mn较长的情况同理。</li>
+</ol>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/link7.png" alt="link5"></p>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用两个指针方式</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> LkList.<span class="function">Node <span class="title">findIntersection</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!hasCircle(list)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    LkList.Node p1 = list.header;</span><br><span class="line">    LkList.Node p2 = list.header;</span><br><span class="line">    LkList.Node node = getMeetNode(p1, p2);</span><br><span class="line">    <span class="keyword">int</span> len1 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (p1 != node) &#123;</span><br><span class="line">        len1++;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    p2 = node.next;</span><br><span class="line">    <span class="keyword">int</span> lenCircle = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (p2 != node) &#123;</span><br><span class="line">        lenCircle++;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    p1 = list.header;</span><br><span class="line">    <span class="keyword">int</span> diffLen = Math.abs(len1 - lenCircle);</span><br><span class="line">    <span class="keyword">if</span> (len1 &gt; lenCircle) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; diffLen; i++) &#123;</span><br><span class="line">            p1 = p1.next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; diffLen; i++) &#123;</span><br><span class="line">            p2 = p2.next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (p1 != p2) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p1;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//使用HashSet方式</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> LkList.<span class="function">Node <span class="title">findIntersectionUseSet</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!hasCircle(list)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    HashSet&lt;LkList.Node&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    LkList.Node p = list.header;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (set.contains(p)) &#123;</span><br><span class="line">            <span class="keyword">return</span> p;</span><br><span class="line">        &#125;</span><br><span class="line">        set.add(p);</span><br><span class="line">        p = p.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="链表有环，如何判断相交">链表有环，如何判断相交</h2><p>思路：和判断链表是否有环同样的方式。分别对两个链表进行判断是否有环，如果两个都有环，再对其中一个链表的环中的一个节点判断是否再另一个链表的环中即可。</p>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line">判断两个链表（链表可能有环）是否相交</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">intersect</span><span class="params">(LkList&lt;Integer&gt; lk1, LkList&lt;Integer&gt; lk2)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">boolean</span> lk1hasCircle = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">boolean</span> lk2hasCircle = <span class="keyword">true</span>;</span><br><span class="line">    </span><br><span class="line">    LkList.Node p11 = lk1.header;</span><br><span class="line">    <span class="keyword">if</span> (p11 == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    LkList.Node p12 = lk1.header;</span><br><span class="line">    <span class="keyword">while</span> (p11 != <span class="keyword">null</span> &amp;&amp; p12 != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p11 = p11.next;</span><br><span class="line">        p12 = p12.next;</span><br><span class="line">        <span class="keyword">if</span> (p12 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            p12 = p12.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (p11 == p12) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p11 != p12) &#123;</span><br><span class="line">        lk1hasCircle = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    LkList.Node p21 = lk2.header;</span><br><span class="line">    <span class="keyword">if</span> (p21 == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    LkList.Node p22 = p21.next;</span><br><span class="line">    <span class="keyword">while</span> (p21 != <span class="keyword">null</span> &amp;&amp; p22 != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p21 = p21.next;</span><br><span class="line">        p22 = p22.next;</span><br><span class="line">        <span class="keyword">if</span> (p22 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            p22 = p22.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (p21 == p22) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p21 != p22) &#123;</span><br><span class="line">        lk2hasCircle = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (!lk1hasCircle &amp;&amp; !lk2hasCircle) &#123; <span class="comment">// 两个链表都没有环</span></span><br><span class="line">        <span class="keyword">return</span> isIntersect(lk1, lk2); <span class="comment">//之前判断两个链表是否相交的方法</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (lk1hasCircle &amp;&amp; !lk2hasCircle || !lk1hasCircle) &#123; <span class="comment">//lk1hasCircle &amp;&amp; !lk2hasCircle || !lk1hasCircle &amp;&amp; lk2hasCircle  只有一个链表有环</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//两个都有环</span></span><br><span class="line">    <span class="keyword">if</span> (p11 == p21) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    p21 = p21.next;</span><br><span class="line">    <span class="keyword">while</span> (p21 != p22) &#123;</span><br><span class="line">        <span class="keyword">if</span> (p11 == p21) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        p21 = p21.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/Algorithm/">Algorithm</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-title="链表的几个问题">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">Mark</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'ztmark' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>
