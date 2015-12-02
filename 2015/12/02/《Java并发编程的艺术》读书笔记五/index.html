@@ -1,0 +1,209 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>《Java并发编程的艺术》读书笔记五 | Mark&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="Mark">
+  
+  
+    <meta name="description" content="《Java并发编程的艺术》读书笔记">
+  
+  <meta name="description" content="《Java并发编程的艺术》读书笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Java并发编程的艺术》读书笔记五">
+<meta property="og:url" content="http://yoursite.com/2015/12/02/《Java并发编程的艺术》读书笔记五/index.html">
+<meta property="og:site_name" content="Mark's Notes">
+<meta property="og:description" content="《Java并发编程的艺术》读书笔记">
+<meta property="og:updated_time" content="2015-12-02T07:12:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《Java并发编程的艺术》读书笔记五">
+<meta name="twitter:description" content="《Java并发编程的艺术》读书笔记">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/fancybox/logo.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">Mark&#39;s Notes</a></h1>
+    <p><a href="/">I think therefore I am</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/12/02/《Java并发编程的艺术》读书笔记五/">
+  <time datetime="2015-12-01T16:00:00.000Z">
+    2015-12-02
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">《Java并发编程的艺术》读书笔记五</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>《Java并发编程的艺术》读书笔记</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=18127334&auto=0&height=66"></iframe>
+
+<h2 id="并发工具类">并发工具类</h2><h3 id="CountDownLatch">CountDownLatch</h3><p>CountDownLatch允许一个或多个线程等待其他线程完成操作。</p>
+<p>CountDownLatch的构造函数接受一个int类型的参数作为计数器，在调用countDown方法后，计数器会减1，在计数器减为0时，在CountDownLatch上因为调用await方法而阻塞的线程会被唤醒继续执行。</p>
+<p>CountDownLatch只能使用一次，无法重新初始化或修改计数器的值。</p>
+<p>例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CountDownLatchTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        CountDownLatch latch = <span class="keyword">new</span> CountDownLatch(<span class="number">2</span>);</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            System.out.println(Thread.currentThread());</span><br><span class="line">            latch.countDown();</span><br><span class="line">        &#125;).start();</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            System.out.println(Thread.currentThread());</span><br><span class="line">            latch.countDown();</span><br><span class="line">        &#125;).start();</span><br><span class="line">        latch.await();</span><br><span class="line">        System.out.println(Thread.currentThread());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>main线程会在<code>latch.await()</code>阻塞，等待latch的计数器减为0后继续往下执行，上面两个线程在打印出线程信息后会将计数器减1，在上面两个线程执行完毕后，计数器减为0，main线程才能继续往下执行。</p>
+<h3 id="CyclicBarrier">CyclicBarrier</h3><p>CyclicBarrier让一组线程到达一个屏障时被阻塞，直到所有的线程都到达屏障时，屏障才回放行所有线程，被拦截的线程才能继续往下执行。</p>
+<p>CyclicBarrier的构造函数带又一个int的参数，表示需要拦截多少线程，每个线程调用await方法告诉CyclicBarrier它到达屏障了，然后阻塞。CyclicBarrier还有一个带Runnable参数的构造函数，在所有线程都到达了屏障，会先执行这个Runnable。</p>
+<p>例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CyclicBarrierTest</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> CyclicBarrier barrier = <span class="keyword">new</span> CyclicBarrier(<span class="number">3</span>, <span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">private</span> ConcurrentHashMap&lt;String, Integer&gt; map = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">doWork</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                map.put(Thread.currentThread().getName(), ThreadLocalRandom.current().nextInt(<span class="number">100</span>));</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    barrier.await();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException | BrokenBarrierException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (Integer i : map.values()) &#123;</span><br><span class="line">            sum += i;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(sum);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        CyclicBarrierTest cyclicBarrierTest = <span class="keyword">new</span> CyclicBarrierTest();</span><br><span class="line">        cyclicBarrierTest.doWork();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Semaphore">Semaphore</h3><p>Semaphore用来控制同时访问特定资源的线程数量，通过协调各个线程，以保证合理的使用公共资源。</p>
+<p>Semaphore的构造函数带有一个int的参数，表示同时允许多少线程访问资源，线程在访问资源之前需要获取Semaphore许可，获得了许可的线程才能访问资源，未获得许可的线程将被阻塞。</p>
+<p>例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SemaphoreTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Semaphore semaphore = <span class="keyword">new</span> Semaphore(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    semaphore.acquire();</span><br><span class="line">                    System.out.println(Thread.currentThread().getName());</span><br><span class="line">                    TimeUnit.SECONDS.sleep(<span class="number">5</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                    semaphore.release();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            semaphore.acquire();</span><br><span class="line">            System.out.println(Thread.currentThread().getName());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            semaphore.release();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>main线程在获取许可的时候将会阻塞，因为之前两个线程已经获取了许可在执行操作并没有多余的许可了。</p>
+<h3 id="Exchanger">Exchanger</h3><p>Exchanger是一个用于线程间协作的工具类，用于进行线程间的数据交换。Exchanger只提供了两个exchange方法，包括一个支持超时的exchange方法。两个线程通过exchange方法交换数据，如果第一个线程先执行exchange方法，它会一直等待第二个线程执行exchange方法。</p>
+<p>例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExchangerTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        Exchanger&lt;String&gt; exchanger = <span class="keyword">new</span> Exchanger&lt;&gt;();</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(exchanger.exchange(<span class="string">"bbbbb"</span>));</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">        String v1 = exchanger.exchange(<span class="string">"aaa"</span>);</span><br><span class="line">        System.out.println(v1);</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(exchanger.exchange(<span class="string">"ccccc"</span>));</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">        String v2 = exchanger.exchange(<span class="string">"bbb"</span>);</span><br><span class="line">        System.out.println(v2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="线程池">线程池</h2><p>使用线程池的好处：降低资源消耗、提高响应速度和提高线程的可管理性。</p>
+<p>ThreadPoolExecutor的execute方法的执行过程：</p>
+<ol>
+<li>如果当前运行的线程少于corePoolSize，则创建新线程来执行任务（需要获取全局锁）</li>
+<li>如果运行的线程等于或多于corePoolSize，则将任务加入BlockingQueue。</li>
+<li>如果无法将任务加入BlockingQueue（队列已满），则创建新的线程来处理任务（需要获取全局锁）</li>
+<li>如果创建新线程将使当前运行的线程超出maximumPoolSize，任务将被拒绝，并调用RejectedExecutionHandler.rejectedExecution方法。</li>
+</ol>
+<p>线程池的创建可以指定这么几个参数：</p>
+<ul>
+<li>corePoolSize: 线程池的基本大小，当提交一个任务到线程池，如果线程池线程数量没有达到corePoolSize，即使又空闲线程，线程池也会创建新的线程来执行该任务</li>
+<li>runnableTaskQueue: 任务队列，用于保存等待执行的任务的阻塞队列。可以有如下几个队列可选：<ul>
+<li>ArrayBlockingQueue</li>
+<li>LinkedBlockingQueue</li>
+<li>SynchronousQueue</li>
+<li>PriorityBlockingQueue</li>
+</ul>
+</li>
+<li>ThreadFactory:用于创建线程的工程</li>
+<li>RejectedExecutionHandler: 饱和策略，当队列和线程池满了，使用该策略来处理新任务，JDK1.5又如下的策略：<ul>
+<li>AbortPolicy:直接抛出异常</li>
+<li>CallerRunsPolicy: 只用调用者所在线程来执行任务</li>
+<li>DiscardOldestPolicy: 丢弃队头的任务，并执行当前任务</li>
+<li>DiscardPolicy: 不处理，丢弃。</li>
+</ul>
+</li>
+<li>keepAliveTime:线程活动保持时间，超出线程池corePoolSize的工作线程空闲后，保持存活的时间。</li>
+<li>TimeUnit:keepAliveTime的单位</li>
+</ul>
+<p>线程池通过execute方法提交一个无返回值的任务，使用submit提交一个有返回值的任务，该方法返回一个Future。</p>
+<p>线程池通过shutdown和shutdownNow方法来关闭线程池，它们通过遍历线程池中的线程，调用线程的interrupt方法来中断线程，所以无法响应中断的任务无法终止。shutdownNow会中断正在执行或暂停的任务，而shutdown只中断没有执行的任务。</p>
+<p>线程池的配置需要根据任务的特点和系统的配置来进行。CPU密集型的任务可以将线程池中的线程数量配置得和CPU数量的大小，IO密集型的任务则可以配置更多的线程，混合型的可以将任务分成CPU密集和IO秘籍两类来进行。阻塞队列推荐使用有界队列。</p>
+<h2 id="Executor框架">Executor框架</h2><p>Executor框架包括3大部分：</p>
+<ul>
+<li>任务：包括执行任务需要实现的接口 Runnable接口和Callable接口</li>
+<li>任务的执行：包括任务执行机制的核心接口Executor，以及继承Executor的ExecutorService接口，其实现类有ThreadPoolExecutor和ScheduledThreadPoolExecutor。</li>
+<li>异步计算的结果：包括Future接口和FutureTask实现类</li>
+</ul>
+<p>Executors工具类可以用来创建ThreadPoolExecutor和ScheduledThreadPoolExecutor实例。</p>
+<p>ThreadPoolExecutor有3种类型</p>
+<ul>
+<li>FixedThreadPool</li>
+<li>SingleThreadExecutor</li>
+<li>CachedThreadPool</li>
+</ul>
+<p>ScheduledThreadPoolExecutor有2种类型</p>
+<ul>
+<li>ScheduledThreadPoolExecutor</li>
+<li>SingleThreadScheduledExecturor</li>
+</ul>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/Java/">Java</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-title="《Java并发编程的艺术》读书笔记五">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">Mark</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'ztmark' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>
