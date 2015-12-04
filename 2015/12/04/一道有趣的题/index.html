@@ -1,0 +1,314 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  
+  <title>一道有趣的题 | Mark&#39;s Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+    <meta name="author" content="Mark">
+  
+  
+    <meta name="description" content="一道有趣的算法题。">
+  
+  <meta name="description" content="一道有趣的算法题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一道有趣的题">
+<meta property="og:url" content="http://yoursite.com/2015/12/04/一道有趣的题/index.html">
+<meta property="og:site_name" content="Mark's Notes">
+<meta property="og:description" content="一道有趣的算法题。">
+<meta property="og:updated_time" content="2015-12-04T04:38:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一道有趣的题">
+<meta name="twitter:description" content="一道有趣的算法题。">
+  
+  
+    <link rel="icon" type="image/x-icon" href="/fancybox/logo.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+  <div class="title">
+    <h1><a href="/">Mark&#39;s Notes</a></h1>
+    <p><a href="/">I think therefore I am</a></p>
+  </div>
+  <nav class="nav">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</header>
+    <div class="content"><article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/12/04/一道有趣的题/">
+  <time datetime="2015-12-03T16:00:00.000Z">
+    2015-12-04
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title">一道有趣的题</h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <p>一道有趣的算法题。</p>
+<a id="more"></a>
+<p>看《算法设计与分析基础》第三版的时候，1.1节习题中又这么一道题：</p>
+<blockquote>
+<p><strong>带锁的门</strong>：在走廊上有n个带锁的门，从1到n一次编号。最初所有的门都是关着的。我们从门前经过n次，每次都从1号门开始。在第i次经过时(i=1，2，3，…，n)我们改变i的整数倍号锁的状态：如果门是关着的，就打开它；如果门是打开的，就关上它。在最后一次经过，哪些门是打开的，哪些门是关上的？有多少打开的门？</p>
+</blockquote>
+<p>一开始没什么头绪，不过我们可以写个例子看看，比如取n等于10。</p>
+<table>
+<thead>
+<tr>
+<th>n/门号</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>7</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>8</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>9</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>10</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>n为0表示初始状态，0表示关闭，1表示打开。</p>
+<p>在写这个例子的时候，我们会发现门号如果能被k(第k次经过)整除，该门的状态就会发生变化，当k&gt;$\sqrt{k}$时，只会改变第k个门的状态。</p>
+<p>我接着就能发现状态改变偶数次后，状态不变，也就是说，对于第k个门，如果k有偶数个约数，那么这扇门的状态最后还是和初始状态一样，这样我们的问题就是找出哪些数有偶数个约数。</p>
+<p>我们观察上面的例子，发现1,4和9的最后状态是与初始状态不一样外，其他门的状态都一样。到这里，我们可能很容易就猜想到1，4，9等这些是某个数的平方的数有奇数个约数，当然，我们可以取n的值16，25再看看。能想到这里，其实为什么这些数有奇数个约数也很容易想到。</p>
+<p>如果k是n的一个约数，那么n除以k等于$\frac nk$余0，那么$\frac nk$也是n的一个约数，这样，n的约数一般都是成对出现，只有一种情况就是k等于$\frac nk$的时候，即这两个约数相等，那么这时只算一个约数。而只有像1，4，9这些数会出现这种情况，1比较特别。</p>
+<p>这样也就回答了上面的那个问题。</p>
+<p>下面是代码演示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">	printState(<span class="number">10</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printState</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (isSquared(i)) &#123;</span><br><span class="line">			System.out.println(<span class="string">"Door "</span> + i  + <span class="string">" is opened"</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			System.out.println(<span class="string">"Door "</span> + i  + <span class="string">" is closed"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isSquared</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> (i * i &lt; n) i++;</span><br><span class="line">	<span class="keyword">return</span> i * i == n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    
+  </div>
+  <footer>
+    
+      
+      
+  <div class="tags">
+    <a class="tags-link" href="/tags/Algorithm/">Algorithm</a>
+  </div>
+
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">评论</h1>
+  <div class="ds-thread" data-title="一道有趣的题">
+  </div>
+</section>
+</div>
+  </div>
+  <footer id="footer"><div class="copyright">
+  
+  &copy; 2015 <a href="/">Mark</a>
+  
+</div>
+<div class="theme-copyright">
+  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
+   | 
+  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script src="/js/scale.fix.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'ztmark' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox();
+  })(jQuery);
+</script>
+
+</body>
+</html>
