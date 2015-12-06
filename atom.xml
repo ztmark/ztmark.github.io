@@ -1,0 +1,1663 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[Mark's Notes]]></title>
+  <subtitle><![CDATA[I think therefore I am]]></subtitle>
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://yoursite.com/"/>
+  <updated>2015-12-04T04:38:57.000Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name><![CDATA[Mark]]></name>
+    <email><![CDATA[shuyumark@gmail.com]]></email>
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[一道有趣的题]]></title>
+    <link href="http://yoursite.com/2015/12/04/%E4%B8%80%E9%81%93%E6%9C%89%E8%B6%A3%E7%9A%84%E9%A2%98/"/>
+    <id>http://yoursite.com/2015/12/04/一道有趣的题/</id>
+    <published>2015-12-03T16:00:00.000Z</published>
+    <updated>2015-12-04T04:38:57.000Z</updated>
+    <content type="html"><![CDATA[<p>一道有趣的算法题。</p>
+<a id="more"></a>
+<p>看《算法设计与分析基础》第三版的时候，1.1节习题中又这么一道题：</p>
+<blockquote>
+<p><strong>带锁的门</strong>：在走廊上有n个带锁的门，从1到n一次编号。最初所有的门都是关着的。我们从门前经过n次，每次都从1号门开始。在第i次经过时(i=1，2，3，…，n)我们改变i的整数倍号锁的状态：如果门是关着的，就打开它；如果门是打开的，就关上它。在最后一次经过，哪些门是打开的，哪些门是关上的？有多少打开的门？</p>
+</blockquote>
+<p>一开始没什么头绪，不过我们可以写个例子看看，比如取n等于10。</p>
+<table>
+<thead>
+<tr>
+<th>n/门号</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>7</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>8</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>9</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>10</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>n为0表示初始状态，0表示关闭，1表示打开。</p>
+<p>在写这个例子的时候，我们会发现门号如果能被k(第k次经过)整除，该门的状态就会发生变化，当k&gt;$\sqrt{k}$时，只会改变第k个门的状态。</p>
+<p>我接着就能发现状态改变偶数次后，状态不变，也就是说，对于第k个门，如果k有偶数个约数，那么这扇门的状态最后还是和初始状态一样，这样我们的问题就是找出哪些数有偶数个约数。</p>
+<p>我们观察上面的例子，发现1,4和9的最后状态是与初始状态不一样外，其他门的状态都一样。到这里，我们可能很容易就猜想到1，4，9等这些是某个数的平方的数有奇数个约数，当然，我们可以取n的值16，25再看看。能想到这里，其实为什么这些数有奇数个约数也很容易想到。</p>
+<p>如果k是n的一个约数，那么n除以k等于$\frac nk$余0，那么$\frac nk$也是n的一个约数，这样，n的约数一般都是成对出现，只有一种情况就是k等于$\frac nk$的时候，即这两个约数相等，那么这时只算一个约数。而只有像1，4，9这些数会出现这种情况，1比较特别。</p>
+<p>这样也就回答了上面的那个问题。</p>
+<p>下面是代码演示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">	printState(<span class="number">10</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printState</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (isSquared(i)) &#123;</span><br><span class="line">			System.out.println(<span class="string">"Door "</span> + i  + <span class="string">" is opened"</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			System.out.println(<span class="string">"Door "</span> + i  + <span class="string">" is closed"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isSquared</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> (i * i &lt; n) i++;</span><br><span class="line">	<span class="keyword">return</span> i * i == n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>一道有趣的算法题。</p>]]>
+    
+    </summary>
+    
+      <category term="Algorithm" scheme="http://yoursite.com/tags/Algorithm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[《Java并发编程的艺术》读书笔记五]]></title>
+    <link href="http://yoursite.com/2015/12/02/%E3%80%8AJava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%BA%94/"/>
+    <id>http://yoursite.com/2015/12/02/《Java并发编程的艺术》读书笔记五/</id>
+    <published>2015-12-01T16:00:00.000Z</published>
+    <updated>2015-12-02T07:12:20.000Z</updated>
+    <content type="html"><![CDATA[<p>《Java并发编程的艺术》读书笔记</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=18127334&auto=0&height=66"></iframe>
+
+<h2 id="并发工具类">并发工具类</h2><h3 id="CountDownLatch">CountDownLatch</h3><p>CountDownLatch允许一个或多个线程等待其他线程完成操作。</p>
+<p>CountDownLatch的构造函数接受一个int类型的参数作为计数器，在调用countDown方法后，计数器会减1，在计数器减为0时，在CountDownLatch上因为调用await方法而阻塞的线程会被唤醒继续执行。</p>
+<p>CountDownLatch只能使用一次，无法重新初始化或修改计数器的值。</p>
+<p>例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CountDownLatchTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        CountDownLatch latch = <span class="keyword">new</span> CountDownLatch(<span class="number">2</span>);</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            System.out.println(Thread.currentThread());</span><br><span class="line">            latch.countDown();</span><br><span class="line">        &#125;).start();</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            System.out.println(Thread.currentThread());</span><br><span class="line">            latch.countDown();</span><br><span class="line">        &#125;).start();</span><br><span class="line">        latch.await();</span><br><span class="line">        System.out.println(Thread.currentThread());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>main线程会在<code>latch.await()</code>阻塞，等待latch的计数器减为0后继续往下执行，上面两个线程在打印出线程信息后会将计数器减1，在上面两个线程执行完毕后，计数器减为0，main线程才能继续往下执行。</p>
+<h3 id="CyclicBarrier">CyclicBarrier</h3><p>CyclicBarrier让一组线程到达一个屏障时被阻塞，直到所有的线程都到达屏障时，屏障才回放行所有线程，被拦截的线程才能继续往下执行。</p>
+<p>CyclicBarrier的构造函数带又一个int的参数，表示需要拦截多少线程，每个线程调用await方法告诉CyclicBarrier它到达屏障了，然后阻塞。CyclicBarrier还有一个带Runnable参数的构造函数，在所有线程都到达了屏障，会先执行这个Runnable。</p>
+<p>例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CyclicBarrierTest</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> CyclicBarrier barrier = <span class="keyword">new</span> CyclicBarrier(<span class="number">3</span>, <span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">private</span> ConcurrentHashMap&lt;String, Integer&gt; map = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">doWork</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                map.put(Thread.currentThread().getName(), ThreadLocalRandom.current().nextInt(<span class="number">100</span>));</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    barrier.await();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException | BrokenBarrierException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (Integer i : map.values()) &#123;</span><br><span class="line">            sum += i;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(sum);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        CyclicBarrierTest cyclicBarrierTest = <span class="keyword">new</span> CyclicBarrierTest();</span><br><span class="line">        cyclicBarrierTest.doWork();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Semaphore">Semaphore</h3><p>Semaphore用来控制同时访问特定资源的线程数量，通过协调各个线程，以保证合理的使用公共资源。</p>
+<p>Semaphore的构造函数带有一个int的参数，表示同时允许多少线程访问资源，线程在访问资源之前需要获取Semaphore许可，获得了许可的线程才能访问资源，未获得许可的线程将被阻塞。</p>
+<p>例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SemaphoreTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Semaphore semaphore = <span class="keyword">new</span> Semaphore(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    semaphore.acquire();</span><br><span class="line">                    System.out.println(Thread.currentThread().getName());</span><br><span class="line">                    TimeUnit.SECONDS.sleep(<span class="number">5</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                    semaphore.release();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            semaphore.acquire();</span><br><span class="line">            System.out.println(Thread.currentThread().getName());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            semaphore.release();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>main线程在获取许可的时候将会阻塞，因为之前两个线程已经获取了许可在执行操作并没有多余的许可了。</p>
+<h3 id="Exchanger">Exchanger</h3><p>Exchanger是一个用于线程间协作的工具类，用于进行线程间的数据交换。Exchanger只提供了两个exchange方法，包括一个支持超时的exchange方法。两个线程通过exchange方法交换数据，如果第一个线程先执行exchange方法，它会一直等待第二个线程执行exchange方法。</p>
+<p>例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExchangerTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        Exchanger&lt;String&gt; exchanger = <span class="keyword">new</span> Exchanger&lt;&gt;();</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(exchanger.exchange(<span class="string">"bbbbb"</span>));</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">        String v1 = exchanger.exchange(<span class="string">"aaa"</span>);</span><br><span class="line">        System.out.println(v1);</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(exchanger.exchange(<span class="string">"ccccc"</span>));</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">        String v2 = exchanger.exchange(<span class="string">"bbb"</span>);</span><br><span class="line">        System.out.println(v2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="线程池">线程池</h2><p>使用线程池的好处：降低资源消耗、提高响应速度和提高线程的可管理性。</p>
+<p>ThreadPoolExecutor的execute方法的执行过程：</p>
+<ol>
+<li>如果当前运行的线程少于corePoolSize，则创建新线程来执行任务（需要获取全局锁）</li>
+<li>如果运行的线程等于或多于corePoolSize，则将任务加入BlockingQueue。</li>
+<li>如果无法将任务加入BlockingQueue（队列已满），则创建新的线程来处理任务（需要获取全局锁）</li>
+<li>如果创建新线程将使当前运行的线程超出maximumPoolSize，任务将被拒绝，并调用RejectedExecutionHandler.rejectedExecution方法。</li>
+</ol>
+<p>线程池的创建可以指定这么几个参数：</p>
+<ul>
+<li>corePoolSize: 线程池的基本大小，当提交一个任务到线程池，如果线程池线程数量没有达到corePoolSize，即使又空闲线程，线程池也会创建新的线程来执行该任务</li>
+<li>runnableTaskQueue: 任务队列，用于保存等待执行的任务的阻塞队列。可以有如下几个队列可选：<ul>
+<li>ArrayBlockingQueue</li>
+<li>LinkedBlockingQueue</li>
+<li>SynchronousQueue</li>
+<li>PriorityBlockingQueue</li>
+</ul>
+</li>
+<li>ThreadFactory:用于创建线程的工程</li>
+<li>RejectedExecutionHandler: 饱和策略，当队列和线程池满了，使用该策略来处理新任务，JDK1.5又如下的策略：<ul>
+<li>AbortPolicy:直接抛出异常</li>
+<li>CallerRunsPolicy: 只用调用者所在线程来执行任务</li>
+<li>DiscardOldestPolicy: 丢弃队头的任务，并执行当前任务</li>
+<li>DiscardPolicy: 不处理，丢弃。</li>
+</ul>
+</li>
+<li>keepAliveTime:线程活动保持时间，超出线程池corePoolSize的工作线程空闲后，保持存活的时间。</li>
+<li>TimeUnit:keepAliveTime的单位</li>
+</ul>
+<p>线程池通过execute方法提交一个无返回值的任务，使用submit提交一个有返回值的任务，该方法返回一个Future。</p>
+<p>线程池通过shutdown和shutdownNow方法来关闭线程池，它们通过遍历线程池中的线程，调用线程的interrupt方法来中断线程，所以无法响应中断的任务无法终止。shutdownNow会中断正在执行或暂停的任务，而shutdown只中断没有执行的任务。</p>
+<p>线程池的配置需要根据任务的特点和系统的配置来进行。CPU密集型的任务可以将线程池中的线程数量配置得和CPU数量的大小，IO密集型的任务则可以配置更多的线程，混合型的可以将任务分成CPU密集和IO秘籍两类来进行。阻塞队列推荐使用有界队列。</p>
+<h2 id="Executor框架">Executor框架</h2><p>Executor框架包括3大部分：</p>
+<ul>
+<li>任务：包括执行任务需要实现的接口 Runnable接口和Callable接口</li>
+<li>任务的执行：包括任务执行机制的核心接口Executor，以及继承Executor的ExecutorService接口，其实现类有ThreadPoolExecutor和ScheduledThreadPoolExecutor。</li>
+<li>异步计算的结果：包括Future接口和FutureTask实现类</li>
+</ul>
+<p>Executors工具类可以用来创建ThreadPoolExecutor和ScheduledThreadPoolExecutor实例。</p>
+<p>ThreadPoolExecutor有3种类型</p>
+<ul>
+<li>FixedThreadPool</li>
+<li>SingleThreadExecutor</li>
+<li>CachedThreadPool</li>
+</ul>
+<p>ScheduledThreadPoolExecutor有2种类型</p>
+<ul>
+<li>ScheduledThreadPoolExecutor</li>
+<li>SingleThreadScheduledExecturor</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>《Java并发编程的艺术》读书笔记</p>]]>
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[《Java并发编程的艺术》读书笔记四]]></title>
+    <link href="http://yoursite.com/2015/12/01/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E5%9B%9B/"/>
+    <id>http://yoursite.com/2015/12/01/Java并发编程的艺术》读书笔记四/</id>
+    <published>2015-11-30T16:00:00.000Z</published>
+    <updated>2015-12-01T13:40:54.000Z</updated>
+    <content type="html"><![CDATA[<p>《Java并发编程的艺术》读书笔记</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=21373645&auto=0&height=66"></iframe>
+
+<h2 id="并发容器">并发容器</h2><h3 id="ConcurrentHashMap">ConcurrentHashMap</h3><p>ConcurrentHashMap是线程安全的HashMap。HashMap在多线程下会导致死循环，而线程安全的HashTable则由于每个方法都使用了synchronized而导致效率底下。ConcurrentHashMap通过将数据分成一段一段地存储，然后给每段数据都配一把锁，当一个线程占用锁访问其中一个数据段的时候，其他线程也能同时访问其他数据段的数据，从而大大地提高了效率。</p>
+<p>ConcurrentHashMap由Segment数组结构和HashEntry数据结构组成，Segment是一种可重入锁，HashEntry存储键值对数据。每个Segment守护着一个HashEntry数组中的元素，要对HashEntry进行修改，需要获取对应的Segment锁。</p>
+<p>ConcurrentHashMap的get方法不需要加锁就可以获取，put方法先定位Segment，获取到Segment锁后，先判断是否要扩容HashEntry数组，然后添加，size方法要统计所有的Segment下的HashEntry的大小才能获得总的大小，ConcurrentHashMap先尝试2次不锁住所有的Segment的方式来统计，如果统计过程中容器的大小发生变化（通过modCount检测）则再使用锁住Segment的方式来统计。</p>
+<h3 id="ConcurrentLinkedQueue">ConcurrentLinkedQueue</h3><p>ConcurrentLinkedQueue是使用非阻塞的方式来实现的线程安全队列。</p>
+<p>ConcurrentLinkedQueue的入队操作分两步，先定位尾节点，然后将入队节点设为尾节点。出队通过获取头结点并通过CAS设置头结点为null来实现。</p>
+<h3 id="阻塞队列">阻塞队列</h3><p>阻塞队列是支持阻塞入队和阻塞出队的队列。</p>
+<p>插入和移除的4种处理方式</p>
+<table>
+<thead>
+<tr>
+<th>方法/处理方式</th>
+<th>抛出异常</th>
+<th>返回特殊值</th>
+<th>一直阻塞</th>
+<th>超时退出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>插入方法</td>
+<td>add(e)</td>
+<td>offer(e)</td>
+<td>put(e)</td>
+<td>offer(e, time, unit)</td>
+</tr>
+<tr>
+<td>移除方法</td>
+<td>remove()</td>
+<td>poll()</td>
+<td>take()</td>
+<td>poll(time, unit)</td>
+</tr>
+<tr>
+<td>检查方法</td>
+<td>element()</td>
+<td>peek()</td>
+<td>不可用</td>
+<td>不可用</td>
+</tr>
+</tbody>
+</table>
+<p>JDK7中又7种阻塞队列：</p>
+<ul>
+<li>ArrayBlockingQueue : 一个数组结构组成的有界阻塞队列</li>
+<li>LinkedBlockingQueue : 一个由链表结构组成的有界阻塞队列</li>
+<li>PriorityBlockingQueue : 一个支持优先级排序的无界阻塞队列</li>
+<li>DelayQueue : 一个使用优先级队列实现的无界阻塞队列</li>
+<li>SynchronousQueue : 一个不存储元素的阻塞队列</li>
+<li>LinkedTransferQueue : 一个由链表结构组成的无界阻塞队列</li>
+<li>LinkedBlockingDeque : 一个由链表结构组成的双向阻塞队列</li>
+</ul>
+<p>DelayQueue是支持延时获取元素的无界阻塞队列，其中的元素必须实现Delay接口，实现方式可以参考ScheduledThreadPoolExecutor里ScheduledFutureTask类的实现。</p>
+<p>SynchronousQueue是一个不存储元素的阻塞队列，每个put操作必须等待一个take操作，否则不能继续添加元素。</p>
+<h2 id="Fork/Join框架">Fork/Join框架</h2><p>Fork/Join框架是Java7提供的一个用于并行执行任务的框架，是一个把大任务分割成若干个小任务，最终汇总每个小任务结果后得到大任务结果的框架。</p>
+<p>使用Fork/Join框架时需要清楚如何分割任务，在什么时候停止分割，如何汇总结果，有结果的任务需要继承RecursiveTask类。</p>
+<p>例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CountTask</span> <span class="keyword">extends</span> <span class="title">RecursiveTask</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THRESHOLD = <span class="number">2</span>; <span class="comment">// 阀值</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> start;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> end;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CountTask</span><span class="params">(<span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.start = start;</span><br><span class="line">        <span class="keyword">this</span>.end = end;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Integer <span class="title">compute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//如果任务足够小就计算任务</span></span><br><span class="line">        <span class="keyword">boolean</span> canCompute = (end - start) &lt;= THRESHOLD;</span><br><span class="line">        <span class="keyword">if</span> (canCompute) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = start; i &lt;= end; i++) &#123;</span><br><span class="line">                sum += i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//如果任务大于阀值，就分割成两个子任务来计算</span></span><br><span class="line">            <span class="keyword">int</span> middle = (start + end) / <span class="number">2</span>;</span><br><span class="line">            CountTask leftTask = <span class="keyword">new</span> CountTask(start, middle);</span><br><span class="line">            CountTask rightTask = <span class="keyword">new</span> CountTask(middle + <span class="number">1</span>, end);</span><br><span class="line">            <span class="comment">//执行子任务</span></span><br><span class="line">            leftTask.fork();</span><br><span class="line">            rightTask.fork();</span><br><span class="line">            <span class="comment">//等待子任务执行完成,并得到其结果</span></span><br><span class="line">            <span class="keyword">int</span> leftResult = leftTask.join();</span><br><span class="line">            <span class="keyword">int</span> rightResult = rightTask.join();</span><br><span class="line">            <span class="comment">//合并子任务的结果</span></span><br><span class="line">            sum = leftResult + rightResult;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ForkJoinPool forkJoinPool = <span class="keyword">new</span> ForkJoinPool();</span><br><span class="line">        <span class="comment">// 生成一个计算任务， 负责计算 1 + 2 + 3 + 4</span></span><br><span class="line">        CountTask task = <span class="keyword">new</span> CountTask(<span class="number">1</span>, <span class="number">4</span>);</span><br><span class="line">        <span class="comment">// 执行一个任务</span></span><br><span class="line">        Future&lt;Integer&gt; result = forkJoinPool.submit(task);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            System.out.println(result.get());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException | ExecutionException ignore) &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Fork/Join框架提供了isCompletedAbnormally()方法来检查任务是否已经抛出异常或已经被取消了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (task.isCompletedAbnormally()) &#123;</span><br><span class="line">	System.out.println(task.getException());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>getException方法在任务被取消了返回CancellationException，抛出异常则返回Throwable对象，任务没有完成或者没有抛出异常则返回null。</p>
+<p>ForkJoinPool由ForkJoinTask数组和ForkJoinWorkerThread数组组成，ForkJoinTask数组存放提交给ForkJoinPool的任务，ForkJoinWorkerThread数组负责执行这些任务。</p>
+<h2 id="原子操作类">原子操作类</h2><p>在java.util.concurrent.atomic包中提供了13类，用来提供原子操作。</p>
+<h3 id="操作基本类型">操作基本类型</h3><ul>
+<li>AtomicBoolean</li>
+<li>AtomicInteger</li>
+<li>AtomicLong</li>
+</ul>
+<p>三个类提供的方法类似，有addAndGet、compareAndSet、getAndIncrement、lazySet和getAndSet等。</p>
+<h3 id="操作数组">操作数组</h3><ul>
+<li>AtomicIntegerArray</li>
+<li>AtomicLongArray</li>
+<li>AtomicReferenceArray</li>
+</ul>
+<h3 id="操作引用类型">操作引用类型</h3><ul>
+<li>AtomicReference</li>
+<li>AtomicReferenceFieldUpdater</li>
+<li>AtomicMarkableReference</li>
+</ul>
+<h3 id="操作字段">操作字段</h3><ul>
+<li>AtomicIntegerFieldUpdater</li>
+<li>AtomicLongFieldUpdater</li>
+<li>AtomicStampedReference</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>《Java并发编程的艺术》读书笔记</p>]]>
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Git Internals 读书笔记]]></title>
+    <link href="http://yoursite.com/2015/11/30/Git%20Internals%20%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <id>http://yoursite.com/2015/11/30/Git Internals 读书笔记/</id>
+    <published>2015-11-29T16:00:00.000Z</published>
+    <updated>2015-11-29T07:25:01.000Z</updated>
+    <content type="html"><![CDATA[<p>Git Internals 读书笔记。</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=2117030&auto=0&height=66"></iframe>
+
+<p><a href="https://github.com/pluralsight/git-internals-pdf" target="_blank" rel="external">Git Internals</a></p>
+<h2 id="Git_Object_Types">Git Object Types</h2><p><code>Git</code>有四种对象类型，分别是<code>Blob</code>、<code>Tree</code>、<code>Commit</code>和<code>Tag</code>，都存储在对象数据库里，都是通过<code>Zlib</code>压缩过的，使用<code>SHA-1</code>值（内容的哈希值）来表示。</p>
+<p>使用书上的例子：</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150116.png" alt="working"></p>
+<h3 id="Blob">Blob</h3><p>在<code>Git</code>中，文件的<strong>内容</strong>是作为<code>Blob</code>进行存储的。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150134.png" alt="blob"></p>
+<p>对于具有相同内容的不同文件，只存储一份。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151611.png" alt="BLOb"></p>
+<h3 id="Tree">Tree</h3><p><code>Tree</code>就对应着目录。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151741.png" alt="tree"></p>
+<p><code>tree</code>存储该目录下的目录和文件的信息（<code>mode</code>,<code>type</code>,<code>name</code>,<code>sha</code>）。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151752.png" alt="tree"></p>
+<h3 id="Commit">Commit</h3><p><code>commit</code>对象指向一个<code>tree</code>对象，然后额外保存了作者，提交者，提交信息和上次提交这些信息。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151804.png" alt="commit"></p>
+<p>第一次提交</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151816.png" alt="commit1"></p>
+<p>第二次提交</p>
+<p>在第二次提交中，就有了<code>parent</code>这一信息，指向上一次的提交对象。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151826.png" alt="commit2"></p>
+<h3 id="Tag">Tag</h3><p><code>Tag</code>对象指向一个特定的<code>commit</code>对象，保存<code>object</code>，<code>type</code>，<code>tag</code>，<code>tagger</code>和<code>message</code>信息。<code>type</code>一般就是<code>commit</code>，<code>object</code>就是这个<code>commit</code>的<code>SHA-1</code>值。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314153119.png" alt="tag"></p>
+<h2 id="Git_Data_Model">Git Data Model</h2><h3 id="The_Model">The Model</h3><p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154003.png" alt="model"></p>
+<p>带颜色是不可变对象。</p>
+<h3 id="Example">Example</h3><p>目录文件如下</p>
+<pre><code>|-- init.rb
+ -- <span class="class"><span class="keyword">lib</span></span>
+    | -- base
+        | -- base_include.rb
+     -- my_plugin.rb
+</code></pre><p>第一次提交后，<code>Git Model</code>如下</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154004.png" alt="model"></p>
+<p><code>branch</code>指向最近的一次提交，<code>HEAD</code>指向当前的<code>branch</code>。</p>
+<p>现在修改<code>lib/base/base_include.rb</code>文件，然后提交，并创建一个<code>tag</code>。</p>
+<p>修改了文件，其父目录以及父目录的父目录直到最顶层目录的内容都被修改了，就会产生新的对象。对于没有改变的文件和目录则不会产生新对象。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154848.png" alt="model"></p>
+<p>现在修改<code>init.rb</code>文件，然后提交。</p>
+<p>由于只修改了<code>init.rb</code>文件，其他的子目录并没有变化，所以就不会产生其他的新对象。如下图所示。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314155544.png" alt="model"></p>
+<p>这样的一种模型，我们可以通过当前的<code>HEAD</code>得到所有的历史文件。</p>
+<h3 id="Traversal">Traversal</h3><p>当进行<code>checkout</code>的时候，通过查看<code>.git/refs</code>目录下的<code>branch</code>，<code>tag</code>，<code>remote</code>，将当前的<code>working directory</code>的内容切换到指定的<code>commit</code>的内容。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314160217.png" alt="traverse"></p>
+<h2 id="Branching_and_Merging">Branching and Merging</h2><p>在<code>Git</code>中，创建分支，切换分支是非常容易的，就是新建一个文件和写几个字符的事。</p>
+<p>在这个例子中，创建一个<code>experiment</code>分支，然后对<code>master</code>和<code>experiment</code>分支分别提交。现在就是下面这个样子。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161539.png" alt="branch"></p>
+<p>将<code>experiment</code>分支合并到<code>master</code>分支后就像下面这样。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161837.png" alt="branch"></p>
+<h3 id="Remotes">Remotes</h3><p>远程分支的名字类似与这样<code>origin/master</code>表示远程仓库<code>origin</code>的<code>master</code>分支。远程仓库的名字<code>origin</code>是可以自定义的，不一定就是<code>origin</code>。</p>
+<p>下面表示有三个分支，两个远程仓库分支<code>idea</code>和<code>master</code>，一个本地分支。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162032.png" alt="remote"></p>
+<p>对这三个分支进行合并，就成了下面这个样子。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162352.png" alt="remtoe"></p>
+<h3 id="Rebasing">Rebasing</h3><p>在多人合作开发时，将别人的代码合并到自己本地时，就会产生下面所示的情况。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163011.png" alt="rebase"></p>
+<p><code>C2</code>，<code>C4</code>，<code>C5</code>这些并没有什么实质的内容，只是进行合并产生的提交。当有大量的这些提交后，我们的提交历史就会变得不清晰。这时，我们可以使用<code>rebase</code>。</p>
+<p>使用<code>rebase</code>的效果和<code>merge</code>的效果如下所示。</p>
+<p>1是<code>rebase</code>产生的提交历史。<br>2是<code>merge</code>产生的提交历史。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163640.png" alt="rebase"></p>
+<blockquote>
+<p><code>rebase</code>只在本地分支上使用，不要在公共的分支上进行<code>rebase</code>!</p>
+</blockquote>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Git Internals 读书笔记。</p>]]>
+    
+    </summary>
+    
+      <category term="Git" scheme="http://yoursite.com/tags/Git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[《Java并发编程的艺术》读书笔记三]]></title>
+    <link href="http://yoursite.com/2015/11/30/%E3%80%8AJava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%89/"/>
+    <id>http://yoursite.com/2015/11/30/《Java并发编程的艺术》读书笔记三/</id>
+    <published>2015-11-29T16:00:00.000Z</published>
+    <updated>2015-11-30T07:14:50.000Z</updated>
+    <content type="html"><![CDATA[<p>《Java并发编程的艺术》读书笔记</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=1297650&auto=0&height=66"></iframe>
+
+<h2 id="线程基本概念">线程基本概念</h2><p>Java中通过继承Thread类，并重写run方法，然后调用start方法开启线程，或者通过向Thread构造函数中传入实现Runnable的类的实例然后调用start方法来开启线程。</p>
+<p>线程创建后可以设置其是否为守护线程，守护线程在所有的非守护线程退出后自动退出，该属性必须在启动线程之前设置。</p>
+<p>线程可以通过其他线程调用该线程的interrupt方法来中断该线程，被中断的线程可以调用isInterrupted方法来测试，这个方法不会影响线程的中断标识。通过静态方法interrupted也可以测试当前线程的中断情况，不过这个方法会重置线程的中断标识。</p>
+<p>方法suspend、resume、stop已标识过期，不推荐使用。停止线程可以通过在run方法中测试中断标识或者测试自定义的表示来实现。</p>
+<p>在Java中的线程有六种状态：</p>
+<table>
+<thead>
+<tr>
+<th>状态名称</th>
+<th>说明 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>New</td>
+<td>初始状态，线程被构建，但是还没有调用start方法</td>
+</tr>
+<tr>
+<td>Runnable</td>
+<td>运行状态，Java线程将操作系统中的就绪和运行两种状态笼统地称为运行中</td>
+</tr>
+<tr>
+<td>Block</td>
+<td>阻塞状态，表示线程阻塞于锁</td>
+</tr>
+<tr>
+<td>Waiting</td>
+<td>等待状态，进入该状态表示当前线程需要等待其他线程做出一些特定动作（通知或中断）</td>
+</tr>
+<tr>
+<td>Time_Waiting</td>
+<td>超时等待，不同于Waiting，它是可以在指定时间自行返回</td>
+</tr>
+<tr>
+<td>Terminated</td>
+<td>终止状态，表示当前线程已经执行完毕</td>
+</tr>
+</tbody>
+</table>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/threadstate.gif" alt="thread state"></p>
+<h2 id="线程间通信">线程间通信</h2><p>线程间通信可以通过等待通知机制来实现。也就是通过Object类中的wait、notify和notifyAll方法来实现。这些方法一般都是在获得了该对象锁后调用的，调用了wait方法后，线程会阻塞在该对象上，在其他线程在该对象上调用notify或notifyAll方法后会唤醒阻塞在该对象上的线程，notify会唤醒阻塞队列中的第一个线程，而notifyAll将会唤醒阻塞在该对象上的所有线程。</p>
+<p>thread.join方法会使当前线程等待thread线程执行完返回后再继续执行。</p>
+<h2 id="Java中的锁">Java中的锁</h2><p>Java中锁相关的类在java.util.concurrent.locks包下。</p>
+<p>Lock接口定义了锁的主要API。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>void lock()</td>
+<td>获取锁，调用该方法的当前线程会获取锁，在获得锁后，从该方法返回</td>
+</tr>
+<tr>
+<td>void lockInterruptibly()</td>
+<td>可中断地获取锁，和lock方法不同的地方是该方法会响应中断，在锁的获取中可以中断当前线程</td>
+</tr>
+<tr>
+<td>boolean tryLock()</td>
+<td>尝试非阻塞获取锁，调用该方法后立即返回，如果能获取则返回true，否则返回false</td>
+</tr>
+<tr>
+<td>boolean tryLock(long time, TimeUnit unit)</td>
+<td>超时的获取锁</td>
+</tr>
+<tr>
+<td>void unlock()</td>
+<td>释放锁</td>
+</tr>
+<tr>
+<td>Condition newCondition()</td>
+<td>获取等待通知组件，该组件和当前的锁绑定，当前线程只有在获取锁后才能调用该组件的wait方法，调用后，当前线程将释放锁</td>
+</tr>
+</tbody>
+</table>
+<h3 id="重入锁">重入锁</h3><p>重入锁是指在获取锁后的代码块中再次获取锁也能成功而不会阻塞的锁。synchronized支持可重入，ReentrantLock类是重入锁的一个实现。通过构造函数可以创建一个公平或非公平的ReentrantLock类实例，公平锁会将锁给最早获取锁的线程。</p>
+<p>可重入锁需要自己维护一个锁获取次数，同一个线程在每次获取锁的时候都要增加该次数，在每次释放锁的时候减少该次数，在减少到0时表示该线程释放了锁。</p>
+<h3 id="读写锁">读写锁</h3><p>读写锁是将读操作和写操作分别使用不同的锁来进行同步的锁，分读锁和写锁，读锁是该共享锁，写锁是独占锁。这样的设计能提高多线程读的操作，特别适合读操作多而写操作少的情况。</p>
+<p>ReentrantReadWriteLock是一个读写锁的实现，它同时也是该重入锁，它使用一个整型变量来维护读写状态，变量高16位维护读状态，低16位维护写状态。</p>
+<h3 id="Condition">Condition</h3><p>Object类的wait、notify和notifyAll方法和synchronized一起来实现等待通知机制，而Condition类和Lock也可以实现这个，而且还比前者更灵活，Condition必须通过Lock的newCondition方法来获得。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>await()</td>
+<td>当前线程进入等待状态直到被通知(signal)或中断</td>
+</tr>
+<tr>
+<td>awaitUninterruptibly()</td>
+<td>不可中断的等待</td>
+</tr>
+<tr>
+<td>awaitNanos(long timeout)</td>
+<td>超时等待。</td>
+</tr>
+<tr>
+<td>awaitUtil(Date deadline)</td>
+<td>当前线程进入等待状态直到被通知、中毒或到某个时间点</td>
+</tr>
+<tr>
+<td>signal()</td>
+<td>唤醒一个在Condition上等待的线程</td>
+</tr>
+<tr>
+<td>signalAll()</td>
+<td>唤醒所有在Condition上等待的线程</td>
+</tr>
+</tbody>
+</table>
+<h2 id="队列同步器（AbstractQueuedSynchronizer）">队列同步器（AbstractQueuedSynchronizer）</h2><p>队列同步器是用来构建锁或者其他同步组件的基础框架，它使用一个int成员变量表示同步状态，通过内置的FIFO队列来完成资源获取线程的排队工作。</p>
+<p>同步器主要使用方式是继承，子类通过继承同步器并实现它的抽象方法来管理同步状态，同步器提供了3该方法(getState()、setState(int newState)和compareAndSetState(int expect, int update))来进行操作，它们能够保证安全的改变状态。</p>
+<p>子类推荐被定义为自定义同步组件的静态内部类，同步器可以支持独占式的获取同步状态，也可以支持共享式的获取同步状态。</p>
+<p>同步器可重写方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>boolean tryAcquire(int arg)</td>
+<td>独占式获取同步状态，实现该方法需要查询当前状态并判断同步状态是否符合预期，然后再进行CAS设置同步状态</td>
+</tr>
+<tr>
+<td>boolean tryRelease(int arg)</td>
+<td>独占式释放同步状态</td>
+</tr>
+<tr>
+<td>int tryAcquireShared(int arg)</td>
+<td>共享式获取同步状态，返回大于0的值，表示获取成功</td>
+</tr>
+<tr>
+<td>boolean tryReleaseShared(int arg)</td>
+<td>共享式释放同步状态</td>
+</tr>
+<tr>
+<td>boolean isHeldExclusively()</td>
+<td>当前线程是否在独占式模式下被线程占用，一般表示是否被当前线程锁独占</td>
+</tr>
+</tbody>
+</table>
+<p>同步器提供的模板方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>void acquire(int arg)</td>
+<td>独占式获取同步状态</td>
+</tr>
+<tr>
+<td>void acquireInterruptibly(int arg)</td>
+<td>与acquire相同，但是能响应中断</td>
+</tr>
+<tr>
+<td>boolean tryAcquireNanos(int arg, long nanos)</td>
+<td>在acquireInterruptibly基础上加了超时限制</td>
+</tr>
+<tr>
+<td>void acquireShared(int arg)</td>
+<td>共享式获取同步状态</td>
+</tr>
+<tr>
+<td>void acquireSharedInterruptibly(int arg)</td>
+<td>与acquireShared，但能响应中断</td>
+</tr>
+<tr>
+<td>boolean tryAcquireSharedNanos(int arg, long nanos)</td>
+<td>在acquireSharedInterruptibly基础上加了超时限制</td>
+</tr>
+<tr>
+<td>boolean release(int arg)</td>
+<td>独占式释放同步状态</td>
+</tr>
+<tr>
+<td>boolean releaseShared(int arg)</td>
+<td>共享式释放同步状态</td>
+</tr>
+<tr>
+<td>Collection<thread> getQueuedThread()</thread></td>
+<td>获取等待在同步队列上的线程集合</td>
+</tr>
+</tbody>
+</table>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.AbstractQueuedSynchronizer;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.Condition;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.Lock;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Mutex</span> <span class="keyword">implements</span> <span class="title">Lock</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Sync sync = <span class="keyword">new</span> Sync();</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        sync.acquire(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lockInterruptibly</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        sync.acquireInterruptibly(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">tryLock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sync.tryAcquire(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">tryLock</span><span class="params">(<span class="keyword">long</span> time, TimeUnit unit)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sync.tryAcquireNanos(<span class="number">1</span>, unit.toNanos(time));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        sync.tryRelease(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Condition <span class="title">newCondition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sync.newCondition();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isLocked</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sync.isHeldExclusively();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasQueuedThreads</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sync.hasQueuedThreads();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Sync</span> <span class="keyword">extends</span> <span class="title">AbstractQueuedSynchronizer</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 是否处于占用状态</span></span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isHeldExclusively</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> getState() == <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">tryAcquire</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 当状态为0时获取锁</span></span><br><span class="line">            <span class="keyword">if</span> (compareAndSetState(<span class="number">0</span>, <span class="number">1</span>)) &#123;</span><br><span class="line">                setExclusiveOwnerThread(Thread.currentThread());</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">tryRelease</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (getState() == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 释放锁,将状态设置为0</span></span><br><span class="line">            setExclusiveOwnerThread(<span class="keyword">null</span>);</span><br><span class="line">            setState(<span class="number">0</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 返回一个Condition, 每个condition都包含了一个condition队列</span></span><br><span class="line">        <span class="function">Condition <span class="title">newCondition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ConditionObject();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同步器依赖内部的同步队列来完成同步状态的管理，当前线程获取同步状态失败时，同步器会将当前线程以及等待状态等信息构造成一个节点通过CAS加入到队列中，同时阻塞当前线程，当同步状态释放时，会把首节点的线程唤醒使其再次尝试获取同步状态。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>《Java并发编程的艺术》读书笔记</p>]]>
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[《Java并发编程的艺术》读书笔记二]]></title>
+    <link href="http://yoursite.com/2015/11/29/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%BA%8C/"/>
+    <id>http://yoursite.com/2015/11/29/Java并发编程的艺术》读书笔记二/</id>
+    <published>2015-11-28T16:00:00.000Z</published>
+    <updated>2015-11-29T07:18:12.000Z</updated>
+    <content type="html"><![CDATA[<p>《Java并发编程的艺术》读书笔记</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=5179544&auto=0&height=66"></iframe>
+
+
+<p>Java线程之间的通信是通过共享内存实现，每个线程也又自己的本地内存，这样多线程程序中就会出现可见性问题。</p>
+<p>在执行程序时，为了提供性能，编译器和处理器会对指令做重排序。</p>
+<p>为了多线程程序能正确执行，需要解决上面的两个问题。</p>
+<p>通过在指令中加入内存屏障和happends-before规则来解决以上问题。</p>
+<p>内存屏障有四种：</p>
+<ul>
+<li><p>LoadLoad Barriers</p>
+<p>  确保该指令之前的数据的装载先于之后的数据装载</p>
+</li>
+<li><p>StoreStore Barriers</p>
+<p>  确保该指令之前的数据对其他处理器的可见性（刷新到主存）先于之后的数据</p>
+</li>
+<li><p>LoadStore Barriers</p>
+<p>  确保该指令之前的数据加载先于之后数据的刷新</p>
+</li>
+<li><p>StoreLoad Barriers</p>
+<p>  确保该指令之前的数据刷新先于之后的数据加载</p>
+</li>
+</ul>
+<p>happens-before规则前后的操作不会进行重排序，规则有下面几条：</p>
+<ul>
+<li><p>程序次序规则</p>
+<p>  线程中的每个动作A都happens-before于该线程中的每一个动作B，其中，在程序中，所有动作B都能出现在A后面。</p>
+</li>
+<li><p>监视器锁规则</p>
+<p>  对于一个监视器锁的解锁happens-before于每一个后续对同一监视器锁的加锁。</p>
+</li>
+<li><p>volatile变量规则</p>
+<p>  对volatile域的写入操作happens-before于每一个后续对同一个域的读写操作。</p>
+</li>
+<li><p>线程启动规则</p>
+<p>  在一个线程里，对Thread.start的调用会happens-before于每个启动线程的动作。</p>
+</li>
+<li><p>线程终结规则</p>
+<p>  线程中的任何动作都happens-before于其他线程检测到这个线程已经终结、或者从Thread.join调用中成功返回，或Thread.isAlive返回false。</p>
+</li>
+<li><p>中断规则</p>
+<p>  一个线程调用另一个线程的interrupt happens-before于被中断的线程发现中断。</p>
+</li>
+<li><p>终结规则</p>
+<p>  一个对象的构造函数的结束happens-before于这个对象finalizer的开始。</p>
+</li>
+<li><p>传递性</p>
+<p>  如果A happens-before于B，且B happens-before于C，则A happens-before于C。</p>
+</li>
+</ul>
+<p>volatile和final的内存语义得到了增强，volatile的变量在某些情况下不会重排序，volatile的64位变量的读写是原子的。final成员变量的初始化在对象构造完成之前完成。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/reordering-table.png" alt="重排序"></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>《Java并发编程的艺术》读书笔记</p>]]>
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[链表的几个问题]]></title>
+    <link href="http://yoursite.com/2015/11/29/%E9%93%BE%E8%A1%A8%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/"/>
+    <id>http://yoursite.com/2015/11/29/链表的几个问题/</id>
+    <published>2015-11-28T16:00:00.000Z</published>
+    <updated>2015-11-29T07:22:14.000Z</updated>
+    <content type="html"><![CDATA[<p>链表的几个问题和答案的代码实现。</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=27902187&auto=0&height=66"></iframe>
+
+<ul>
+<li>给出单链表中一个节点的指针（不是最后的那个节点），删除该节点</li>
+<li>单链表的转置</li>
+<li>求单链表倒数第k个节点</li>
+<li>求链表的中间节点</li>
+<li>判断两个链表是否相交</li>
+<li>求两链表相交的交点</li>
+<li>判断单链表是否存在环</li>
+<li>找到环的入口</li>
+<li>链表有环，如何判断相交</li>
+</ul>
+<p>简单链表的结构</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LkList</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">        Node header;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">LkList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.header = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(T v)</span> </span>&#123;</span><br><span class="line">            Node n = <span class="keyword">new</span> Node(v, header);</span><br><span class="line">            header = n;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">            T item;</span><br><span class="line">            Node next;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(T item, Node next)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">this</span>.item = item;</span><br><span class="line">                <span class="keyword">this</span>.next = next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="给出单链表中一个节点的指针p（不是最后的那个节点），删除该节点">给出单链表中一个节点的指针p（不是最后的那个节点），删除该节点</h2><p>思路：由于是单链表，所以无法得到该节点的前一个节点，但是我们可以容易地得到该节点之后的节点。所以要是删除该节点之后的节点，我们是可以容易做到的。对于删除节点，其实就是将该节点的数据从链表中删除，而对于该节点本身在不在链表中我们并不关心。所以我们可以想到，为了删除本节点的数据，我们可以用其他数据覆盖掉本节点的数据，我们可以用该节点之后的节点的数据覆盖掉本节点的数据，然后将之后的那个节点删除，这样就相当于删除了本节点。就是下图显示的那样。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/link1.jpg" alt="link1"></p>
+<p>代码实现：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> LkList.<span class="function">Node <span class="title">deleteNode</span><span class="params">(LkList.Node p)</span> </span>&#123;</span><br><span class="line">    LkList.Node deleted = p.next; </span><br><span class="line">    p.item = deleted.item;</span><br><span class="line">    p.next = deleted.next;</span><br><span class="line">    deleted.next = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">return</span> deleted;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="单链表的转置">单链表的转置</h2><p>思路：对该单链表进行遍历，对于每个节点，进行头插法，插入到另一个链表，然后将该链表返回。</p>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> LkList&lt;Integer&gt; <span class="title">reverseList</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    LkList&lt;Integer&gt; nl = <span class="keyword">new</span> LkList&lt;&gt;();</span><br><span class="line">    LkList.Node p;</span><br><span class="line">    <span class="keyword">while</span> (list.header != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p = list.header.next;</span><br><span class="line">        list.header.next = nl.header;</span><br><span class="line">        nl.header = list.header;</span><br><span class="line">        list.header = p;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> nl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="求单链表倒数第k个节点">求单链表倒数第k个节点</h2><p>思路：</p>
+<ol>
+<li><p>求倒数第k个节点，就相当于第len-k+1(len是单链表的长度)个节点，所以可以先遍历一遍链表，求出链表的长度，然后再求第len-k+1个节点。</p>
+</li>
+<li><p>求倒数第k个节点，也就是说求一个节点，该节点距离链表的末尾k个距离，那么，问题就是如何测量这段距离，我们可以使用一个指针p1,从头遍历到第k+1个节点，那么从开始节点到p1指向的节点就的距离相差k，我们可以把这段距离当作一把尺来测试每个节点是否到链表末尾距离为k。所以，方法就是：可以使用两个指针p1,p2，先让p1遍历到第k+1个节点，然后p1，p2一起向后遍历，当p1遍历到末尾null时，p2指向的节点就是倒数第k个节点。</p>
+</li>
+</ol>
+<p>比如说想要求倒数第3个节点，我们可以先让p1遍历到第4个节点（节点6），然后p1,p2一起往后遍历，直到p1到null，此时，p2指向的节点就是倒数第3个节点。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/link3.jpg" alt="link2"></p>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * assume k is less than the size of list</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> LkList.<span class="function">Node <span class="title">lastKth</span><span class="params">(LkList&lt;Integer&gt; list, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    LkList.Node p1 = list.header;</span><br><span class="line">    LkList.Node p2 = list.header;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k &amp;&amp; p1 != <span class="keyword">null</span>; i++) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (p1 != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="求链表的中间节点">求链表的中间节点</h2><p>思路：看着与上面那题挺相似的，但是我们中间那个节点是第几个节点我们并不知道，单是中间节点是挺特殊的位置，正好是整个链表的一半。可以使用两个指针，一个一次遍历一个节点，另一个一次遍历两个节点。这样就能找到中间节点。需要的注意的是当链表中的节点是奇数个和偶数个的区别。</p>
+<p>奇数个的情况：<br><img src="http://7u2r8z.com1.z0.glb.clouddn.com/link4.jpg" alt="link3"></p>
+<p>偶数个的情况：<br><img src="http://7u2r8z.com1.z0.glb.clouddn.com/link5.jpg" alt="link4"></p>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> LkList.<span class="function">Node <span class="title">findMidNode</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    LkList.Node p1 = list.header;</span><br><span class="line">    LkList.Node p2;</span><br><span class="line">    <span class="keyword">if</span> (p1 == <span class="keyword">null</span>) &#123; <span class="comment">// 链表为空</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (p1.next == <span class="keyword">null</span>) &#123; <span class="comment">//链表只有一个节点</span></span><br><span class="line">        <span class="keyword">return</span> p1;</span><br><span class="line">    &#125;</span><br><span class="line">    p2 = p1.next;</span><br><span class="line">    <span class="keyword">while</span> (p2.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">        <span class="keyword">if</span> (p2.next == <span class="keyword">null</span>) &#123; <span class="comment">//链表有偶数个节点的时候，p2走到最后一个节点</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="判断两个链表是否相交">判断两个链表是否相交</h2><p>思路：判断两个链表的最后一个节点是否是同一个节点</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150210174318.png" alt="link6"></p>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isIntersect</span><span class="params">(LkList&lt;Integer&gt; lk1, LkList&lt;Integer&gt; lk2)</span> </span>&#123;</span><br><span class="line">    LkList.Node p1 = lk1.header;</span><br><span class="line">    LkList.Node p2 = lk2.header;</span><br><span class="line">    <span class="keyword">if</span> (p1 == <span class="keyword">null</span> || p2 == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">while</span> (p1.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (p2.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p1 == p2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="求两链表相交的交点">求两链表相交的交点</h2><p>思路：求出两个链表的长度差k，然长的链表先遍历k个节点，然后两个链表一起遍历，直到遍历到同一个节点，这个节点就是两个链表相交的交点。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150210175728.png" alt="link7"></p>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> LkList.<span class="function">Node <span class="title">findIntersect</span><span class="params">(LkList&lt;Integer&gt; lk1, LkList&lt;Integer&gt; lk2)</span> </span>&#123;</span><br><span class="line">    LkList.Node p1 = lk1.header;</span><br><span class="line">    LkList.Node p2 = lk2.header;</span><br><span class="line">    <span class="keyword">if</span> (p1 == <span class="keyword">null</span> || p2 == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">int</span> len1 = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> len2 = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (p1.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        len1++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (p2.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">        len2++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p1 != p2) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">int</span> k = Math.abs(len1 - len2);</span><br><span class="line">    p1 = lk1.header;</span><br><span class="line">    p2 = lk2.header;</span><br><span class="line">    <span class="keyword">if</span> (len1 &gt; len2) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">            p1 = p1.next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">            p2 = p2.next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (p1 != <span class="keyword">null</span> &amp;&amp; p2 != <span class="keyword">null</span> &amp;&amp; p1 != p2) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="判断单链表是否存在环">判断单链表是否存在环</h2><p>思路：</p>
+<ol>
+<li>使用<code>HashSet</code>来保存遍历过的节点，在遍历新节点的时候，进行查询是否之前遍历过，如果遍历过，就表示有环，能遍历完整个链表就表示没有环。</li>
+<li>使用两个指针，一个每次遍历一个几点，另一个每次遍历两个节点，如果有环，则，在某一次遍历后两个节点会相遇，如果没有环，快的那个节点会变为null。对于有环的链表，两个指针总会在环中循环遍历，遍历速度快的那个指针每次比慢的多遍历一个节点，在某一个时间点，快的指针会将慢的指针套圈（就像跑步一样，跑的快的会将跑的慢的套圈。），两个指针相遇。</li>
+</ol>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//两个指针的方式</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasCircle</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    LkList.Node p1 = list.header;</span><br><span class="line">    <span class="keyword">if</span> (p1 == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    LkList.Node p2 = list.header.next;</span><br><span class="line">    LkList.Node node = getMeetNode(p1, p2);</span><br><span class="line">    <span class="keyword">return</span> node != <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> LkList.<span class="function">Node <span class="title">getMeetNode</span><span class="params">(LkList.Node p1, LkList.Node p2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (p1 != <span class="keyword">null</span> &amp;&amp; p2 != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">        <span class="keyword">if</span> (p2 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            p2 = p2.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (p1 == p2) &#123;</span><br><span class="line">            <span class="keyword">return</span> p1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用HashSet</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasCircleUseSet</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    HashSet&lt;LkList.Node&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    LkList.Node p = list.header;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (set.contains(p)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        set.add(p);</span><br><span class="line">        p = p.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="找到环的入口">找到环的入口</h2><p>思路：</p>
+<ol>
+<li>与上一题的方法一一样，还是使用<code>HashSet</code>，第一个遍历过的节点就是入口。</li>
+<li>只有两个指针，先使用上面的方法二找到两个指针相遇的节点m，设入口节点为n,第一个节点为h,我们使用一个指针p1,从h遍历到m,计算出h到m的长度x,然后使用指针p2从m节点开始遍历，遍历一圈环，计算出环的长度y,计算出|x-y|,这个差值就是hn与mn的长度差，如果hn较长，则p1从h开始先遍历|x-y|个节点，然后p1和p2（指向m）开始一起遍历，当p1和p2遍历到同一个节点时，这个节点就是环的入口，对mn较长的情况同理。</li>
+</ol>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/link7.png" alt="link5"></p>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用两个指针方式</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> LkList.<span class="function">Node <span class="title">findIntersection</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!hasCircle(list)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    LkList.Node p1 = list.header;</span><br><span class="line">    LkList.Node p2 = list.header;</span><br><span class="line">    LkList.Node node = getMeetNode(p1, p2);</span><br><span class="line">    <span class="keyword">int</span> len1 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (p1 != node) &#123;</span><br><span class="line">        len1++;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    p2 = node.next;</span><br><span class="line">    <span class="keyword">int</span> lenCircle = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (p2 != node) &#123;</span><br><span class="line">        lenCircle++;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    p1 = list.header;</span><br><span class="line">    <span class="keyword">int</span> diffLen = Math.abs(len1 - lenCircle);</span><br><span class="line">    <span class="keyword">if</span> (len1 &gt; lenCircle) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; diffLen; i++) &#123;</span><br><span class="line">            p1 = p1.next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; diffLen; i++) &#123;</span><br><span class="line">            p2 = p2.next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (p1 != p2) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p1;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//使用HashSet方式</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> LkList.<span class="function">Node <span class="title">findIntersectionUseSet</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!hasCircle(list)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    HashSet&lt;LkList.Node&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    LkList.Node p = list.header;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (set.contains(p)) &#123;</span><br><span class="line">            <span class="keyword">return</span> p;</span><br><span class="line">        &#125;</span><br><span class="line">        set.add(p);</span><br><span class="line">        p = p.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="链表有环，如何判断相交">链表有环，如何判断相交</h2><p>思路：和判断链表是否有环同样的方式。分别对两个链表进行判断是否有环，如果两个都有环，再对其中一个链表的环中的一个节点判断是否再另一个链表的环中即可。</p>
+<p>代码实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line">判断两个链表（链表可能有环）是否相交</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">intersect</span><span class="params">(LkList&lt;Integer&gt; lk1, LkList&lt;Integer&gt; lk2)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">boolean</span> lk1hasCircle = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">boolean</span> lk2hasCircle = <span class="keyword">true</span>;</span><br><span class="line">    </span><br><span class="line">    LkList.Node p11 = lk1.header;</span><br><span class="line">    <span class="keyword">if</span> (p11 == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    LkList.Node p12 = lk1.header;</span><br><span class="line">    <span class="keyword">while</span> (p11 != <span class="keyword">null</span> &amp;&amp; p12 != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p11 = p11.next;</span><br><span class="line">        p12 = p12.next;</span><br><span class="line">        <span class="keyword">if</span> (p12 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            p12 = p12.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (p11 == p12) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p11 != p12) &#123;</span><br><span class="line">        lk1hasCircle = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    LkList.Node p21 = lk2.header;</span><br><span class="line">    <span class="keyword">if</span> (p21 == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    LkList.Node p22 = p21.next;</span><br><span class="line">    <span class="keyword">while</span> (p21 != <span class="keyword">null</span> &amp;&amp; p22 != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p21 = p21.next;</span><br><span class="line">        p22 = p22.next;</span><br><span class="line">        <span class="keyword">if</span> (p22 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            p22 = p22.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (p21 == p22) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p21 != p22) &#123;</span><br><span class="line">        lk2hasCircle = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (!lk1hasCircle &amp;&amp; !lk2hasCircle) &#123; <span class="comment">// 两个链表都没有环</span></span><br><span class="line">        <span class="keyword">return</span> isIntersect(lk1, lk2); <span class="comment">//之前判断两个链表是否相交的方法</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (lk1hasCircle &amp;&amp; !lk2hasCircle || !lk1hasCircle) &#123; <span class="comment">//lk1hasCircle &amp;&amp; !lk2hasCircle || !lk1hasCircle &amp;&amp; lk2hasCircle  只有一个链表有环</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//两个都有环</span></span><br><span class="line">    <span class="keyword">if</span> (p11 == p21) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    p21 = p21.next;</span><br><span class="line">    <span class="keyword">while</span> (p21 != p22) &#123;</span><br><span class="line">        <span class="keyword">if</span> (p11 == p21) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        p21 = p21.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>链表的几个问题和答案的代码实现。</p>]]>
+    
+    </summary>
+    
+      <category term="Algorithm" scheme="http://yoursite.com/tags/Algorithm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[《Java并发编程的艺术》读书笔记一]]></title>
+    <link href="http://yoursite.com/2015/11/28/%E3%80%8AJava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%80/"/>
+    <id>http://yoursite.com/2015/11/28/《Java并发编程的艺术》读书笔记一/</id>
+    <published>2015-11-27T16:00:00.000Z</published>
+    <updated>2015-11-28T06:37:37.000Z</updated>
+    <content type="html"><![CDATA[<p>《Java并发编程的艺术》读书笔记</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=27556211&auto=0&height=66"></iframe>
+
+<p>为什么要并发？现在的机器都是带多核处理器的，为了能充分发挥多核处理器的优势，并发编程就派上用场了。当然，在单核处理器的情况下，如果碰到了IO密集型的程序，并发编程也能重复利用处理器。并发的多线程程序通常响应更快。</p>
+<p>但是，并发程序更快并不是绝对的，线程之间的上下文切换是需要消耗时间的，如果上下文切换花费的时间多于多线程带来的程序执行的减少时间，那么并发程序反而比串行执行程序花费的时间更多。</p>
+<p>而且，编写并发程序往往要比编写串行程序难。</p>
+<h2 id="Java并发机制的底层实现原理">Java并发机制的底层实现原理</h2><h3 id="volatile">volatile</h3><p><code>volatile</code>关键字能够保证被修饰的变量的<strong>可见性</strong>和<strong>顺序性</strong>。</p>
+<p>由于CPU的速度和内存的速度有着巨大的差距，为了提高处理速度，CPU不直接与内存进行交互，而是先将数据读到CPU的高速缓存，然后CPU从高速缓存读取数据，写也先写到高速缓存中，然后再写入内存，每个CPU都有高速缓存，这样就会出现CPU读到的数据可能与内存中的数据不一致。</p>
+<p><code>volatile</code>变量的写，在写完高速缓存后会马上写入内存，每次读都会先使高速缓存实现，然后从内存读取。<code>volatile</code>变量也不会与其他变量发生重排序。</p>
+<h3 id="synchronized">synchronized</h3><p><code>synchronized</code>关键字可以修饰方法，也可以用在同步代码块中，修饰静态方法时，使用的锁是当前类的Class对象，修饰普通方法时，使用的锁是当前对象，用在同步代码块的时候需要自己指定锁。</p>
+<p>Java中的对象在对象头部分会存有HashCode值、分代年龄和锁标记。</p>
+<p><code>synchronized</code>使用的锁又4种状态：无锁状态、偏向锁状态、轻量级锁状态和重量级锁状态。</p>
+<h4 id="偏向锁">偏向锁</h4><p>研究发现，在多数情况下，锁总是由同一个线程多次获得，为了让线程获得锁的代价更低就引入了偏向锁。</p>
+<p>在锁对象的锁标记中会记录偏向的线程的ID，在该线程要获得该锁时，只要测试一下这个锁对象的锁标记是否指向该线程就可以了，如果不是，则测试一下该锁对象是否是偏向锁，是的话就通过CAS设置该锁指向当前线程，如果不是，则通过CAS来竞争锁。</p>
+<p>偏向锁使用了一种等到竞争出现才释放锁的机制，所以当其他线程尝试竞争锁时，持有该锁的线程才会释放锁。</p>
+<h4 id="轻量级锁">轻量级锁</h4><p>轻量级锁在获取的时候，会先将锁的对象头中的Mark Word数据复制到线程栈的锁记录中，然后通过CAS将锁的对象头中的标记指向该锁记录，如果成功则获得了锁。</p>
+<p>释放轻量级锁时，通过CAS将锁记录复制到锁对象的对象头中，如果失败则升级到重量级锁。</p>
+<h4 id="重量级锁">重量级锁</h4><p>重量级锁就是一般意义上的锁，会阻塞线程。</p>
+<h4 id="锁的对比">锁的对比</h4><table>
+<thead>
+<tr>
+<th>锁</th>
+<th>优点</th>
+<th>缺点</th>
+<th>使用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>偏向锁</td>
+<td>加锁和解锁不需要额外的消耗</td>
+<td>如果线程间存在锁竞争，会带来额外的锁撤销消耗</td>
+<td>适用于只有一个线程访问同步块的场景</td>
+</tr>
+<tr>
+<td>轻量级锁</td>
+<td>竞争的线程不会阻塞，提供了程序的响应时间</td>
+<td>如果始终得不到锁，会自旋消耗CPU</td>
+<td>最近响应时间，同步代码块执行速度块</td>
+</tr>
+<tr>
+<td>重量级锁</td>
+<td>线程竞争不使用自旋，不会消耗CPU</td>
+<td>线程阻塞，响应时间缓慢</td>
+<td>最近吞吐量，同步代码块执行速度长</td>
+</tr>
+</tbody>
+</table>
+<h3 id="原子操作">原子操作</h3><p>原子操作是指不可被中断的一个或多个操作。</p>
+<p>CAS（比较并交换），输入两个值，一个旧值和一个新值，如果旧值没有变化，就将其设置为新值，如果变化了就不做处理。</p>
+<p>Java中可以通过锁和CAS来实现原子操作。从JDK1.5开始java.util.concurrent.atomic包中包含了一些支持原子操作的类。</p>
+<h4 id="CAS实现原子操作的问题">CAS实现原子操作的问题</h4><ul>
+<li><p>ABA问题</p>
+<p>  旧值从A变成B然后又变回A，这种情况，CAS无法感知，会认为旧值一直没变过。</p>
+</li>
+<li><p>循环时间长开销大</p>
+<p>  自旋CAS如果长时间不成功，会给CPU带来非常的开销。</p>
+</li>
+<li><p>只能保证一个共享变量的原子操作</p>
+<p>  如果要对个共享变量的操作，CAS就无力了。</p>
+</li>
+</ul>
+<h4 id="锁实现原子操作">锁实现原子操作</h4><p>使用锁实现原子操作，只有获得锁的线程才能进入代码块或方法，在锁所保护的代码块或方法内可以又任意多个操作。</p>
+<p>除了偏向锁，其他锁的获取都是通过CAS方式来获取的。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>《Java并发编程的艺术》读书笔记</p>]]>
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Mac 下配置Scheme环境]]></title>
+    <link href="http://yoursite.com/2015/11/26/Mac%20%E4%B8%8B%E5%AE%89%E8%A3%85Scheme%E7%8E%AF%E5%A2%83/"/>
+    <id>http://yoursite.com/2015/11/26/Mac 下安装Scheme环境/</id>
+    <published>2015-11-25T16:00:00.000Z</published>
+    <updated>2015-11-27T06:48:54.000Z</updated>
+    <content type="html"><![CDATA[<p>记录Scheme的安装和使用。</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=28815250&auto=0&height=66"></iframe>
+
+<h2 id="安装">安装</h2><p>到<a href="http://www.gnu.org/software/mit-scheme/" target="_blank" rel="external">官网</a>下载对应的版本安装。</p>
+<h2 id="配置">配置</h2><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /<span class="constant">Applications</span>/<span class="constant">MIT</span>:<span class="constant">GNU</span>\ <span class="constant">Scheme</span>.app/<span class="constant">Contents</span>/<span class="constant">Resources</span> /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">mit</span>-<span class="title">scheme</span>-<span class="title">x86</span>-64</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">mit</span>-<span class="title">scheme</span>-<span class="title">x86</span>-64/<span class="title">mit</span>-<span class="title">scheme</span> /<span class="title">usr</span>/<span class="title">bin</span>/<span class="title">scheme</span></span></span><br></pre></td></tr></table></figure>
+<p>这一步会出现<code>not permitted</code>错误，办法是不要链接到<code>/usr/bin</code>下，而是链接到<code>/usr/local/bin</code>下，命令如下：</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">mit</span>-<span class="title">scheme</span>-<span class="title">x86</span>-64/<span class="title">mit</span>-<span class="title">scheme</span> /<span class="title">usr</span>//<span class="title">local</span>/<span class="title">bin</span>/<span class="title">scheme</span></span></span><br></pre></td></tr></table></figure>
+<p>这样，在命令行中敲入<code>scheme</code>就会出现scheme的交互环境了。</p>
+<h2 id="运行">运行</h2><p>在命令中输入<code>scheme</code>打开交互环境。</p>
+<p>在Scheme的交互环境中可以通过</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">pwd</span>)</span></span><br></pre></td></tr></table></figure>
+<p>查看当前路径。</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">cd</span> <span class="string">"~/demo"</span>)</span></span><br></pre></td></tr></table></figure>
+<p>切换目录。</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword"><span class="built_in">load</span></span> <span class="string">"test.scm"</span>)</span></span><br></pre></td></tr></table></figure>
+<p>加载Scheme源文件，加载后会执行这个文件中的代码。</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">disk-save</span> <span class="string">"demo-env"</span>)</span></span><br></pre></td></tr></table></figure>
+<p>保存当前交互环境，在当前目录下会有一个名为demo-env的文件。</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">disk-restore</span> <span class="string">"demo-env"</span>)</span></span><br></pre></td></tr></table></figure>
+<p>加载之前保存的交互环境。</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">quit</span>)</span></span><br></pre></td></tr></table></figure>
+<p>退出交互环境。</p>
+<h2 id="配置Sublime">配置Sublime</h2><p>安装<code>Scheme</code>和<code>SublimeREPL</code>两个插件，搜<code>Scheme</code>出来的都是主题相关的并不好找。</p>
+<p>安装好<code>SublimeREPL</code>后打开会提示无法加载<code>Scheme.tmLanguage</code>,可以到<a href="https://github.com/masondesu/sublime-scheme-syntax" target="_blank" rel="external">sublime-scheme-syntax</a>仓库中下载这些配置文件，然后放到Packages目录下即可。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>记录Scheme的安装和使用。</p>]]>
+    
+    </summary>
+    
+      <category term="Scheme" scheme="http://yoursite.com/tags/Scheme/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[git basics]]></title>
+    <link href="http://yoursite.com/2015/11/19/git-basics/"/>
+    <id>http://yoursite.com/2015/11/19/git-basics/</id>
+    <published>2015-11-19T05:06:55.000Z</published>
+    <updated>2015-11-25T12:27:33.000Z</updated>
+    <content type="html"><![CDATA[<p>记录<code>Git</code>的安装过程、常用的命令和<code>GitHub</code>的使用。</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=26113988&auto=0&height=66"></iframe>
+
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/git+github.jpg" alt="git+github"></p>
+<h2 id="安装">安装</h2><p>去<a href="http://git-scm.com/" target="_blank" rel="external">官网</a>下载<br>双击安装，默认选项就行。</p>
+<p>在Mac下，Xcode内置了Git，只要装Command Line Tools就可以了，安装命令<code>xcode-select --install</code>，查看是否安装了的命令是<code>xcode-select -p</code>,如果出现了<code>/Applications/Xcode.app/Contents/Developer</code>就表示已经安装了。</p>
+<h3 id="设置">设置</h3><p>设置用户名和邮箱</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user<span class="class">.name</span> <span class="string">"Mark"</span></span><br><span class="line">git config --global user<span class="class">.email</span> <span class="string">"shuyumark@gmail.com"</span></span><br></pre></td></tr></table></figure>
+<p><code>global</code>选项表示这些设置信息是全局的，所有的项目默认使用这些设置。如果不想使用这些设置，只要在特定的项目去掉<code>--global</code>重新设置即可。</p>
+<p>设置命令的高亮显示</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global <span class="attribute">color</span><span class="class">.ui</span> true</span><br></pre></td></tr></table></figure>
+<h3 id="设置SSH">设置SSH</h3><p>如果通过<code>SSH</code>来链接远程仓库的话，需要设置<code>SSH</code>。使用<code>HTTPS</code>则不用设置，每次<code>push</code>会提示输入用户名和密码。</p>
+<p>在<code>Git</code>命令行下输入<br><figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -<span class="keyword">C</span> <span class="string">"shuyumark@gmail.com"</span></span><br></pre></td></tr></table></figure></p>
+<p>回车，会提示保存位置，原先没有生成过<code>SSH</code>密钥可以直接默认回车就好。然后提示输入<code>passphrase</code>,就是密码一样的东西，有这个会更加安全，但是我这里就直接空着了，回车完成。</p>
+<p>然后将<code>/Users/Mark/.ssh/id_rsa.pub</code>中的内容添加到<code>GitHub</code>中.</p>
+<p>然后测试</p>
+<p>输入<code>ssh -T git@github.com</code>回车</p>
+<p>一开始会有警告，输入<code>yes</code>回车就可以了。如果出现了自己的用户名和</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You've successfully authenticated, <span class="keyword">but</span> GitHub <span class="keyword">does</span> <span class="keyword">not</span> provide shell access.</span><br></pre></td></tr></table></figure>
+<p>就表明成功了。</p>
+<h2 id="命令">命令</h2><h3 id="git_init">git init</h3><p>用法</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">git</span> init</span><br></pre></td></tr></table></figure>
+<p>初始化一个本地仓库，在项目文件下会产生一个<code>.git</code>的隐藏目录。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-init.html" target="_blank" rel="external">git init</a></p>
+<h3 id="git_clone">git clone</h3><p>用法</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">clone</span> <span class="title">&lt;url</span>&gt; <span class="tag">&lt;dir&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>&lt;url&gt;</code>表示远程仓库的<code>URL</code>，<code>&lt;dir&gt;</code>表示将要拷贝到本地的目录名，可以省略，省略后本地目录名就是远程仓库的项目名称。</p>
+<p>将远程仓库拷贝到本地。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-clone.html" target="_blank" rel="external">git clone</a></p>
+<h3 id="git_add">git add</h3><p>用法</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add <span class="variable">&lt;filename&gt;</span>|<span class="string">.</span></span><br></pre></td></tr></table></figure>
+<p><code>&lt;filename&gt;</code>表示文件名，<code>.</code>表示所有文件。</p>
+<p>将文件添加到<code>stage area</code>或者说<code>index</code>。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-add.html" target="_blank" rel="external">git add</a></p>
+<h3 id="git_rm">git rm</h3><p>用法</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm <span class="string">[--cached]</span> &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+<p><code>[--cached]</code>加上该参数表示文件移出<code>Git</code>。不加该参数表示删除该文件，也从文件系统中删除该文件。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-rm.html" target="_blank" rel="external">git rm</a></p>
+<h3 id="git_commit">git commit</h3><p>用法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="operator"><span class="keyword">commit</span> -<span class="keyword">m</span> &lt;msg&gt;</span></span><br></pre></td></tr></table></figure>
+<p>将<code>index</code>中的文件提交到本地仓库，<code>&lt;msg&gt;</code>表示提交信息。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-commit.html" target="_blank" rel="external">git commit</a></p>
+<h3 id="git_status">git status</h3><p>用法</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">status</span></span><br></pre></td></tr></table></figure>
+<p>查看当前分支的仓库信息。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-status.html" target="_blank" rel="external">git status</a></p>
+<h3 id="git_branch">git branch</h3><p>用法</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch [-d] <span class="annotation">[&lt;branch-name&gt;]</span></span><br></pre></td></tr></table></figure>
+<p><code>git branch</code>不加任何参数，表示显示所有的分支，当前分支前会加<code>*</code>显示。<code>git branch &lt;branch-name&gt;</code>表示新建名为<code>branch-name</code>的分支。<code>git branch -d &lt;branch-name&gt;</code>表示删除名为<code>branch-name</code>的分支。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-branch.html" target="_blank" rel="external">git branch</a></p>
+<h3 id="git_checkout">git checkout</h3><p>用法</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout <span class="string">[-b]</span> &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
+<p>不加<code>-b</code>参数表示切换到<code>branch-name</code>分支。加上<code>-b</code>参数表示新建<code>branch-name</code>分支并切换到该分支。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-checkout.html" target="_blank" rel="external">git checkout</a></p>
+<h3 id="git_merge">git merge</h3><p>用法</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">merge</span> &lt;branch-<span class="constant">one</span>&gt; &lt;branch-<span class="constant">two</span>&gt; ...</span><br></pre></td></tr></table></figure>
+<p>将<code>branch-one</code>和<code>branch-two</code>分支合并到当前分支。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-merge.html" target="_blank" rel="external">git merge</a></p>
+<h3 id="git_reset">git reset</h3><p>用法</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset [--soft] [--hard] <span class="annotation">[&lt;commit&gt;]</span></span><br></pre></td></tr></table></figure>
+<p><code>git reset</code>表示将<code>index</code>恢复到上一次提交时的样子，此时，<code>index</code>是没有文件准备提交的。<code>git reset HEAD &lt;file&gt;</code>表示将<code>file</code>文件从<code>index</code>移到<code>working directory</code>。<code>git reset --soft &lt;commit&gt;</code>表示将<code>commit</code>这一次提交的内容恢复到<code>index</code>。<code>git reset --hard &lt;commit&gt;</code>将当前分支恢复到<code>commit</code>提交后的样子。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-reset.html" target="_blank" rel="external">git reset</a></p>
+<h3 id="git_rebase">git rebase</h3><p>用法</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git rebase &lt;branch&gt;</span><br><span class="line">git rebase <span class="comment">--continue</span></span><br><span class="line">git rebase <span class="comment">--skip</span></span><br><span class="line">git rebase <span class="comment">--abort</span></span><br></pre></td></tr></table></figure>
+<p>合并分支的另一种方式，表示将<code>branch</code>分支合并到当前分支。如果合并的时候出现冲突，可以解决冲突后<code>git rebase --continue</code>继续合并，或者跳过或者终止合并。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-rebase.html" target="_blank" rel="external">git rebase</a></p>
+<h3 id="git_stash">git stash</h3><p>用法</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git stash</span><br><span class="line">git stash list</span><br><span class="line">git stash drop <span class="tag">&lt;<span class="title">stash</span>&gt;</span></span><br><span class="line">git stash apply <span class="tag">&lt;<span class="title">stash</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>git stash</code>表示暂时保存未提交的修改，这样，就可以切换到其他分支了。<br><code>git stash apply &lt;stash&gt;</code>表示恢复到指定的<code>stash</code>，不加参数就默认恢复到最近的一次<code>stash</code>。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-stash.html" target="_blank" rel="external">git stash</a></p>
+<h3 id="git_tag">git tag</h3><p>用法</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">tag</span> <span class="title">[-a</span>] <span class="tag">&lt;tag-name&gt;</span> [-m <span class="tag">&lt;msg&gt;</span>]</span><br></pre></td></tr></table></figure>
+<p><code>git tag -a &lt;tag-name&gt; -m &lt;msg&gt;</code>表示建一个标签，会生成一个<code>tag</code>对象。<br><code>git tag &lt;tag-name&gt;</code>表示建一个标签，单不会生成一个<code>tag</code>对象。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-tag.html" target="_blank" rel="external">git tag</a></p>
+<h3 id="git_fetch">git fetch</h3><p>用法</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch <span class="tag">&lt;<span class="title">remote</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>表示从远程仓库获取更新。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-fetch.html" target="_blank" rel="external">git fetch</a></p>
+<h3 id="git_pull">git pull</h3><p>用法</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull <span class="tag">&lt;<span class="title">remote</span>&gt;</span> <span class="tag">&lt;<span class="title">branch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>将远程仓库的<code>branch</code>分支合并到本地当前分支。相当于<code>git fetch &lt;remote&gt;</code>和<code>git merge &lt;remote&gt;/&lt;branch&gt;</code>的组合。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-pull.html" target="_blank" rel="external">git pull</a></p>
+<h3 id="git_push">git push</h3><p>用法</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push <span class="annotation">[&lt;remote&gt;]</span> <span class="annotation">[&lt;branch&gt;]</span></span><br></pre></td></tr></table></figure>
+<p>将本地仓库推送到远程仓库。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-push.html" target="_blank" rel="external">git push</a></p>
+<h3 id="git_remote">git remote</h3><p>用法</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote <span class="string">[-v]</span> <span class="string">[add]</span> <span class="string">[rename]</span> <span class="string">[remove]</span> <span class="string">[set-url]</span></span><br></pre></td></tr></table></figure>
+<p>不加任何参数表示显示远程仓库。<code>-v</code>参数表示显示详细信息，<code>add</code>表示添加远程仓库，<code>rename</code>表示修改远程仓库的名字，<code>remove</code>表示删除远程仓库，<code>set-url</code>表示更改远程仓库的URL。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-remote.html" target="_blank" rel="external">git remote</a></p>
+<h3 id="git_log">git log</h3><p>用法</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="command">log</span></span><br></pre></td></tr></table></figure>
+<p>查看提交日志，有很详细配置参数。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-log.html" target="_blank" rel="external">git log</a></p>
+<h3 id="git_diff">git diff</h3><p>用法</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff <span class="string">[--cached]</span> <span class="string">[branch1..branch2]</span></span><br></pre></td></tr></table></figure>
+<p><code>git diff</code>表示<code>working directory</code>和<code>index</code>之间的差别。<br><code>git diff --cached</code>表示<code>index</code>与<code>last commit</code>直接的差别。<br><code>git diff HEAD</code>表示<code>working directory</code>和<code>last commit</code>之间的差别。<br><code>git diff branch1..branch2</code>表示<code>branch1</code>和<code>branch2</code>之间的差别。</p>
+<p>详见<a href="https://www.kernel.org/pub/software/scm/git/docs/git-diff.html" target="_blank" rel="external">git diff</a></p>
+<h2 id="Github">Github</h2><h3 id="在Github如何进行pull_request？">在<a href="https://github.com" target="_blank" rel="external">Github</a>如何进行<code>pull request</code>？</h3><p>首先要fork对方的项目，之后你就能看到一个在你名下的一个和对方项目一模一样的项目。</p>
+<p>然后，在本地clone你名下的那个项目</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">clone</span> <span class="title">your-git-repo</span></span><br></pre></td></tr></table></figure>
+<p>要从原仓库获得更新</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="label">git</span> remote <span class="keyword">add </span>upstream origin-git-repo</span><br></pre></td></tr></table></figure>
+<p>更新</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git fetch upstream</span><br><span class="line">git <span class="operator"><span class="keyword">merge</span> upstream/<span class="keyword">master</span></span></span><br></pre></td></tr></table></figure>
+<p>推送到自己的仓库</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="label">git</span> <span class="keyword">push </span>origin master</span><br></pre></td></tr></table></figure>
+<p>最后在建一个<code>pull request</code>。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>记录<code>Git</code>的安装过程、常用的命令和<code>GitHub</code>的使用。</p>]]>
+    
+    </summary>
+    
+      <category term="Git" scheme="http://yoursite.com/tags/Git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[singleton-pattern]]></title>
+    <link href="http://yoursite.com/2015/11/18/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/"/>
+    <id>http://yoursite.com/2015/11/18/代理模式/</id>
+    <published>2015-11-18T11:38:21.000Z</published>
+    <updated>2015-11-18T11:51:28.000Z</updated>
+    <content type="html"><![CDATA[<p><a href="http://zh.wikipedia.org/zh/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F" target="_blank" rel="external">单例模式</a>能够保证类只有一个实例对象。在<code>Java</code>中可以使用多种方式来实现单例模式。</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=30953009&auto=0&height=66"></iframe>
+
+<h2 id="Eager_initialization">Eager initialization</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonEagerInit</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> SingletonEagerInit instance = <span class="keyword">new</span> SingletonEagerInit();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonEagerInit</span> <span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonEagerInit <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// other methods</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该方式在类加载的时候就对实例进行初始化。然后每次调用<code>getInstance</code>都会返回这个实例对象。</p>
+<p>该方式是有缺点，如果这个类的对象非常大，在加载该类后却没有调用<code>getInstance</code>方法，即加载了类，但没有使用该类的对象。但是这个对象已经被实例化，会占用一部分内存，如果我们用不着这个对象，这些内存就浪费了。</p>
+<h2 id="Lazy_initialization">Lazy initialization</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonLazyInit</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SingletonLazyInit instance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonLazyInit</span> <span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> SingletonLazyInit <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> SingletonLazyInit();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// other methods</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>延迟初始化的方式能够在真正用到实例对象的时候才对其进行初始化。</p>
+<p>对整个方法进行<code>synchronized</code>，避免了多线程下的同步问题，但是对整个方法进行<code>synchronized</code>效率会下降。</p>
+<h2 id="double_checked_locking">double checked locking</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonDoubleChecked</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> SingletonDoubleChecked instance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonDoubleChecked</span> <span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// effective java : 第71条</span></span><br><span class="line">    <span class="comment">// 使用局部变量可以提供性能</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonDoubleChecked <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        SingletonDoubleChecked result = instance;</span><br><span class="line">        <span class="keyword">if</span> (result == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span>(SingletonDoubleChecked.class) &#123;</span><br><span class="line">                result = instance;</span><br><span class="line">                <span class="keyword">if</span> (result == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    instance = result = <span class="keyword">new</span> SingletonDoubleChecked();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// other methods</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该方法并为整个方法进行<code>synchronized</code>,尽可能的缩小了同步块的范围。</p>
+<p>字段<code>instance</code>用<code>volatile</code>修饰是为了可见性，一致性，顺序性，可见性就是指当对一个临界资源进行修改后，其他线程就能马上觉察到该修改，所有线程看到这个变量的值是一致的,而且编译器也不会对其进行指令重排。</p>
+<p><code>getInstance</code>方法中使用局部变量<code>result</code>的原因可以见<code>Effective Java</code>第二版的第71条。</p>
+<blockquote>
+<p>这个变量的作用是确保实例变量只在已经被初始化的情况下读取一次。虽然这不是严格要求，但是可以提升性能。</p>
+</blockquote>
+<p>我的理解是<code>instance</code>这个实例变量是在堆内存中分配的，而局部变量<code>result</code>是在栈中分配的，栈的读取速度要快于堆的读取速度。</p>
+<p>如果该单例的类需要实现序列化，那么在加上<code>implements Serializable</code>后，还需要添加<code>readResolve</code>方法。该类的实例域都要声明为<code>transient</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Object <span class="title">readResolve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> instance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对与<code>clone</code>方法，可以直接抛出异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> CloneNotSupportedException();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Initialization-on-demand_holder_idiom">Initialization-on-demand holder idiom</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonByHolder</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonByHolder <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonByHolder</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// other methods</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonHolder</span> </span>&#123;</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">final</span> SingletonByHolder instance = <span class="keyword">new</span> SingletonByHolder();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种方式也是只有在第一次调用<code>getInstance</code>方法时才进行初始化。在加载<code>SingletonByHolder</code>类时并不会加载<code>SingletonHolder</code>类，所以就不会对<code>instance</code>进行初始化，只有在<code>getInstance</code>方法中调用<code>SingletonHolder.instance</code>才会加载<code>SingletonHolder</code>类，然后进行初始化。</p>
+<h2 id="The_enum_way">The enum way</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Singleton &#123;</span><br><span class="line"></span><br><span class="line">    INSTANCE;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// other methods</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用枚举来实现单例模式是被推荐的。</p>
+<blockquote>
+<p>这种方法在功能上与公有域方法相近，但是它更加简洁，无偿地提供了序列化机制，绝对防止多次实例化，即使是在面对复杂的序列化或者反射攻击的时候。虽然这种方法还没有广泛采用，但是单元素的枚举类型已经成为实现Singleton的最佳方法。</p>
+</blockquote>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><a href="http://zh.wikipedia.org/zh/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">单例模式</a>能够保证类只有一个实例对象。在<code>Java</code>中可以使用多种方式来实现单例模式。</p>]]>
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Markdown Syntax]]></title>
+    <link href="http://yoursite.com/2015/11/18/MarkDown%20Syntax/"/>
+    <id>http://yoursite.com/2015/11/18/MarkDown Syntax/</id>
+    <published>2015-11-17T16:00:00.000Z</published>
+    <updated>2015-11-19T07:19:22.000Z</updated>
+    <content type="html"><![CDATA[<p>Markdown 的语法有个主要的目的：用来作为一种网络内容的<em>写作</em>用语言。<br>下面是Markdown的详细语法介绍。</p>
+<a id="more"></a>
+<p><strong>说明：</strong>本文原载于<a href="http://markdown.tw/" target="_blank" rel="external">markdown.tw</a>网站，本次转载时为方便阅读，将其改为简体中文，并修改个别用语。<a href="http://twitter.com/#!/hi_jeanne" target="_blank" rel="external">@hi_jeanne</a></p>
+<p><strong>NOTE:</strong> This is Simplified Chinese Edition Document of<br>Markdown Syntax. If you are seeking for English Edition<br>Document. Please refer to <a href="http://daringfireball.net/projects/markdown/syntax" target="_blank" rel="external">Markdown: Syntax</a>.</p>
+<h1 id="Markdown:_Syntax">Markdown: Syntax</h1><ul>
+<li><a href="#overview">概述</a><ul>
+<li><a href="#philosophy">哲学</a></li>
+<li><a href="#html">行内 HTML</a></li>
+<li><a href="#autoescape">特殊字符自动转换</a></li>
+</ul>
+</li>
+<li><a href="#block">区块元素</a><ul>
+<li><a href="#p">段落和换行</a></li>
+<li><a href="#header">标题</a></li>
+<li><a href="#blockquote">区块引言</a></li>
+<li><a href="#list">列表</a></li>
+<li><a href="#precode">程序代码区块</a></li>
+<li><a href="#hr">分隔线</a></li>
+</ul>
+</li>
+<li><a href="#span">区段元素</a><ul>
+<li><a href="#link">链接</a></li>
+<li><a href="#em">强调</a></li>
+<li><a href="#code">程序代码</a></li>
+<li><a href="#img">图片</a></li>
+</ul>
+</li>
+<li><a href="#misc">其它</a><ul>
+<li><a href="#backslash">转义字符</a></li>
+<li><a href="#autolink">自动链接</a></li>
+</ul>
+</li>
+<li><a href="#acknowledgement">感谢</a></li>
+</ul>
+<p><strong>注意：</strong>这份文档是用 Markdown 写的，你可以看看附件中的原始文档 。</p>
+<hr>
+<h2 id="overview">概述</h2>
+
+<h3 id="philosophy">哲学</h3>
+
+<p>Markdown 的目标是实现「易读易写」。</p>
+<p>不过最需要强调的便是它的可读性。一份使用 Markdown 格式撰写的文档应该可以直接以纯文本发布，并且看起来不会像是由许多标签或是格式指令所构成。Markdown 语法受到一些既有 text-to-HTML 格式的影响，包括 <a href="http://docutils.sourceforge.net/mirror/setext.html" target="_blank" rel="external">Setext</a>、<a href="http://www.aaronsw.com/2002/atx/" target="_blank" rel="external">atx</a>、<a href="http://textism.com/tools/textile/" target="_blank" rel="external">Textile</a>、<a href="http://docutils.sourceforge.net/rst.html" target="_blank" rel="external">reStructuredText</a>、<a href="http://www.triptico.com/software/grutatxt.html" target="_blank" rel="external">Grutatext</a> 和 <a href="http://ettext.taint.org/doc/" target="_blank" rel="external">EtText</a>，然而最大灵感来源其实是纯文本的电子邮件格式。</p>
+<p>因此 Markdown 的语法全由标点符号所组成，并经过严谨慎选，是为了让它们看起来就像所要表达的意思。像是在文字两旁加上星号，看起来就像*强调*。Markdown 的列表看起来，嗯，就是列表。假如你用过电子邮件，区块引言看起来就真的像是引用一段文字。</p>
+<h3 id="html">行内 HTML</h3>
+
+<p>Markdown 的语法有个主要的目的：用来作为一种网络内容的<em>写作</em>用语言。</p>
+<p>Markdown 不是要来取代 HTML，甚至也没有要和它相似，它的语法种类不多，只和 HTML 的一部分有关系，重点<em>不是</em>要创造一种更容易写作 HTML 文档的语法，我认为 HTML 已经很容易写了，Markdown 的重点在于，它能让文档更容易阅读、编写。HTML 是一种<em>发布</em>的格式，Markdown 是一种<em>编写</em>的格式，因此，Markdown 的格式语法只涵盖纯文本可以涵盖的范围。</p>
+<p>不在 Markdown 涵盖范围之外的标签，都可以直接在文档里面用 HTML 撰写。不需要额外标注这是 HTML 或是 Markdown；只要直接加标签就可以了。</p>
+<p>只有区块元素──比如 <code>&lt;div&gt;</code>、<code>&lt;table&gt;</code>、<code>&lt;pre&gt;</code>、<code>&lt;p&gt;</code> 等标签，必需在前后加上空白，以利与内容区隔。而且这些（元素）的开始与结尾标签，不可以用 tab 或是空白来缩排。Markdown 的产生器有智能判断，可以避免在区块标签前后加上没有必要的 <code>&lt;p&gt;</code> 标签。</p>
+<p>举例来说，在 Markdown 文档里加上一段 HTML 表格：</p>
+<pre><code>This is a regular paragraph.
+
+<span class="tag">&lt;<span class="title">table</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">tr</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">td</span>&gt;</span>Foo<span class="tag">&lt;/<span class="title">td</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">tr</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">table</span>&gt;</span>
+
+This is another regular paragraph.
+</code></pre><p>请注意，Markdown 语法在 HTML 区块标签中将不会被进行处理。例如，无法在 HTML 区块内使用 Markdown 形式的<code>*强调*</code>。</p>
+<p>HTML 的区段标签如 <code>&lt;span&gt;</code>、<code>&lt;cite&gt;</code>、<code>&lt;del&gt;</code> 则不受限制，可以在 Markdown 的段落、列表或是标题里任意使用。依照个人习惯，甚至可以不用Markdown 格式，而采用 HTML 标签来格式化。举例说明：如果比较喜欢 HTML 的  <code>&lt;a&gt;</code> 或 <code>&lt;img&gt;</code> 标签，可以直接使用这些标签，而不用 Markdown 提供的链接或是图片标示语法。</p>
+<p>HTML 区段标签和区块标签不同，在区段标签的范围内， Markdown 的语法是有效的。</p>
+<h3 id="autoescape">特殊字符自动转换</h3>
+
+<p>在 HTML 文档中，有两个字符需要特殊处理： <code>&lt;</code> 和 <code>&amp;</code> 。 <code>&lt;</code> 符号用于起始标签，<code>&amp;</code> 符号则用于标记 HTML 实体，如果只是想要使用这些符号，必须要使用实体的形式，像是 <code>&amp;lt;</code> 和 <code>&amp;amp;</code>。</p>
+<p><code>&amp;</code> 符号其实很让写作网络文档的人很困扰，如果要输入「AT&amp;T」 ，必须要写成「<code>AT&amp;amp;T</code>」 ，还得转换网址内的 <code>&amp;</code> 符号，如果要链接到：</p>
+<pre><code><span class="string">http:</span><span class="comment">//images.google.com/images?num=30&amp;q=larry+bird</span>
+</code></pre><p>必须要把网址转成：</p>
+<pre><code><span class="string">http:</span><span class="comment">//images.google.com/images?num=30&amp;amp;q=larry+bird</span>
+</code></pre><p>才能放到链接标签的 <code>href</code> 属性里。不用说也知道这很容易忘记，这也可能是 HTML 标准检查所检查到的错误中，数量最多的。</p>
+<p>Markdown 允许直接使用这些符号，但是要小心转义字符的使用，如果是在HTML 实体中使用 <code>&amp;</code> 符号的话，它不会被转换，而在其它情形下，它则会被转换成 <code>&amp;amp;</code>。所以如果要在文档中插入一个著作权的符号，可以这样写：</p>
+<pre><code>&amp;<span class="keyword">copy</span>;
+</code></pre><p>Markdown 将不会对这段文字做修改，但是如果这样写：</p>
+<pre><code><span class="built_in">AT</span>&amp;T
+</code></pre><p>Markdown 就会将它转为：</p>
+<pre><code>AT&amp;amp<span class="comment">;T</span>
+</code></pre><p>类似的状况也会发生在 <code>&lt;</code> 符号上，因为 Markdown 支持 <a href="#html">行内 HTML</a> ，如果是使用 <code>&lt;</code> 符号作为 HTML 标签使用，那 Markdown 也不会对它做任何转换，但是如果是写：</p>
+<pre><code><span class="number">4</span> &lt; <span class="number">5</span>
+</code></pre><p>Markdown 将会把它转换为：</p>
+<pre><code><span class="number">4</span> &amp;lt; <span class="number">5</span>
+</code></pre><p>不过需要注意的是，code 范围内，不论是行内还是区块， <code>&lt;</code> 和 <code>&amp;</code> 两个符号都<em>一定</em>会被转换成 HTML 实体，这项特性让你可以很容易地用 Markdown 写 HTML code （和 HTML 相对而言， HTML 语法中，要把所有的 <code>&lt;</code> 和 <code>&amp;</code> 都转换为 HTML 实体，才能在 HTML 文档里面写出 HTML code。）</p>
+<hr>
+<h2 id="block">区块元素</h2>
+
+
+<h3 id="p">段落和换行</h3>
+
+<p>一个段落是由一个以上相连接的行句组成，而一个以上的空行则会切分出不同的段落（空行的定义是显示上看起来像是空行，便会被视为空行。比方说，若某一行只包含空白和 tab，则该行也会被视为空行），一般的段落不需要用空白或断行缩排。</p>
+<p>「一个以上相连接的行句组成」这句话其实暗示了 Markdown 允许段落内的强迫断行，这个特性和其他大部分的 text-to-HTML 格式不一样（包括 MovableType 的「Convert Line Breaks」选项），其它的格式会把每个断行都转成 <code>&lt;br /&gt;</code> 标签。</p>
+<p>如果<em>真的</em>想要插入 <code>&lt;br /&gt;</code> 标签，在行尾加上两个以上的空白，然后按 enter。</p>
+<p>是的，这确实需要花比较多功夫来插入 <code>&lt;br /&gt;</code> ，但是「每个换行都转换为 <code>&lt;br /&gt;</code>」的方法在 Markdown 中并不适合， Markdown 中 email 式的 <a href="#blockquote">区块引言</a> 和多段落的 <a href="#list">列表</a> 在使用换行来排版的时候，不但更好用，还更好阅读。</p>
+<h3 id="header">标题</h3>
+
+<p>Markdown 支持两种标题的语法，<a href="http://docutils.sourceforge.net/mirror/setext.html" target="_blank" rel="external">Setext</a> 和 <a href="http://www.aaronsw.com/2002/atx/" target="_blank" rel="external">atx</a> 形式。</p>
+<p>Setext 形式是用底线的形式，利用 <code>=</code> （一级标题）和 <code>-</code> （二级标题），例如：</p>
+<pre><code><span class="header">This is an H1
+=============</span>
+
+<span class="header">This is an H2
+-------------</span>
+</code></pre><p>任何数量的 <code>=</code> 和 <code>-</code> 都可以有效果。</p>
+<p>Atx 形式则是在行首插入 1 到 6 个 <code>#</code> ，对应到标题 1 到 6 级，例如：</p>
+<pre><code><span class="comment"># This is an H1</span>
+
+<span class="comment">## This is an H2</span>
+
+<span class="comment">###### This is an H6</span>
+</code></pre><p>可以选择性地「关闭」atx 样式的标题，这纯粹只是美观用的，若是觉得这样看起来比较舒适，就可以在行尾加上 <code>#</code>，而行尾的 <code>#</code> 数量也不用和开头一样（行首的井字数量决定标题的级别）：</p>
+<pre><code><span class="comment"># This is an H1 #</span>
+
+<span class="comment">## This is an H2 ##</span>
+
+<span class="comment">### This is an H3 ######</span>
+</code></pre><h3 id="blockquote">Blockquotes</h3>
+
+<p>Markdown 使用 email 形式的区块引言，如果你很熟悉如何在 email 信件中引用，就知道怎么在 Markdown 文档中建立一个区块引言，那会看起来像是强迫断行，然后在每行的最前面加上 <code>&gt;</code> ：</p>
+<pre><code>&gt; This is a blockquote with two paragraphs. Lo<span class="comment">rem ipsum dolor sit amet,</span>
+&gt; consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
+&gt; Vestibulum enim wisi, viverra nec, fringilla <span class="flow">in</span>, laoreet vitae, risus.
+&gt; 
+&gt; Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
+&gt; id sem consectetuer libero luctus adipiscing.
+</code></pre><p>Markdown 也允许只在整个段落的第一行最前面加上 <code>&gt;</code> ：</p>
+<pre><code>&gt; This is a blockquote with two paragraphs. Lo<span class="comment">rem ipsum dolor sit amet,</span>
+consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
+Vestibulum enim wisi, viverra nec, fringilla <span class="flow">in</span>, laoreet vitae, risus.
+
+&gt; Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
+id sem consectetuer libero luctus adipiscing.
+</code></pre><p>区块引言可以有级别（例如：引言内的引言），只要根据级别加上不同数量的 <code>&gt;</code> ：</p>
+<pre><code>&gt; This <span class="keyword">is</span> <span class="keyword">the</span> <span class="keyword">first</span> level <span class="keyword">of</span> quoting.
+&gt;
+&gt; &gt; This <span class="keyword">is</span> nested blockquote.
+&gt;
+&gt; Back <span class="keyword">to</span> <span class="keyword">the</span> <span class="keyword">first</span> level.
+</code></pre><p>引言的区块内也可以使用其他的 Markdown 语法，包括标题、列表、程序代码区块等：</p>
+<pre><code>&gt; <span class="comment">## This is a header.</span>
+&gt; 
+&gt; <span class="number">1.</span>   This <span class="keyword">is</span> <span class="keyword">the</span> <span class="keyword">first</span> <span class="type">list</span> <span class="property">item</span>.
+&gt; <span class="number">2.</span>   This <span class="keyword">is</span> <span class="keyword">the</span> <span class="keyword">second</span> <span class="type">list</span> <span class="property">item</span>.
+&gt; 
+&gt; Here's <span class="keyword">some</span> example code:
+&gt; 
+&gt;     <span class="constant">return</span> shell_exec(<span class="string">"echo $input | $markdown_script"</span>);
+</code></pre><p>任何标准的文本编辑器都能简单地建立 email 样式的引言，例如 BBEdit ，可以选择文字后，从菜单中选择<em>增加引言级别</em>。</p>
+<h3 id="list">列表</h3>
+
+<p>Markdown 支持有序列表和无序列表。</p>
+<p>无序列表使用星号、加号或是减号作为列表标记：</p>
+<pre><code><span class="bullet">*   </span>Red
+<span class="bullet">*   </span>Green
+<span class="bullet">*   </span>Blue
+</code></pre><p>等同于：</p>
+<pre><code><span class="bullet">+   </span>Red
+<span class="bullet">+   </span>Green
+<span class="bullet">+   </span>Blue
+</code></pre><p>也等同于：</p>
+<pre><code>-<span class="ruby">   <span class="constant">Red</span>
+</span>-<span class="ruby">   <span class="constant">Green</span>
+</span>-<span class="ruby">   <span class="constant">Blue</span></span>
+</code></pre><p>有序列表则使用数字接着一个英文句点：</p>
+<pre><code><span class="number">1.</span>  Bird
+<span class="number">2.</span>  McHale
+<span class="number">3.</span>  Parish
+</code></pre><p>很重要的一点是，在列表标记上使用的数字并不会影响输出的 HTML 结果，上面的列表所产生的 HTML 标记为：</p>
+<pre><code><span class="tag">&lt;<span class="title">ol</span>&gt;</span>
+<span class="tag">&lt;<span class="title">li</span>&gt;</span>Bird<span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+<span class="tag">&lt;<span class="title">li</span>&gt;</span>McHale<span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+<span class="tag">&lt;<span class="title">li</span>&gt;</span>Parish<span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">ol</span>&gt;</span>
+</code></pre><p>如果你的列表标记写成：</p>
+<pre><code><span class="number">1.</span>  Bird
+<span class="number">1.</span>  McHale
+<span class="number">1.</span>  Parish
+</code></pre><p>或甚至是：</p>
+<pre><code><span class="number">3.</span> Bird
+<span class="number">1.</span> McHale
+<span class="number">8.</span> Parish
+</code></pre><p>都会得到完全相同的 HTML 输出。重点在于，你可以让 Markdown 文档的列表数字和输出的结果相同，或是懒一点，可以完全不用在意数字的正确性。</p>
+<p>如果使用懒惰的写法，建议第一个项目最好还是从 1. 开始，因为 Markdown 未来可能会支持有序列表的 start 属性。</p>
+<p>列表项目标记通常是放在最左边，但是其实也可以缩排，最多三个空白，项目标记后面则一定要接着至少一个空白或 tab。</p>
+<p>要让列表看起来更漂亮，可以把内容用固定的缩排整理好：</p>
+<pre><code>*   Lo<span class="comment">rem ipsum dolor sit amet, consectetuer adipiscing elit.</span>
+    Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
+    viverra nec, fringilla <span class="flow">in</span>, laoreet vitae, risus.
+*   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
+    Suspendisse id sem consectetuer libero luctus adipiscing.
+</code></pre><p>但是如果你很懒，那也不一定需要：</p>
+<pre><code>*   Lo<span class="comment">rem ipsum dolor sit amet, consectetuer adipiscing elit.</span>
+Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
+viverra nec, fringilla <span class="flow">in</span>, laoreet vitae, risus.
+*   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
+Suspendisse id sem consectetuer libero luctus adipiscing.
+</code></pre><p>如果列表项目间用空行分开， Markdown 会把项目的内容在输出时用 <code>&lt;p&gt;</code><br>标签包起来，举例来说：</p>
+<pre><code><span class="bullet">*   </span>Bird
+<span class="bullet">*   </span>Magic
+</code></pre><p>会被转换为：</p>
+<pre><code><span class="tag">&lt;<span class="title">ul</span>&gt;</span>
+<span class="tag">&lt;<span class="title">li</span>&gt;</span>Bird<span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+<span class="tag">&lt;<span class="title">li</span>&gt;</span>Magic<span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">ul</span>&gt;</span>
+</code></pre><p>但是这个：</p>
+<pre><code><span class="bullet">*   </span>Bird
+
+<span class="bullet">*   </span>Magic
+</code></pre><p>会被转换为：</p>
+<pre><code><span class="tag">&lt;<span class="title">ul</span>&gt;</span>
+<span class="tag">&lt;<span class="title">li</span>&gt;</span><span class="tag">&lt;<span class="title">p</span>&gt;</span>Bird<span class="tag">&lt;/<span class="title">p</span>&gt;</span><span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+<span class="tag">&lt;<span class="title">li</span>&gt;</span><span class="tag">&lt;<span class="title">p</span>&gt;</span>Magic<span class="tag">&lt;/<span class="title">p</span>&gt;</span><span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">ul</span>&gt;</span>
+</code></pre><p>列表项目可以包含多个段落，每个项目下的段落都必须缩排 4 个空白或是一个 tab ：</p>
+<pre><code><span class="number">1</span>.  This is a list item with two paragraphs. Lo<span class="comment">rem ipsum dolor</span>
+    sit amet, consectetuer adipiscing elit. Aliquam hendrerit
+    mi posuere lectus.
+
+    Vestibulum enim wisi, viverra nec, fringilla <span class="flow">in</span>, laoreet
+    vitae, risus. Donec sit amet nisl. Aliquam semper ipsum
+    sit amet velit.
+
+<span class="number">2</span>.  Suspendisse id sem consectetuer libero luctus adipiscing.
+</code></pre><p>如果每行都有缩排，看起来会看好很多，当然，再次地，如果你很懒惰，Markdown 也允许：</p>
+<pre><code>*   This <span class="keyword">is</span> a <span class="type">list</span> <span class="property">item</span> <span class="keyword">with</span> two <span class="property">paragraphs</span>.
+
+    This <span class="keyword">is</span> <span class="keyword">the</span> <span class="keyword">second</span> <span class="property">paragraph</span> <span class="keyword">in</span> <span class="keyword">the</span> <span class="type">list</span> <span class="property">item</span>. You're
+only required <span class="keyword">to</span> indent <span class="keyword">the</span> <span class="keyword">first</span> line. Lorem ipsum dolor
+sit amet, consectetuer adipiscing elit.
+
+*   Another <span class="property">item</span> <span class="keyword">in</span> <span class="keyword">the</span> same <span class="type">list</span>.
+</code></pre><p>如果要在列表项目内放进引言，那 <code>&gt;</code> 就需要缩排：</p>
+<pre><code>*   A <span class="type">list</span> <span class="property">item</span> <span class="keyword">with</span> a blockquote:
+
+    &gt; This <span class="keyword">is</span> a blockquote
+    &gt; inside a <span class="type">list</span> <span class="property">item</span>.
+</code></pre><p>如果要放程序代码区块的话，该区块就需要缩排<em>两次</em>，也就是 8 个空白或是两个 tab：</p>
+<pre><code>*   A list <span class="keyword">item </span>with a <span class="preprocessor">code</span> <span class="keyword">block:
+</span>
+        &lt;<span class="preprocessor">code</span> goes here&gt;
+</code></pre><p>当然，项目列表很可能会不小心产生，像是下面这样的写法：</p>
+<pre><code><span class="number">1986</span>. What <span class="tag">a</span> great season.
+</code></pre><p>换句话说，也就是在行首出现<em>数字-句点-空白</em>，要避免这样的状况，可以在句点前面加上反斜杠。</p>
+<pre><code><span class="number">1986</span>\. What <span class="tag">a</span> great season.
+</code></pre><h3 id="precode">程序代码区块</h3>
+
+<p>和程序相关的写作或是标签语言原始代码通常会有已经排版好的程序代码区块，通常这些区块我们并不希望它以一般段落文档的方式去排版，而是照原来的样子显示，Markdown 会用 <code>&lt;pre&gt;</code> 和 <code>&lt;code&gt;</code> 标签来把程序代码区块包起来。</p>
+<p>要在 Markdown 中建立程序代码区块很简单，只要简单地缩排 4 个空白或是 1 个 tab 就可以，例如，下面的输入：</p>
+<pre><code>This is <span class="tag">a</span> <span class="attribute">normal</span> paragraph:
+
+    This is <span class="tag">a</span> <span class="tag">code</span> block.
+</code></pre><p>Markdown 会转换成：</p>
+<pre><code><span class="variable">&lt;p&gt;</span>This is a normal paragraph:<span class="variable">&lt;/p&gt;</span>
+
+<span class="variable">&lt;pre&gt;</span><span class="variable">&lt;code&gt;</span>This is a code <span class="built_in">block</span>.
+<span class="variable">&lt;/code&gt;</span><span class="variable">&lt;/pre&gt;</span>
+</code></pre><p>这个每行一级的缩排（4 个空白或是 1 个 tab），都会被移除，例如：</p>
+<pre><code>Here <span class="keyword">is</span> an example <span class="keyword">of</span> <span class="constant">AppleScript</span>:
+
+    <span class="keyword">tell</span> <span class="type">application</span> <span class="string">"Foo"</span>
+        <span class="command">beep</span>
+    <span class="keyword">end</span> <span class="keyword">tell</span>
+</code></pre><p>会被转换为：</p>
+<pre><code>&lt;p&gt;Here <span class="keyword">is</span> an example <span class="keyword">of</span> <span class="constant">AppleScript</span>:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;<span class="keyword">tell</span> <span class="type">application</span> <span class="string">"Foo"</span>
+    <span class="command">beep</span>
+<span class="keyword">end</span> <span class="keyword">tell</span>
+&lt;/code&gt;&lt;/pre&gt;
+</code></pre><p>一个程序代码区块会一直持续到没有缩排的那一行（或是文档结尾）。</p>
+<p>在程序代码区块里面， <code>&amp;</code> 、 <code>&lt;</code> 和 <code>&gt;</code> 会自动转成 HTML 实体，这样的方式让你非常容易使用 Markdown 插入范例用的 HTML 原始代码，只需要复制贴上，再加上缩排就可以了，剩下的 Markdown 都会帮你处理，例如：</p>
+<pre><code>&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"footer"</span>&gt;
+    &amp;<span class="keyword">copy</span>; <span class="number">2004</span> Foo Corporation
+&lt;/<span class="keyword">div</span>&gt;
+</code></pre><p>会被转换为：</p>
+<pre><code>&lt;<span class="keyword">pre</span>&gt;&lt;code&gt;&amp;<span class="keyword">lt</span>;div class=<span class="string">"footer"</span>&amp;gt;
+    &amp;amp;<span class="built_in">copy</span>; <span class="number">2004</span> Foo Corporation
+&amp;<span class="keyword">lt</span>;/div&amp;gt;
+&lt;/code&gt;&lt;/<span class="keyword">pre</span>&gt;
+</code></pre><p>程序代码区块中，一般的 Markdown 语法不会被转换，像是星号便只是星号，这表示你可以很容易地以 Markdown 语法撰写 Markdown 语法相关的文档。</p>
+<h3 id="hr">分隔线</h3>
+
+<p>你可以在一行中用三个或以上的星号、减号、底线来建立一个分隔线，行内不能有其他东西。你也可以在星号中间插入空白。下面每种写法都可以建立分隔线：</p>
+<pre><code><span class="keyword">*</span> <span class="keyword">*</span> <span class="keyword">*</span>
+
+<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+
+<span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+
+- - -
+
+---------------------------------------
+</code></pre><hr>
+<h2 id="span">区段元素</h2>
+
+<h3 id="link">链接</h3>
+
+<p>Markdown 支持两种形式的链接语法： <em>行内</em>和<em>参考</em>两种形式。</p>
+<p>不管是哪一种，链接的文字都是用 [方括号] 来标记。</p>
+<p>要建立一个行内形式的链接，只要在方块括号后面马上接着括号并插入网址链接即可，如果你还想要加上链接的 title 文字，只要在网址后面，用双引号把 title 文字包起来即可，例如：</p>
+<pre><code>This is [<span class="link_label">an example</span>](<span class="link_url">http://example.com/ "Title"</span>) inline link.
+
+[<span class="link_label">This link</span>](<span class="link_url">http://example.net/</span>) has no title attribute.
+</code></pre><p>会产生：</p>
+<pre><code><span class="tag">&lt;<span class="title">p</span>&gt;</span>This is <span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"http://example.com/"</span> <span class="attribute">title</span>=<span class="value">"Title"</span>&gt;</span>
+an example<span class="tag">&lt;/<span class="title">a</span>&gt;</span> inline link.<span class="tag">&lt;/<span class="title">p</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">p</span>&gt;</span><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"http://example.net/"</span>&gt;</span>This link<span class="tag">&lt;/<span class="title">a</span>&gt;</span> has no
+title attribute.<span class="tag">&lt;/<span class="title">p</span>&gt;</span>
+</code></pre><p>如果是要链接到同样主机的资源，可以使用相对路径：</p>
+<pre><code>See my [<span class="link_label">About</span>](<span class="link_url">/about/</span>) page for details.   
+</code></pre><p>参考形式的链接使用另外一个方括号接在链接文字的括号后面，而在第二个方括号里面要填入用以辨识链接的标签：</p>
+<pre><code>This is [<span class="link_label">an example</span>][<span class="link_reference">id</span>] reference-style link.
+</code></pre><p>也可以选择性地在两个方括号中间加上空白：</p>
+<pre><code>This <span class="keyword">is</span> [an example] [<span class="property">id</span>] <span class="keyword">reference</span>-style link.
+</code></pre><p>接着，在文档的任意处，可以把这个标签的链接内容定义出来：</p>
+<pre><code>[<span class="link_reference">id</span>]:<span class="link_url"> http://example.com/  "Optional Title Here"</span>
+</code></pre><p>链接定义的形式为：</p>
+<ul>
+<li>方括号，里面输入链接的辨识用标签</li>
+<li>接着一个冒号</li>
+<li>接着一个以上的空白或 tab</li>
+<li>接着链接的网址</li>
+<li>选择性地接着 title 内容，可以用单引号、双引号或是括号包着</li>
+</ul>
+<p>下面这三种链接的定义都是相同：</p>
+<pre><code>[<span class="link_reference">foo</span>]:<span class="link_url"> http://example.com/  "Optional Title Here"</span>
+[<span class="link_reference">foo</span>]:<span class="link_url"> http://example.com/  'Optional Title Here'</span>
+[<span class="link_reference">foo</span>]:<span class="link_url"> http://example.com/  (Optional Title Here)</span>
+</code></pre><p><strong>请注意：</strong>有一个已知的问题是 Markdown.pl 1.0.1 会忽略单引号包起来的链接 title。</p>
+<p>链接网址也可以用方括号包起来：</p>
+<pre><code>[<span class="link_reference">id</span>]:<span class="link_url"> &lt;http://example.com/&gt;  "Optional Title Here"</span>
+</code></pre><p>你也可以把 title 属性放到下一行，也可以加一些缩排，网址太长的话，这样会比较好看：</p>
+<pre><code>[id]<span class="symbol">:</span> <span class="symbol">http:</span>/<span class="regexp">/example.com/longish</span><span class="regexp">/path/to</span><span class="regexp">/resource/here</span>
+    <span class="string">"Optional Title Here"</span>
+</code></pre><p>网址定义只有在产生链接的时候用到，并不会直接出现在文档之中。</p>
+<p>链接辨识标签可以有字母、数字、空白和标点符号，但是并<em>不</em>区分大小写，因此下面两个链接是一样的：</p>
+<pre><code>[<span class="link_label">link text</span>][<span class="link_reference">a</span>]
+[<span class="link_label">link text</span>][<span class="link_reference">A</span>]
+</code></pre><p><em>默认的链接标签</em>功能让你可以省略指定链接标签，这种情形下，链接标签和链接文字会视为相同，要用默认链接标签只要在链接文字后面加上一个空的方括号，如果要让 “Google” 链接到 google.com，可以简化成：</p>
+<pre><code>[<span class="link_label">Google</span>][<span class="link_reference"></span>]
+</code></pre><p>然后定义链接内容：</p>
+<pre><code>[<span class="link_reference">Google</span>]:<span class="link_url"> http://google.com/</span>
+</code></pre><p>由于链接文字可能包含空白，所以这种简化的标签内也可以包含多个文字：</p>
+<pre><code>Visit [<span class="link_label">Daring Fireball</span>][<span class="link_reference"></span>] for more information.
+</code></pre><p>然后接着定义链接：</p>
+<pre><code>[<span class="link_reference">Daring Fireball</span>]:<span class="link_url"> http://daringfireball.net/</span>
+</code></pre><p>链接的定义可以放在文档中的任何一个地方，我比较偏好直接放在链接出现段落的后面，也可以把它放在文档最后面，就像是批注一样。</p>
+<p>下面是一个参考式链接的范例：</p>
+<pre><code><span class="name">I</span> <span class="atom">get</span> <span class="number">10</span> <span class="atom">times</span> <span class="atom">more</span> <span class="atom">traffic</span> <span class="atom">from</span> [<span class="name">Google</span>] [<span class="number">1</span>] <span class="atom">than</span> <span class="atom">from</span>
+[<span class="name">Yahoo</span>] [<span class="number">2</span>] <span class="atom">or</span> [<span class="name">MSN</span>] [<span class="number">3</span>].
+
+  [<span class="number">1</span>]: <span class="atom">http</span>://<span class="atom">google</span>.<span class="atom">com</span>/        <span class="string">"Google"</span>
+  [<span class="number">2</span>]: <span class="atom">http</span>://<span class="atom">search</span>.<span class="atom">yahoo</span>.<span class="atom">com</span>/  <span class="string">"Yahoo Search"</span>
+  [<span class="number">3</span>]: <span class="atom">http</span>://<span class="atom">search</span>.<span class="atom">msn</span>.<span class="atom">com</span>/    <span class="string">"MSN Search"</span>
+</code></pre><p>如果改成用链接名称的方式写：</p>
+<pre><code>I get 10 times more traffic from [<span class="link_label">Google</span>][<span class="link_reference"></span>] than from
+[<span class="link_label">Yahoo</span>][<span class="link_reference"></span>] or [<span class="link_label">MSN</span>][<span class="link_reference"></span>].
+
+  [google]: http://google.com/        "Google"
+  [yahoo]:  http://search.yahoo.com/  "Yahoo Search"
+  [msn]:    http://search.msn.com/    "MSN Search"
+</code></pre><p>上面两种写法都会产生下面的 HTML。</p>
+<pre><code>&lt;p&gt;I <span class="built_in">get</span> <span class="number">10</span> times more traffic <span class="built_in">from</span> &lt;<span class="operator">a</span> href=<span class="string">"http://google.com/"</span>
+title=<span class="string">"Google"</span>&gt;Google&lt;/<span class="operator">a</span>&gt; than <span class="built_in">from</span>
+&lt;<span class="operator">a</span> href=<span class="string">"http://search.yahoo.com/"</span> title=<span class="string">"Yahoo Search"</span>&gt;Yahoo&lt;/<span class="operator">a</span>&gt;
+<span class="operator">or</span> &lt;<span class="operator">a</span> href=<span class="string">"http://search.msn.com/"</span> title=<span class="string">"MSN Search"</span>&gt;MSN&lt;/<span class="operator">a</span>&gt;.&lt;/p&gt;
+</code></pre><p>下面是用行内形式写的同样一段内容的 Markdown 文档，提供作为比较之用：</p>
+<pre><code>I get 10 times more traffic from [<span class="link_label">Google</span>](<span class="link_url">http://google.com/ "Google"</span>)
+than from [<span class="link_label">Yahoo</span>](<span class="link_url">http://search.yahoo.com/ "Yahoo Search"</span>) or
+[<span class="link_label">MSN</span>](<span class="link_url">http://search.msn.com/ "MSN Search"</span>).
+</code></pre><p>参考式的链接其实重点不在于它比较好写，而是它比较好读，比较一下上面的范例，使用参考式的文章本身只有 81 个字符，但是用行内形式的链接却会增加到 176 个字符，如果是用纯 HTML 格式来写，会有 234 个字符，在 HTML 格式中，标签比文字还要多。</p>
+<p>使用 Markdown 的参考式链接，可以让文档更像是浏览器最后产生的结果，把一些标记相关的信息移到段落文字之外，这样增加链接，文章的阅读感也不会被打断。</p>
+<h3 id="em">强调</h3>
+
+<p>Markdown 使用星号（<code>*</code>）和底线（<code>_</code>）作为标记强调字词的符号，被 <code>*</code> 或 <code>_</code> 包围的字词会被转成用 <code>&lt;em&gt;</code> 标签包围，用两个 <code>*</code> 或 <code>_</code> 包起来的话，则会被转成 <code>&lt;strong&gt;</code>，例如：</p>
+<pre><code><span class="keyword">*</span>single asterisks<span class="keyword">*</span>
+
+_single underscores_
+
+<span class="keyword">*</span><span class="keyword">*</span>double asterisks<span class="keyword">*</span><span class="keyword">*</span>
+
+__double underscores__
+</code></pre><p>会转成：</p>
+<pre><code><span class="tag">&lt;<span class="title">em</span>&gt;</span>single asterisks<span class="tag">&lt;/<span class="title">em</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">em</span>&gt;</span>single underscores<span class="tag">&lt;/<span class="title">em</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">strong</span>&gt;</span>double asterisks<span class="tag">&lt;/<span class="title">strong</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">strong</span>&gt;</span>double underscores<span class="tag">&lt;/<span class="title">strong</span>&gt;</span>
+</code></pre><p>你可以随便用你喜欢的样式，唯一的限制是，用什么符号开启标签，就要用什么符号结束。</p>
+<p>强调也可以直接差在文字中间：</p>
+<pre><code>un<span class="keyword">*</span>frigging<span class="keyword">*</span>believable
+</code></pre><p>但是如果 <code>*</code> 和 <code>_</code> 两边都有空白的话，它们就只会被当成普通的符号。</p>
+<p>如果要在文字前后直接插入普通的星号或底线，可以用反斜杠：</p>
+<pre><code><span class="string">\*this</span> text <span class="keyword">is</span> surrounded <span class="keyword">by</span> literal asterisks<span class="string">\*</span>
+</code></pre><h3 id="code">程序代码</h3>
+
+<p>如果要标记一小段行内程序代码，可以用反引号把它包起来（<code>` </code>），例如：</p>
+<pre><code><span class="keyword">Use</span> the `printf()` <span class="function"><span class="keyword">function</span>.</span>
+</code></pre><p>会产生：</p>
+<pre><code><span class="tag">&lt;<span class="title">p</span>&gt;</span>Use the <span class="tag">&lt;<span class="title">code</span>&gt;</span>printf()<span class="tag">&lt;/<span class="title">code</span>&gt;</span> function.<span class="tag">&lt;/<span class="title">p</span>&gt;</span>
+</code></pre><p>如果要在程序代码区段内插入反引号，可以用多个反引号来开启和结束程序代码区段：</p>
+<pre><code><span class="escape">``</span>There is <span class="literal">a</span> literal backtick (<span class="escape">`)</span> here.<span class="escape">``</span>
+</code></pre><p>这段语法会产生：</p>
+<pre><code><span class="tag">&lt;<span class="title">p</span>&gt;</span><span class="tag">&lt;<span class="title">code</span>&gt;</span>There is a literal backtick (`) here.<span class="tag">&lt;/<span class="title">code</span>&gt;</span><span class="tag">&lt;/<span class="title">p</span>&gt;</span>
+</code></pre><p>程序代码区段的起始和结束端都可以放入一个空白，起始端后面一个，结束端前面一个，这样就可以在区段的一开始就插入反引号：</p>
+<pre><code>A single backtick <span class="keyword">in</span> <span class="tag">a</span> <span class="tag">code</span> <span class="tag">span</span>: `` ` ``
+
+A backtick-delimited string <span class="keyword">in</span> <span class="tag">a</span> <span class="tag">code</span> <span class="tag">span</span>: `` `foo` ``
+</code></pre><p>会产生：</p>
+<pre><code>&lt;p&gt;A single backtick <span class="keyword">in</span> <span class="tag">a</span> <span class="tag">code</span> <span class="tag">span</span>: &lt;code&gt;`&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;A backtick-delimited string <span class="keyword">in</span> <span class="tag">a</span> <span class="tag">code</span> <span class="tag">span</span>: &lt;code&gt;`foo`&lt;/code&gt;&lt;/p&gt;
+</code></pre><p>在程序代码区段内，<code>&amp;</code> 和方括号都会被转成 HTML 实体，这样会比较容易插入 HTML 原始代码，Markdown 会把下面这段：</p>
+<pre><code>Please don't <span class="operator"><span class="keyword">use</span> <span class="keyword">any</span> <span class="string">`&lt;blink&gt;`</span> tags.</span>
+</code></pre><p>转为：</p>
+<pre><code><span class="variable">&lt;p&gt;</span>Please don't use <span class="literal">any</span> <span class="variable">&lt;code&gt;</span>&amp;lt;blink&amp;gt;<span class="variable">&lt;/code&gt;</span> tags.<span class="variable">&lt;/p&gt;</span>
+</code></pre><p>也可以这样写：</p>
+<pre><code>`<span class="javascript">&amp;#<span class="number">8212</span>;</span>` <span class="keyword">is</span> the decimal-encoded equivalent <span class="keyword">of</span> `<span class="javascript">&amp;mdash;</span>`.
+</code></pre><p>以产生：</p>
+<pre><code><span class="variable">&lt;p&gt;</span><span class="variable">&lt;code&gt;</span>&amp;amp;<span class="comment">#8212;&lt;/code&gt; is the decimal-encoded</span>
+equivalent of <span class="variable">&lt;code&gt;</span>&amp;amp;mdash;<span class="variable">&lt;/code&gt;</span>.<span class="variable">&lt;/p&gt;</span>
+</code></pre><h3 id="img">图片</h3>
+
+<p>很明显地，要在纯文本应用中设计一个 「自然」的语法来插入图片是有一定难度的。</p>
+<p>Markdown 使用一种和链接很相似的语法来标记图片，同样也允许两种样式： <em>行内</em>和<em>参考</em>。</p>
+<p>行内图片的语法看起来像是：</p>
+<pre><code>![<span class="link_label">Alt text</span>](<span class="link_url">/path/to/img.jpg</span>)
+
+![<span class="link_label">Alt text</span>](<span class="link_url">/path/to/img.jpg "Optional title"</span>)
+</code></pre><p>详细叙述如下：</p>
+<ul>
+<li>一个惊叹号 <code>!</code></li>
+<li>接着一个方括号，里面放上图片的替换文字</li>
+<li>接着一个普通括号，里面放上图片的网址，最后还可以用引号包住并加上<br>选择性的 ‘title’ 文字。</li>
+</ul>
+<p>参考式的图片语法则长得像这样：</p>
+<pre><code>![<span class="link_label">Alt text</span>][<span class="link_reference">id</span>]
+</code></pre><p>「id」是图片参考的名称，图片参考的定义方式则和链接参考一样：</p>
+<pre><code>[<span class="property">id</span>]: url/<span class="keyword">to</span>/image  <span class="string">"Optional title attribute"</span>
+</code></pre><p>到目前为止， Markdown 还没有办法指定图片的宽高，如果需要的话，可以使用普通的 <code>&lt;img&gt;</code> 标签。</p>
+<hr>
+<h2 id="misc">其它</h2>
+
+<h3 id="autolink">自动链接</h3>
+
+<p>Markdown 支持比较简短的自动链接形式来处理网址和电子邮件信箱，只要是用方括号包起来， Markdown 就会自动把它转成链接，链接的文字就和链接位置一样，例如：</p>
+<pre><code>&lt;<span class="string">http:</span><span class="comment">//example.com/&gt;</span>
+</code></pre><p>Markdown 会转为：</p>
+<pre><code>&lt;<span class="tag">a</span> href=<span class="string">"http://example.com/"</span>&gt;http:<span class="comment">//example.com/&lt;/a&gt;</span>
+</code></pre><p>自动的邮件链接也很类似，只是 Markdown 会先做一个编码转换的过程，把文字字符转成 16 进位码的 HTML 实体，这样的格式可以混淆一些不好的信箱地址收集机器人，例如：</p>
+<pre><code><span class="tag">&lt;address@example.com&gt;</span>
+</code></pre><p>Markdown 会转成：</p>
+<pre><code>&lt;a href=<span class="string">"&amp;#x6D;&amp;#x61;i&amp;#x6C;&amp;#x74;&amp;#x6F;:&amp;#x61;&amp;#x64;&amp;#x64;&amp;#x72;&amp;#x65;
+&amp;#115;&amp;#115;&amp;#64;&amp;#101;&amp;#120;&amp;#x61;&amp;#109;&amp;#x70;&amp;#x6C;e&amp;#x2E;&amp;#99;&amp;#111;
+&amp;#109;"</span>&gt;&amp;<span class="title">#x61</span>;&amp;<span class="title">#x64</span>;&amp;<span class="title">#x64</span>;&amp;<span class="title">#x72</span>;&amp;<span class="title">#x65</span>;&amp;<span class="title">#115</span>;&amp;<span class="title">#115</span>;&amp;<span class="title">#64</span>;&amp;<span class="title">#101</span>;&amp;<span class="title">#120</span>;&amp;<span class="title">#x61</span>;
+&amp;<span class="title">#109</span>;&amp;<span class="title">#x70</span>;&amp;<span class="title">#x6</span>C;e&amp;<span class="title">#x2</span>E;&amp;<span class="title">#99</span>;&amp;<span class="title">#111</span>;&amp;<span class="title">#109</span>;&lt;/a&gt;
+</code></pre><p>在浏览器里面，这段字符串会变成一个可以点击的「address@example.com」链接。</p>
+<p>（这种作法虽然可以混淆不少的机器人，但并无法全部挡下来，不过这样也比什么都不做好些。无论如何，公开你的信箱终究会引来广告信件的。）</p>
+<h3 id="backslash">转义字符</h3>
+
+<p>Markdown 可以利用反斜杠来插入一些在语法中有其它意义的符号，例如：如果想要用星号加在文字旁边的方式来做出强调效果（但不用 <code>&lt;em&gt;</code> 标签），可以在星号的前面加上反斜杠：</p>
+<pre><code>\<span class="keyword">*</span>literal asterisks\<span class="keyword">*</span>
+</code></pre><p>Markdown 支持在下面这些符号前面加上反斜杠来帮助插入普通的符号：</p>
+<pre><code>\   反斜杠
+`   反引号
+<span class="bullet">*   </span>星号
+_   底线
+{}  大括号
+[]  方括号
+()  括号
+<span class="header">#   井字号</span>
+<span class="bullet">+    </span>加号
+<span class="bullet">-    </span>减号
+.   英文句点
+!   惊叹号
+</code></pre><h2 id="acknowledgement">感谢</h2>
+
+<p>感谢 <a href="https://twitter.com/#!/leafy7382" target="_blank" rel="external">leafy7382</a> 协助翻译，<a href="http://iamhlb.com/" target="_blank" rel="external">hlb</a>、<a href="http://twitter.com/randylien" target="_blank" rel="external">Randylien</a> 帮忙润稿，<a href="https://twitter.com/#!/ethantw" target="_blank" rel="external">ethantw</a> 的<a href="http://ethantw.net/projects/han/" target="_blank" rel="external">汉字标准格式・CSS Reset</a>， <a href="http://kidwm.net/" target="_blank" rel="external">WM</a> 回报文字错误。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Markdown 的语法有个主要的目的：用来作为一种网络内容的<em>写作</em>用语言。<br>下面是Markdown的详细语法介绍。</p>]]>
+    
+    </summary>
+    
+      <category term="Markdown" scheme="http://yoursite.com/tags/Markdown/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Hello World]]></title>
+    <link href="http://yoursite.com/2015/11/17/hello-world/"/>
+    <id>http://yoursite.com/2015/11/17/hello-world/</id>
+    <published>2015-11-16T16:00:00.000Z</published>
+    <updated>2015-11-19T07:19:17.000Z</updated>
+    <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<a id="more"></a>
+<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Welcome to <a href="http://hexo.io/">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>]]>
+    
+    </summary>
+    
+  </entry>
+  
+</feed>
