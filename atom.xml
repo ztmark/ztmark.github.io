@@ -3,9 +3,9 @@
   <title><![CDATA[Mark's Notes]]></title>
   <subtitle><![CDATA[I think therefore I am]]></subtitle>
   <link href="/atom.xml" rel="self"/>
-  <link href="http://yoursite.com/"/>
+  <link href="http://ztmark.github.io/"/>
   <updated>2015-12-04T04:38:57.000Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>http://ztmark.github.io/</id>
   
   <author>
     <name><![CDATA[Mark]]></name>
@@ -16,8 +16,8 @@
   
   <entry>
     <title><![CDATA[一道有趣的题]]></title>
-    <link href="http://yoursite.com/2015/12/04/%E4%B8%80%E9%81%93%E6%9C%89%E8%B6%A3%E7%9A%84%E9%A2%98/"/>
-    <id>http://yoursite.com/2015/12/04/一道有趣的题/</id>
+    <link href="http://ztmark.github.io/2015/12/04/%E4%B8%80%E9%81%93%E6%9C%89%E8%B6%A3%E7%9A%84%E9%A2%98/"/>
+    <id>http://ztmark.github.io/2015/12/04/一道有趣的题/</id>
     <published>2015-12-03T16:00:00.000Z</published>
     <updated>2015-12-04T04:38:57.000Z</updated>
     <content type="html"><![CDATA[<p>一道有趣的算法题。</p>
@@ -203,14 +203,14 @@
     
     </summary>
     
-      <category term="Algorithm" scheme="http://yoursite.com/tags/Algorithm/"/>
+      <category term="Algorithm" scheme="http://ztmark.github.io/tags/Algorithm/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[《Java并发编程的艺术》读书笔记五]]></title>
-    <link href="http://yoursite.com/2015/12/02/%E3%80%8AJava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%BA%94/"/>
-    <id>http://yoursite.com/2015/12/02/《Java并发编程的艺术》读书笔记五/</id>
+    <link href="http://ztmark.github.io/2015/12/02/%E3%80%8AJava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%BA%94/"/>
+    <id>http://ztmark.github.io/2015/12/02/《Java并发编程的艺术》读书笔记五/</id>
     <published>2015-12-01T16:00:00.000Z</published>
     <updated>2015-12-02T07:12:20.000Z</updated>
     <content type="html"><![CDATA[<p>《Java并发编程的艺术》读书笔记</p>
@@ -291,14 +291,14 @@
     
     </summary>
     
-      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+      <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[《Java并发编程的艺术》读书笔记四]]></title>
-    <link href="http://yoursite.com/2015/12/01/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E5%9B%9B/"/>
-    <id>http://yoursite.com/2015/12/01/Java并发编程的艺术》读书笔记四/</id>
+    <link href="http://ztmark.github.io/2015/12/01/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E5%9B%9B/"/>
+    <id>http://ztmark.github.io/2015/12/01/Java并发编程的艺术》读书笔记四/</id>
     <published>2015-11-30T16:00:00.000Z</published>
     <updated>2015-12-01T13:40:54.000Z</updated>
     <content type="html"><![CDATA[<p>《Java并发编程的艺术》读书笔记</p>
@@ -394,14 +394,14 @@
     
     </summary>
     
-      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+      <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Git Internals 读书笔记]]></title>
-    <link href="http://yoursite.com/2015/11/30/Git%20Internals%20%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    <id>http://yoursite.com/2015/11/30/Git Internals 读书笔记/</id>
+    <link href="http://ztmark.github.io/2015/11/30/Git%20Internals%20%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <id>http://ztmark.github.io/2015/11/30/Git Internals 读书笔记/</id>
     <published>2015-11-29T16:00:00.000Z</published>
     <updated>2015-11-29T07:25:01.000Z</updated>
     <content type="html"><![CDATA[<p>Git Internals 读书笔记。</p>
@@ -474,14 +474,14 @@
     
     </summary>
     
-      <category term="Git" scheme="http://yoursite.com/tags/Git/"/>
+      <category term="Git" scheme="http://ztmark.github.io/tags/Git/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[《Java并发编程的艺术》读书笔记三]]></title>
-    <link href="http://yoursite.com/2015/11/30/%E3%80%8AJava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%89/"/>
-    <id>http://yoursite.com/2015/11/30/《Java并发编程的艺术》读书笔记三/</id>
+    <link href="http://ztmark.github.io/2015/11/30/%E3%80%8AJava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%89/"/>
+    <id>http://ztmark.github.io/2015/11/30/《Java并发编程的艺术》读书笔记三/</id>
     <published>2015-11-29T16:00:00.000Z</published>
     <updated>2015-11-30T07:14:50.000Z</updated>
     <content type="html"><![CDATA[<p>《Java并发编程的艺术》读书笔记</p>
@@ -695,14 +695,14 @@
     
     </summary>
     
-      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+      <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[《Java并发编程的艺术》读书笔记二]]></title>
-    <link href="http://yoursite.com/2015/11/29/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%BA%8C/"/>
-    <id>http://yoursite.com/2015/11/29/Java并发编程的艺术》读书笔记二/</id>
+    <link href="http://ztmark.github.io/2015/11/29/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%BA%8C/"/>
+    <id>http://ztmark.github.io/2015/11/29/Java并发编程的艺术》读书笔记二/</id>
     <published>2015-11-28T16:00:00.000Z</published>
     <updated>2015-11-29T07:18:12.000Z</updated>
     <content type="html"><![CDATA[<p>《Java并发编程的艺术》读书笔记</p>
@@ -764,14 +764,14 @@
     
     </summary>
     
-      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+      <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[链表的几个问题]]></title>
-    <link href="http://yoursite.com/2015/11/29/%E9%93%BE%E8%A1%A8%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/"/>
-    <id>http://yoursite.com/2015/11/29/链表的几个问题/</id>
+    <link href="http://ztmark.github.io/2015/11/29/%E9%93%BE%E8%A1%A8%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/"/>
+    <id>http://ztmark.github.io/2015/11/29/链表的几个问题/</id>
     <published>2015-11-28T16:00:00.000Z</published>
     <updated>2015-11-29T07:22:14.000Z</updated>
     <content type="html"><![CDATA[<p>链表的几个问题和答案的代码实现。</p>
@@ -845,14 +845,14 @@
     
     </summary>
     
-      <category term="Algorithm" scheme="http://yoursite.com/tags/Algorithm/"/>
+      <category term="Algorithm" scheme="http://ztmark.github.io/tags/Algorithm/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[《Java并发编程的艺术》读书笔记一]]></title>
-    <link href="http://yoursite.com/2015/11/28/%E3%80%8AJava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%80/"/>
-    <id>http://yoursite.com/2015/11/28/《Java并发编程的艺术》读书笔记一/</id>
+    <link href="http://ztmark.github.io/2015/11/28/%E3%80%8AJava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%80/"/>
+    <id>http://ztmark.github.io/2015/11/28/《Java并发编程的艺术》读书笔记一/</id>
     <published>2015-11-27T16:00:00.000Z</published>
     <updated>2015-11-28T06:37:37.000Z</updated>
     <content type="html"><![CDATA[<p>《Java并发编程的艺术》读书笔记</p>
@@ -926,14 +926,14 @@
     
     </summary>
     
-      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+      <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Mac 下配置Scheme环境]]></title>
-    <link href="http://yoursite.com/2015/11/26/Mac%20%E4%B8%8B%E5%AE%89%E8%A3%85Scheme%E7%8E%AF%E5%A2%83/"/>
-    <id>http://yoursite.com/2015/11/26/Mac 下安装Scheme环境/</id>
+    <link href="http://ztmark.github.io/2015/11/26/Mac%20%E4%B8%8B%E5%AE%89%E8%A3%85Scheme%E7%8E%AF%E5%A2%83/"/>
+    <id>http://ztmark.github.io/2015/11/26/Mac 下安装Scheme环境/</id>
     <published>2015-11-25T16:00:00.000Z</published>
     <updated>2015-11-27T06:48:54.000Z</updated>
     <content type="html"><![CDATA[<p>记录Scheme的安装和使用。</p>
@@ -968,14 +968,14 @@
     
     </summary>
     
-      <category term="Scheme" scheme="http://yoursite.com/tags/Scheme/"/>
+      <category term="Scheme" scheme="http://ztmark.github.io/tags/Scheme/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[git basics]]></title>
-    <link href="http://yoursite.com/2015/11/19/git-basics/"/>
-    <id>http://yoursite.com/2015/11/19/git-basics/</id>
+    <link href="http://ztmark.github.io/2015/11/19/git-basics/"/>
+    <id>http://ztmark.github.io/2015/11/19/git-basics/</id>
     <published>2015-11-19T05:06:55.000Z</published>
     <updated>2015-11-25T12:27:33.000Z</updated>
     <content type="html"><![CDATA[<p>记录<code>Git</code>的安装过程、常用的命令和<code>GitHub</code>的使用。</p>
@@ -1093,14 +1093,14 @@
     
     </summary>
     
-      <category term="Git" scheme="http://yoursite.com/tags/Git/"/>
+      <category term="Git" scheme="http://ztmark.github.io/tags/Git/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[singleton-pattern]]></title>
-    <link href="http://yoursite.com/2015/11/18/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/"/>
-    <id>http://yoursite.com/2015/11/18/代理模式/</id>
+    <link href="http://ztmark.github.io/2015/11/18/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/"/>
+    <id>http://ztmark.github.io/2015/11/18/代理模式/</id>
     <published>2015-11-18T11:38:21.000Z</published>
     <updated>2015-11-18T11:51:28.000Z</updated>
     <content type="html"><![CDATA[<p><a href="http://zh.wikipedia.org/zh/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F" target="_blank" rel="external">单例模式</a>能够保证类只有一个实例对象。在<code>Java</code>中可以使用多种方式来实现单例模式。</p>
@@ -1138,14 +1138,14 @@
     
     </summary>
     
-      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+      <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Markdown Syntax]]></title>
-    <link href="http://yoursite.com/2015/11/18/MarkDown%20Syntax/"/>
-    <id>http://yoursite.com/2015/11/18/MarkDown Syntax/</id>
+    <link href="http://ztmark.github.io/2015/11/18/MarkDown%20Syntax/"/>
+    <id>http://ztmark.github.io/2015/11/18/MarkDown Syntax/</id>
     <published>2015-11-17T16:00:00.000Z</published>
     <updated>2015-11-19T07:19:22.000Z</updated>
     <content type="html"><![CDATA[<p>Markdown 的语法有个主要的目的：用来作为一种网络内容的<em>写作</em>用语言。<br>下面是Markdown的详细语法介绍。</p>
@@ -1632,14 +1632,14 @@ _   底线
     
     </summary>
     
-      <category term="Markdown" scheme="http://yoursite.com/tags/Markdown/"/>
+      <category term="Markdown" scheme="http://ztmark.github.io/tags/Markdown/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Hello World]]></title>
-    <link href="http://yoursite.com/2015/11/17/hello-world/"/>
-    <id>http://yoursite.com/2015/11/17/hello-world/</id>
+    <link href="http://ztmark.github.io/2015/11/17/hello-world/"/>
+    <id>http://ztmark.github.io/2015/11/17/hello-world/</id>
     <published>2015-11-16T16:00:00.000Z</published>
     <updated>2015-11-19T07:19:17.000Z</updated>
     <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
