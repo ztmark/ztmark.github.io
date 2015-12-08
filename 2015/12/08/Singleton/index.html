@@ -39,6 +39,8 @@
 
 
 
+  
+
 
   <link rel="alternate" href="/atom.xml" title="Mark's Notes" type="application/atom+xml" />
 
@@ -54,13 +56,13 @@
 
 <meta name="description" content="单例模式能够保证类只有一个实例对象。在Java中可以使用多种方式来实现单例模式。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="singleton-pattern">
-<meta property="og:url" content="http://ztmark.github.io/2015/11/18/代理模式/index.html">
+<meta property="og:title" content="Singleton Pattern">
+<meta property="og:url" content="http://ztmark.github.io/2015/12/08/Singleton/index.html">
 <meta property="og:site_name" content="Mark's Notes">
 <meta property="og:description" content="单例模式能够保证类只有一个实例对象。在Java中可以使用多种方式来实现单例模式。">
-<meta property="og:updated_time" content="2015-11-18T11:51:28.000Z">
+<meta property="og:updated_time" content="2015-12-08T10:22:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="singleton-pattern">
+<meta name="twitter:title" content="Singleton Pattern">
 <meta name="twitter:description" content="单例模式能够保证类只有一个实例对象。在Java中可以使用多种方式来实现单例模式。">
 
 
@@ -73,7 +75,7 @@
   };
 </script>
 
-  <title> singleton-pattern | Mark's Notes </title>
+  <title> Singleton Pattern | Mark's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -183,7 +185,7 @@
             
             
               
-                singleton-pattern
+                Singleton Pattern
               
             
           </h1>
@@ -192,8 +194,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-11-18T19:38:21+08:00" content="2015-11-18">
-              2015-11-18
+            <time itemprop="dateCreated" datetime="2015-12-08T00:00:00+08:00" content="2015-12-08">
+              2015-12-08
             </time>
           </span>
 
@@ -203,8 +205,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/11/18/代理模式/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/18/代理模式/" itemprop="commentsCount"></span>
+                <a href="/2015/12/08/Singleton/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/08/Singleton/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -225,8 +227,6 @@
       
         <span itemprop="articleBody"><p><a href="http://zh.wikipedia.org/zh/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F" target="_blank" rel="external">单例模式</a>能够保证类只有一个实例对象。在<code>Java</code>中可以使用多种方式来实现单例模式。</p>
 <a id="more"></a>
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=30953009&auto=0&height=66"></iframe>
-
 <h2 id="Eager_initialization">Eager initialization</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonEagerInit</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> SingletonEagerInit instance = <span class="keyword">new</span> SingletonEagerInit();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonEagerInit</span> <span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonEagerInit <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// other methods</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>该方式在类加载的时候就对实例进行初始化。然后每次调用<code>getInstance</code>都会返回这个实例对象。</p>
 <p>该方式是有缺点，如果这个类的对象非常大，在加载该类后却没有调用<code>getInstance</code>方法，即加载了类，但没有使用该类的对象。但是这个对象已经被实例化，会占用一部分内存，如果我们用不着这个对象，这些内存就浪费了。</p>
@@ -269,17 +269,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/11/18/MarkDown Syntax/" rel="next" title="Markdown Syntax">
-                <i class="fa fa-chevron-left"></i> Markdown Syntax
+              <a href="/2015/12/04/一道有趣的题/" rel="next" title="一道有趣的题">
+                <i class="fa fa-chevron-left"></i> 一道有趣的题
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/19/git-basics/" rel="prev" title="git basics">
-                git basics <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -306,8 +302,8 @@
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/11/18/代理模式/"
-           data-title="singleton-pattern" data-url="http://ztmark.github.io/2015/11/18/代理模式/">
+      <div class="ds-thread" data-thread-key="2015/12/08/Singleton/"
+           data-title="Singleton Pattern" data-url="http://ztmark.github.io/2015/12/08/Singleton/">
       </div>
     
   </div>

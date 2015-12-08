@@ -4,7 +4,7 @@
   <subtitle><![CDATA[I think therefore I am]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ztmark.github.io/"/>
-  <updated>2015-12-04T04:38:57.000Z</updated>
+  <updated>2015-12-08T10:22:44.000Z</updated>
   <id>http://ztmark.github.io/</id>
   
   <author>
@@ -13,6 +13,49 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Singleton Pattern]]></title>
+    <link href="http://ztmark.github.io/2015/12/08/Singleton/"/>
+    <id>http://ztmark.github.io/2015/12/08/Singleton/</id>
+    <published>2015-12-07T16:00:00.000Z</published>
+    <updated>2015-12-08T10:22:44.000Z</updated>
+    <content type="html"><![CDATA[<p><a href="http://zh.wikipedia.org/zh/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F" target="_blank" rel="external">单例模式</a>能够保证类只有一个实例对象。在<code>Java</code>中可以使用多种方式来实现单例模式。</p>
+<a id="more"></a>
+<h2 id="Eager_initialization">Eager initialization</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonEagerInit</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> SingletonEagerInit instance = <span class="keyword">new</span> SingletonEagerInit();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonEagerInit</span> <span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonEagerInit <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// other methods</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该方式在类加载的时候就对实例进行初始化。然后每次调用<code>getInstance</code>都会返回这个实例对象。</p>
+<p>该方式是有缺点，如果这个类的对象非常大，在加载该类后却没有调用<code>getInstance</code>方法，即加载了类，但没有使用该类的对象。但是这个对象已经被实例化，会占用一部分内存，如果我们用不着这个对象，这些内存就浪费了。</p>
+<h2 id="Lazy_initialization">Lazy initialization</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonLazyInit</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SingletonLazyInit instance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonLazyInit</span> <span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> SingletonLazyInit <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> SingletonLazyInit();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// other methods</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>延迟初始化的方式能够在真正用到实例对象的时候才对其进行初始化。</p>
+<p>对整个方法进行<code>synchronized</code>，避免了多线程下的同步问题，但是对整个方法进行<code>synchronized</code>效率会下降。</p>
+<h2 id="double_checked_locking">double checked locking</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonDoubleChecked</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> SingletonDoubleChecked instance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonDoubleChecked</span> <span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// effective java : 第71条</span></span><br><span class="line">    <span class="comment">// 使用局部变量可以提供性能</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonDoubleChecked <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        SingletonDoubleChecked result = instance;</span><br><span class="line">        <span class="keyword">if</span> (result == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span>(SingletonDoubleChecked.class) &#123;</span><br><span class="line">                result = instance;</span><br><span class="line">                <span class="keyword">if</span> (result == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    instance = result = <span class="keyword">new</span> SingletonDoubleChecked();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// other methods</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该方法并为整个方法进行<code>synchronized</code>,尽可能的缩小了同步块的范围。</p>
+<p>字段<code>instance</code>用<code>volatile</code>修饰是为了可见性，一致性，顺序性，可见性就是指当对一个临界资源进行修改后，其他线程就能马上觉察到该修改，所有线程看到这个变量的值是一致的,而且编译器也不会对其进行指令重排。</p>
+<p><code>getInstance</code>方法中使用局部变量<code>result</code>的原因可以见<code>Effective Java</code>第二版的第71条。</p>
+<blockquote>
+<p>这个变量的作用是确保实例变量只在已经被初始化的情况下读取一次。虽然这不是严格要求，但是可以提升性能。</p>
+</blockquote>
+<p>我的理解是<code>instance</code>这个实例变量是在堆内存中分配的，而局部变量<code>result</code>是在栈中分配的，栈的读取速度要快于堆的读取速度。</p>
+<p>如果该单例的类需要实现序列化，那么在加上<code>implements Serializable</code>后，还需要添加<code>readResolve</code>方法。该类的实例域都要声明为<code>transient</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Object <span class="title">readResolve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> instance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对与<code>clone</code>方法，可以直接抛出异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> CloneNotSupportedException();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Initialization-on-demand_holder_idiom">Initialization-on-demand holder idiom</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonByHolder</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingletonByHolder <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingletonByHolder</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// other methods</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonHolder</span> </span>&#123;</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">final</span> SingletonByHolder instance = <span class="keyword">new</span> SingletonByHolder();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种方式也是只有在第一次调用<code>getInstance</code>方法时才进行初始化。在加载<code>SingletonByHolder</code>类时并不会加载<code>SingletonHolder</code>类，所以就不会对<code>instance</code>进行初始化，只有在<code>getInstance</code>方法中调用<code>SingletonHolder.instance</code>才会加载<code>SingletonHolder</code>类，然后进行初始化。</p>
+<h2 id="The_enum_way">The enum way</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Singleton &#123;</span><br><span class="line"></span><br><span class="line">    INSTANCE;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// other methods</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用枚举来实现单例模式是被推荐的。</p>
+<blockquote>
+<p>这种方法在功能上与公有域方法相近，但是它更加简洁，无偿地提供了序列化机制，绝对防止多次实例化，即使是在面对复杂的序列化或者反射攻击的时候。虽然这种方法还没有广泛采用，但是单元素的枚举类型已经成为实现Singleton的最佳方法。</p>
+</blockquote>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><a href="http://zh.wikipedia.org/zh/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F">单例模式</a>能够保证类只有一个实例对象。在<code>Java</code>中可以使用多种方式来实现单例模式。</p>]]>
+    
+    </summary>
+    
+      <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[一道有趣的题]]></title>
@@ -700,75 +743,6 @@
   </entry>
   
   <entry>
-    <title><![CDATA[《Java并发编程的艺术》读书笔记二]]></title>
-    <link href="http://ztmark.github.io/2015/11/29/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%BA%8C/"/>
-    <id>http://ztmark.github.io/2015/11/29/Java并发编程的艺术》读书笔记二/</id>
-    <published>2015-11-28T16:00:00.000Z</published>
-    <updated>2015-11-29T07:18:12.000Z</updated>
-    <content type="html"><![CDATA[<p>《Java并发编程的艺术》读书笔记</p>
-<a id="more"></a>
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=5179544&auto=0&height=66"></iframe>
-
-
-<p>Java线程之间的通信是通过共享内存实现，每个线程也又自己的本地内存，这样多线程程序中就会出现可见性问题。</p>
-<p>在执行程序时，为了提供性能，编译器和处理器会对指令做重排序。</p>
-<p>为了多线程程序能正确执行，需要解决上面的两个问题。</p>
-<p>通过在指令中加入内存屏障和happends-before规则来解决以上问题。</p>
-<p>内存屏障有四种：</p>
-<ul>
-<li><p>LoadLoad Barriers</p>
-<p>  确保该指令之前的数据的装载先于之后的数据装载</p>
-</li>
-<li><p>StoreStore Barriers</p>
-<p>  确保该指令之前的数据对其他处理器的可见性（刷新到主存）先于之后的数据</p>
-</li>
-<li><p>LoadStore Barriers</p>
-<p>  确保该指令之前的数据加载先于之后数据的刷新</p>
-</li>
-<li><p>StoreLoad Barriers</p>
-<p>  确保该指令之前的数据刷新先于之后的数据加载</p>
-</li>
-</ul>
-<p>happens-before规则前后的操作不会进行重排序，规则有下面几条：</p>
-<ul>
-<li><p>程序次序规则</p>
-<p>  线程中的每个动作A都happens-before于该线程中的每一个动作B，其中，在程序中，所有动作B都能出现在A后面。</p>
-</li>
-<li><p>监视器锁规则</p>
-<p>  对于一个监视器锁的解锁happens-before于每一个后续对同一监视器锁的加锁。</p>
-</li>
-<li><p>volatile变量规则</p>
-<p>  对volatile域的写入操作happens-before于每一个后续对同一个域的读写操作。</p>
-</li>
-<li><p>线程启动规则</p>
-<p>  在一个线程里，对Thread.start的调用会happens-before于每个启动线程的动作。</p>
-</li>
-<li><p>线程终结规则</p>
-<p>  线程中的任何动作都happens-before于其他线程检测到这个线程已经终结、或者从Thread.join调用中成功返回，或Thread.isAlive返回false。</p>
-</li>
-<li><p>中断规则</p>
-<p>  一个线程调用另一个线程的interrupt happens-before于被中断的线程发现中断。</p>
-</li>
-<li><p>终结规则</p>
-<p>  一个对象的构造函数的结束happens-before于这个对象finalizer的开始。</p>
-</li>
-<li><p>传递性</p>
-<p>  如果A happens-before于B，且B happens-before于C，则A happens-before于C。</p>
-</li>
-</ul>
-<p>volatile和final的内存语义得到了增强，volatile的变量在某些情况下不会重排序，volatile的64位变量的读写是原子的。final成员变量的初始化在对象构造完成之前完成。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/reordering-table.png" alt="重排序"></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>《Java并发编程的艺术》读书笔记</p>]]>
-    
-    </summary>
-    
-      <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[链表的几个问题]]></title>
     <link href="http://ztmark.github.io/2015/11/29/%E9%93%BE%E8%A1%A8%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/"/>
     <id>http://ztmark.github.io/2015/11/29/链表的几个问题/</id>
@@ -846,6 +820,75 @@
     </summary>
     
       <category term="Algorithm" scheme="http://ztmark.github.io/tags/Algorithm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[《Java并发编程的艺术》读书笔记二]]></title>
+    <link href="http://ztmark.github.io/2015/11/29/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%BA%8C/"/>
+    <id>http://ztmark.github.io/2015/11/29/Java并发编程的艺术》读书笔记二/</id>
+    <published>2015-11-28T16:00:00.000Z</published>
+    <updated>2015-11-29T07:18:12.000Z</updated>
+    <content type="html"><![CDATA[<p>《Java并发编程的艺术》读书笔记</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=5179544&auto=0&height=66"></iframe>
+
+
+<p>Java线程之间的通信是通过共享内存实现，每个线程也又自己的本地内存，这样多线程程序中就会出现可见性问题。</p>
+<p>在执行程序时，为了提供性能，编译器和处理器会对指令做重排序。</p>
+<p>为了多线程程序能正确执行，需要解决上面的两个问题。</p>
+<p>通过在指令中加入内存屏障和happends-before规则来解决以上问题。</p>
+<p>内存屏障有四种：</p>
+<ul>
+<li><p>LoadLoad Barriers</p>
+<p>  确保该指令之前的数据的装载先于之后的数据装载</p>
+</li>
+<li><p>StoreStore Barriers</p>
+<p>  确保该指令之前的数据对其他处理器的可见性（刷新到主存）先于之后的数据</p>
+</li>
+<li><p>LoadStore Barriers</p>
+<p>  确保该指令之前的数据加载先于之后数据的刷新</p>
+</li>
+<li><p>StoreLoad Barriers</p>
+<p>  确保该指令之前的数据刷新先于之后的数据加载</p>
+</li>
+</ul>
+<p>happens-before规则前后的操作不会进行重排序，规则有下面几条：</p>
+<ul>
+<li><p>程序次序规则</p>
+<p>  线程中的每个动作A都happens-before于该线程中的每一个动作B，其中，在程序中，所有动作B都能出现在A后面。</p>
+</li>
+<li><p>监视器锁规则</p>
+<p>  对于一个监视器锁的解锁happens-before于每一个后续对同一监视器锁的加锁。</p>
+</li>
+<li><p>volatile变量规则</p>
+<p>  对volatile域的写入操作happens-before于每一个后续对同一个域的读写操作。</p>
+</li>
+<li><p>线程启动规则</p>
+<p>  在一个线程里，对Thread.start的调用会happens-before于每个启动线程的动作。</p>
+</li>
+<li><p>线程终结规则</p>
+<p>  线程中的任何动作都happens-before于其他线程检测到这个线程已经终结、或者从Thread.join调用中成功返回，或Thread.isAlive返回false。</p>
+</li>
+<li><p>中断规则</p>
+<p>  一个线程调用另一个线程的interrupt happens-before于被中断的线程发现中断。</p>
+</li>
+<li><p>终结规则</p>
+<p>  一个对象的构造函数的结束happens-before于这个对象finalizer的开始。</p>
+</li>
+<li><p>传递性</p>
+<p>  如果A happens-before于B，且B happens-before于C，则A happens-before于C。</p>
+</li>
+</ul>
+<p>volatile和final的内存语义得到了增强，volatile的变量在某些情况下不会重排序，volatile的64位变量的读写是原子的。final成员变量的初始化在对象构造完成之前完成。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/reordering-table.png" alt="重排序"></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>《Java并发编程的艺术》读书笔记</p>]]>
+    
+    </summary>
+    
+      <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
     
   </entry>
   
