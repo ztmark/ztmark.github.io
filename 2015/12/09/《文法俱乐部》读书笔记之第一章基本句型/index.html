@@ -34,10 +34,12 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java," />
+  <meta name="keywords" content="English," />
 
 
 
+
+  
 
 
   <link rel="alternate" href="/atom.xml" title="Mark's Notes" type="application/atom+xml" />
@@ -52,16 +54,16 @@
 
 
 
-<meta name="description" content="《Java并发编程的艺术》读书笔记">
+<meta name="description" content="《文法俱乐部》读书笔记.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《Java并发编程的艺术》读书笔记一">
-<meta property="og:url" content="http://ztmark.github.io/2015/11/28/《Java并发编程的艺术》读书笔记一/index.html">
+<meta property="og:title" content="《文法俱乐部》读书笔记之第一章基本句型">
+<meta property="og:url" content="http://ztmark.github.io/2015/12/09/《文法俱乐部》读书笔记之第一章基本句型/index.html">
 <meta property="og:site_name" content="Mark's Notes">
-<meta property="og:description" content="《Java并发编程的艺术》读书笔记">
-<meta property="og:updated_time" content="2015-11-28T06:37:37.000Z">
+<meta property="og:description" content="《文法俱乐部》读书笔记.">
+<meta property="og:updated_time" content="2015-12-09T06:04:36.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="《Java并发编程的艺术》读书笔记一">
-<meta name="twitter:description" content="《Java并发编程的艺术》读书笔记">
+<meta name="twitter:title" content="《文法俱乐部》读书笔记之第一章基本句型">
+<meta name="twitter:description" content="《文法俱乐部》读书笔记.">
 
 
 
@@ -73,7 +75,7 @@
   };
 </script>
 
-  <title> 《Java并发编程的艺术》读书笔记一 | Mark's Notes </title>
+  <title> 《文法俱乐部》读书笔记之第一章基本句型 | Mark's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -183,7 +185,7 @@
             
             
               
-                《Java并发编程的艺术》读书笔记一
+                《文法俱乐部》读书笔记之第一章基本句型
               
             
           </h1>
@@ -192,8 +194,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-11-28T00:00:00+08:00" content="2015-11-28">
-              2015-11-28
+            <time itemprop="dateCreated" datetime="2015-12-09T00:00:00+08:00" content="2015-12-09">
+              2015-12-09
             </time>
           </span>
 
@@ -203,8 +205,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/11/28/《Java并发编程的艺术》读书笔记一/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/28/《Java并发编程的艺术》读书笔记一/" itemprop="commentsCount"></span>
+                <a href="/2015/12/09/《文法俱乐部》读书笔记之第一章基本句型/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/09/《文法俱乐部》读书笔记之第一章基本句型/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -223,72 +225,64 @@
       
 
       
-        <span itemprop="articleBody"><p>《Java并发编程的艺术》读书笔记</p>
+        <span itemprop="articleBody"><p>《文法俱乐部》读书笔记.</p>
 <a id="more"></a>
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=27556211&auto=0&height=66"></iframe>
+<h2 id="五种基本句型">五种基本句型</h2><ol>
+<li>S+V</li>
+<li>S+V+O</li>
+<li>S+V+C</li>
+<li>S+V+O+O</li>
+<li>S+V+O+C</li>
+</ol>
+<p>S：主词 V：动词 O：受词 C：补语</p>
+<p><strong>动词特性</strong>主要看这个动词是<strong>及物(transitive)</strong>还是<strong>不及物(intransitive)</strong>，另一个角度是看它<strong>完全(complete)</strong>还是<strong>不完全(incomplete)</strong>。</p>
+<p>如果它是及物动词，那么它后面必须有一个受词(Object)，因此，它只能用在上述的2,4和5句型中，如果它是个不及物动词，就只能用在上述的3和4这种不带受词的句型中。有些词即可以是及物动词也可以是不及物动词。</p>
+<p>如果这个动词是个不完全动词，那么后面需要有个补语(complement)来补充它，产生完整的句意，那么只有上述的3和5句型可选。反之，如果是完全动词，那么后面不需要补语，就可以使用上述的1，2和4句型。</p>
+<p>一个完整的句子，必须能够表达完整的意思，这需要两个部分：主部(subject)和述部(predicate)。主部是表示这个句子讲的是『什么人或什么东西』。述部告诉我们这个人或东西『怎么样』。</p>
+<pre><code>The dog barked <span class="keyword">at</span> <span class="operator">the</span> mailman. 狗冲着邮差叫。
+S V
+The dog bit <span class="operator">the</span> mailman. 狗咬邮差。
+S V O
+</code></pre><p>在第一个句子的主部就是the dog，它就是这个句子叙述的对象，这个句子告诉读者讲的有关the dog的事，什么事呢，主要是『叫(barked)』。述部的动词barked构成这个句子最主要的叙述内容。对谁叫是可有可无的细节，at the mailman是用来修饰动词的。只说The dog barked仍可以构成一个完整的句子。</p>
+<pre><code>Don<span class="attribute">'t</span> worry. It doesn<span class="attribute">'t</span> <span class="typename">bit</span>. 别担心，它不咬人。
+S V
+</code></pre><p>这里的bit后面没有带受词，主词仍然是It狗，这时，bit就成了不及物动词。    </p>
+<p><strong>补语</strong>是用来对欠缺叙述能力的动词的补充。在所有的英文动词中，只有解释为『是』的这种动词是空的、没有意义的，这种动词需要补语来补充句子的意思。比如：</p>
+<pre><code>The dog was a bulldog. 那是只斗牛犬
+S V <span class="keyword">C</span>
 
-<p>为什么要并发？现在的机器都是带多核处理器的，为了能充分发挥多核处理器的优势，并发编程就派上用场了。当然，在单核处理器的情况下，如果碰到了IO密集型的程序，并发编程也能重复利用处理器。并发的多线程程序通常响应更快。</p>
-<p>但是，并发程序更快并不是绝对的，线程之间的上下文切换是需要消耗时间的，如果上下文切换花费的时间多于多线程带来的程序执行的减少时间，那么并发程序反而比串行执行程序花费的时间更多。</p>
-<p>而且，编写并发程序往往要比编写串行程序难。</p>
-<h2 id="Java并发机制的底层实现原理">Java并发机制的底层实现原理</h2><h3 id="volatile">volatile</h3><p><code>volatile</code>关键字能够保证被修饰的变量的<strong>可见性</strong>和<strong>顺序性</strong>。</p>
-<p>由于CPU的速度和内存的速度有着巨大的差距，为了提高处理速度，CPU不直接与内存进行交互，而是先将数据读到CPU的高速缓存，然后CPU从高速缓存读取数据，写也先写到高速缓存中，然后再写入内存，每个CPU都有高速缓存，这样就会出现CPU读到的数据可能与内存中的数据不一致。</p>
-<p><code>volatile</code>变量的写，在写完高速缓存后会马上写入内存，每次读都会先使高速缓存实现，然后从内存读取。<code>volatile</code>变量也不会与其他变量发生重排序。</p>
-<h3 id="synchronized">synchronized</h3><p><code>synchronized</code>关键字可以修饰方法，也可以用在同步代码块中，修饰静态方法时，使用的锁是当前类的Class对象，修饰普通方法时，使用的锁是当前对象，用在同步代码块的时候需要自己指定锁。</p>
-<p>Java中的对象在对象头部分会存有HashCode值、分代年龄和锁标记。</p>
-<p><code>synchronized</code>使用的锁又4种状态：无锁状态、偏向锁状态、轻量级锁状态和重量级锁状态。</p>
-<h4 id="偏向锁">偏向锁</h4><p>研究发现，在多数情况下，锁总是由同一个线程多次获得，为了让线程获得锁的代价更低就引入了偏向锁。</p>
-<p>在锁对象的锁标记中会记录偏向的线程的ID，在该线程要获得该锁时，只要测试一下这个锁对象的锁标记是否指向该线程就可以了，如果不是，则测试一下该锁对象是否是偏向锁，是的话就通过CAS设置该锁指向当前线程，如果不是，则通过CAS来竞争锁。</p>
-<p>偏向锁使用了一种等到竞争出现才释放锁的机制，所以当其他线程尝试竞争锁时，持有该锁的线程才会释放锁。</p>
-<h4 id="轻量级锁">轻量级锁</h4><p>轻量级锁在获取的时候，会先将锁的对象头中的Mark Word数据复制到线程栈的锁记录中，然后通过CAS将锁的对象头中的标记指向该锁记录，如果成功则获得了锁。</p>
-<p>释放轻量级锁时，通过CAS将锁记录复制到锁对象的对象头中，如果失败则升级到重量级锁。</p>
-<h4 id="重量级锁">重量级锁</h4><p>重量级锁就是一般意义上的锁，会阻塞线程。</p>
-<h4 id="锁的对比">锁的对比</h4><table>
-<thead>
-<tr>
-<th>锁</th>
-<th>优点</th>
-<th>缺点</th>
-<th>使用场景</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>偏向锁</td>
-<td>加锁和解锁不需要额外的消耗</td>
-<td>如果线程间存在锁竞争，会带来额外的锁撤销消耗</td>
-<td>适用于只有一个线程访问同步块的场景</td>
-</tr>
-<tr>
-<td>轻量级锁</td>
-<td>竞争的线程不会阻塞，提供了程序的响应时间</td>
-<td>如果始终得不到锁，会自旋消耗CPU</td>
-<td>最近响应时间，同步代码块执行速度块</td>
-</tr>
-<tr>
-<td>重量级锁</td>
-<td>线程竞争不使用自旋，不会消耗CPU</td>
-<td>线程阻塞，响应时间缓慢</td>
-<td>最近吞吐量，同步代码块执行速度长</td>
-</tr>
-</tbody>
-</table>
-<h3 id="原子操作">原子操作</h3><p>原子操作是指不可被中断的一个或多个操作。</p>
-<p>CAS（比较并交换），输入两个值，一个旧值和一个新值，如果旧值没有变化，就将其设置为新值，如果变化了就不做处理。</p>
-<p>Java中可以通过锁和CAS来实现原子操作。从JDK1.5开始java.util.concurrent.atomic包中包含了一些支持原子操作的类。</p>
-<h4 id="CAS实现原子操作的问题">CAS实现原子操作的问题</h4><ul>
-<li><p>ABA问题</p>
-<p>  旧值从A变成B然后又变回A，这种情况，CAS无法感知，会认为旧值一直没变过。</p>
-</li>
-<li><p>循环时间长开销大</p>
-<p>  自旋CAS如果长时间不成功，会给CPU带来非常的开销。</p>
-</li>
-<li><p>只能保证一个共享变量的原子操作</p>
-<p>  如果要对个共享变量的操作，CAS就无力了。</p>
-</li>
-</ul>
-<h4 id="锁实现原子操作">锁实现原子操作</h4><p>使用锁实现原子操作，只有获得锁的线程才能进入代码块或方法，在锁所保护的代码块或方法内可以又任意多个操作。</p>
-<p>除了偏向锁，其他锁的获取都是通过CAS方式来获取的。</p>
-</span>
+The dog was mean. 那只狗很凶恶
+S V <span class="keyword">C</span>
+</code></pre><p>was这个动词可以解释为『是』，它并没有告诉我们有关the dog的任何事。</p>
+<p>这种没有叙述能力，只是将主词和后面做叙述的部分连起来的词又叫『连缀动词(linking verb)』。Be动词翻译为『是』是最具有代表性的『连缀动词』。在所有的英文动词中，凡是后面必须接补语的动词都可以解释为各种各样的『是』。比如：</p>
+<pre><code>look 看起来是
+seem 似乎是
+appear 显然是
+<span class="keyword">sound</span> 听起来是
+feel 摸起来是
+taste 尝起来是
+stay 仍然是
+</code></pre><p>例句：</p>
+<pre><code>That purse looks pretty. 那个包包很好看
+The question seems easy. 这个问题好像很容易
+He appears quite <span class="tag">a</span> gentleman. 他似乎是个十足的绅士
+Your suggestion sounds exciting. 你的提议听起来很刺激
+</code></pre><p>这种在动词后面的那个部分，是在对主词进行实质的叙述、补充句意的完整，叫做主词补语，凡是动词解释为各种各样的『是』的句子都属于这种句型及S+V+C。</p>
+<p>S+V+O+C句型是用补语来告诉读者受词是什么。比如</p>
+<pre><code>I found <span class="operator">the</span> purse pretty. 我觉得这个包包很漂亮
+The tip made <span class="operator">the</span> question easy. 因为又提示，所有问题变得很容易
+I consider him quite <span class="operator">a</span> gentleman. 我任务他是个十足的绅士
+</code></pre><p>第一个例句受词the purse和受词补语pretty之间虽然没有『是』字，但是暗示存在『我觉的这个包包<strong>是</strong>很漂亮的』，在受词和受词补语之间加个be动词进去，就变成了The purse is pretty，就是S+V+C的句型了。</p>
+<p>补语的类型一般是名词或者形容词，还有就是地方副词，用来修饰名词『在什么地方』。比如</p>
+<pre><code>The key is there. 钥匙在哪里
+S V <span class="keyword">C</span>
+He left the key there. 他把钥匙留在那里。
+S V <span class="keyword">O</span> <span class="keyword">C</span>
+</code></pre><p>没有补语的be动词并不解释为『是』，而要解释为『存在』。比如</p>
+<pre><code>I think<span class="comment">; therefore I am. am 翻译为存在</span>
+</code></pre><p>有一种动词可以接受两个受词。比如</p>
+<pre><code>His wife gave him <span class="operator">a</span> jar <span class="operator">of</span> honey. 他老婆给他一瓶蜂蜜
+</code></pre></span>
       
     </div>
 
@@ -296,7 +290,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Java/" rel="tag">#Java</a>
+            <a href="/tags/English/" rel="tag">#English</a>
           
         </div>
       
@@ -305,17 +299,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/11/26/Mac 下安装Scheme环境/" rel="next" title="Mac 下配置Scheme环境">
-                <i class="fa fa-chevron-left"></i> Mac 下配置Scheme环境
+              <a href="/2015/12/08/Singleton/" rel="next" title="Singleton Pattern">
+                <i class="fa fa-chevron-left"></i> Singleton Pattern
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/29/Java并发编程的艺术》读书笔记二/" rel="prev" title="《Java并发编程的艺术》读书笔记二">
-                《Java并发编程的艺术》读书笔记二 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -342,8 +332,8 @@
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/11/28/《Java并发编程的艺术》读书笔记一/"
-           data-title="《Java并发编程的艺术》读书笔记一" data-url="http://ztmark.github.io/2015/11/28/《Java并发编程的艺术》读书笔记一/">
+      <div class="ds-thread" data-thread-key="2015/12/09/《文法俱乐部》读书笔记之第一章基本句型/"
+           data-title="《文法俱乐部》读书笔记之第一章基本句型" data-url="http://ztmark.github.io/2015/12/09/《文法俱乐部》读书笔记之第一章基本句型/">
       </div>
     
   </div>
@@ -450,7 +440,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java并发机制的底层实现原理"><span class="nav-number">1.</span> <span class="nav-text">Java并发机制的底层实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#volatile"><span class="nav-number">1.1.</span> <span class="nav-text">volatile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronized"><span class="nav-number">1.2.</span> <span class="nav-text">synchronized</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#偏向锁"><span class="nav-number">1.2.1.</span> <span class="nav-text">偏向锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#轻量级锁"><span class="nav-number">1.2.2.</span> <span class="nav-text">轻量级锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重量级锁"><span class="nav-number">1.2.3.</span> <span class="nav-text">重量级锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#锁的对比"><span class="nav-number">1.2.4.</span> <span class="nav-text">锁的对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原子操作"><span class="nav-number">1.3.</span> <span class="nav-text">原子操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CAS实现原子操作的问题"><span class="nav-number">1.3.1.</span> <span class="nav-text">CAS实现原子操作的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#锁实现原子操作"><span class="nav-number">1.3.2.</span> <span class="nav-text">锁实现原子操作</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#五种基本句型"><span class="nav-number">1.</span> <span class="nav-text">五种基本句型</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

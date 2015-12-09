@@ -4,7 +4,7 @@
   <subtitle><![CDATA[I think therefore I am]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ztmark.github.io/"/>
-  <updated>2015-12-08T10:22:44.000Z</updated>
+  <updated>2015-12-09T06:04:36.000Z</updated>
   <id>http://ztmark.github.io/</id>
   
   <author>
@@ -13,6 +13,79 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[《文法俱乐部》读书笔记之第一章基本句型]]></title>
+    <link href="http://ztmark.github.io/2015/12/09/%E3%80%8A%E6%96%87%E6%B3%95%E4%BF%B1%E4%B9%90%E9%83%A8%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B9%8B%E7%AC%AC%E4%B8%80%E7%AB%A0%E5%9F%BA%E6%9C%AC%E5%8F%A5%E5%9E%8B/"/>
+    <id>http://ztmark.github.io/2015/12/09/《文法俱乐部》读书笔记之第一章基本句型/</id>
+    <published>2015-12-08T16:00:00.000Z</published>
+    <updated>2015-12-09T06:04:36.000Z</updated>
+    <content type="html"><![CDATA[<p>《文法俱乐部》读书笔记.</p>
+<a id="more"></a>
+<h2 id="五种基本句型">五种基本句型</h2><ol>
+<li>S+V</li>
+<li>S+V+O</li>
+<li>S+V+C</li>
+<li>S+V+O+O</li>
+<li>S+V+O+C</li>
+</ol>
+<p>S：主词 V：动词 O：受词 C：补语</p>
+<p><strong>动词特性</strong>主要看这个动词是<strong>及物(transitive)</strong>还是<strong>不及物(intransitive)</strong>，另一个角度是看它<strong>完全(complete)</strong>还是<strong>不完全(incomplete)</strong>。</p>
+<p>如果它是及物动词，那么它后面必须有一个受词(Object)，因此，它只能用在上述的2,4和5句型中，如果它是个不及物动词，就只能用在上述的3和4这种不带受词的句型中。有些词即可以是及物动词也可以是不及物动词。</p>
+<p>如果这个动词是个不完全动词，那么后面需要有个补语(complement)来补充它，产生完整的句意，那么只有上述的3和5句型可选。反之，如果是完全动词，那么后面不需要补语，就可以使用上述的1，2和4句型。</p>
+<p>一个完整的句子，必须能够表达完整的意思，这需要两个部分：主部(subject)和述部(predicate)。主部是表示这个句子讲的是『什么人或什么东西』。述部告诉我们这个人或东西『怎么样』。</p>
+<pre><code>The dog barked <span class="keyword">at</span> <span class="operator">the</span> mailman. 狗冲着邮差叫。
+S V
+The dog bit <span class="operator">the</span> mailman. 狗咬邮差。
+S V O
+</code></pre><p>在第一个句子的主部就是the dog，它就是这个句子叙述的对象，这个句子告诉读者讲的有关the dog的事，什么事呢，主要是『叫(barked)』。述部的动词barked构成这个句子最主要的叙述内容。对谁叫是可有可无的细节，at the mailman是用来修饰动词的。只说The dog barked仍可以构成一个完整的句子。</p>
+<pre><code>Don<span class="attribute">'t</span> worry. It doesn<span class="attribute">'t</span> <span class="typename">bit</span>. 别担心，它不咬人。
+S V
+</code></pre><p>这里的bit后面没有带受词，主词仍然是It狗，这时，bit就成了不及物动词。    </p>
+<p><strong>补语</strong>是用来对欠缺叙述能力的动词的补充。在所有的英文动词中，只有解释为『是』的这种动词是空的、没有意义的，这种动词需要补语来补充句子的意思。比如：</p>
+<pre><code>The dog was a bulldog. 那是只斗牛犬
+S V <span class="keyword">C</span>
+
+The dog was mean. 那只狗很凶恶
+S V <span class="keyword">C</span>
+</code></pre><p>was这个动词可以解释为『是』，它并没有告诉我们有关the dog的任何事。</p>
+<p>这种没有叙述能力，只是将主词和后面做叙述的部分连起来的词又叫『连缀动词(linking verb)』。Be动词翻译为『是』是最具有代表性的『连缀动词』。在所有的英文动词中，凡是后面必须接补语的动词都可以解释为各种各样的『是』。比如：</p>
+<pre><code>look 看起来是
+seem 似乎是
+appear 显然是
+<span class="keyword">sound</span> 听起来是
+feel 摸起来是
+taste 尝起来是
+stay 仍然是
+</code></pre><p>例句：</p>
+<pre><code>That purse looks pretty. 那个包包很好看
+The question seems easy. 这个问题好像很容易
+He appears quite <span class="tag">a</span> gentleman. 他似乎是个十足的绅士
+Your suggestion sounds exciting. 你的提议听起来很刺激
+</code></pre><p>这种在动词后面的那个部分，是在对主词进行实质的叙述、补充句意的完整，叫做主词补语，凡是动词解释为各种各样的『是』的句子都属于这种句型及S+V+C。</p>
+<p>S+V+O+C句型是用补语来告诉读者受词是什么。比如</p>
+<pre><code>I found <span class="operator">the</span> purse pretty. 我觉得这个包包很漂亮
+The tip made <span class="operator">the</span> question easy. 因为又提示，所有问题变得很容易
+I consider him quite <span class="operator">a</span> gentleman. 我任务他是个十足的绅士
+</code></pre><p>第一个例句受词the purse和受词补语pretty之间虽然没有『是』字，但是暗示存在『我觉的这个包包<strong>是</strong>很漂亮的』，在受词和受词补语之间加个be动词进去，就变成了The purse is pretty，就是S+V+C的句型了。</p>
+<p>补语的类型一般是名词或者形容词，还有就是地方副词，用来修饰名词『在什么地方』。比如</p>
+<pre><code>The key is there. 钥匙在哪里
+S V <span class="keyword">C</span>
+He left the key there. 他把钥匙留在那里。
+S V <span class="keyword">O</span> <span class="keyword">C</span>
+</code></pre><p>没有补语的be动词并不解释为『是』，而要解释为『存在』。比如</p>
+<pre><code>I think<span class="comment">; therefore I am. am 翻译为存在</span>
+</code></pre><p>有一种动词可以接受两个受词。比如</p>
+<pre><code>His wife gave him <span class="operator">a</span> jar <span class="operator">of</span> honey. 他老婆给他一瓶蜂蜜
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<p>《文法俱乐部》读书笔记.</p>]]>
+    
+    </summary>
+    
+      <category term="English" scheme="http://ztmark.github.io/tags/English/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Singleton Pattern]]></title>
@@ -442,86 +515,6 @@
   </entry>
   
   <entry>
-    <title><![CDATA[Git Internals 读书笔记]]></title>
-    <link href="http://ztmark.github.io/2015/11/30/Git%20Internals%20%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    <id>http://ztmark.github.io/2015/11/30/Git Internals 读书笔记/</id>
-    <published>2015-11-29T16:00:00.000Z</published>
-    <updated>2015-11-29T07:25:01.000Z</updated>
-    <content type="html"><![CDATA[<p>Git Internals 读书笔记。</p>
-<a id="more"></a>
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=2117030&auto=0&height=66"></iframe>
-
-<p><a href="https://github.com/pluralsight/git-internals-pdf" target="_blank" rel="external">Git Internals</a></p>
-<h2 id="Git_Object_Types">Git Object Types</h2><p><code>Git</code>有四种对象类型，分别是<code>Blob</code>、<code>Tree</code>、<code>Commit</code>和<code>Tag</code>，都存储在对象数据库里，都是通过<code>Zlib</code>压缩过的，使用<code>SHA-1</code>值（内容的哈希值）来表示。</p>
-<p>使用书上的例子：</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150116.png" alt="working"></p>
-<h3 id="Blob">Blob</h3><p>在<code>Git</code>中，文件的<strong>内容</strong>是作为<code>Blob</code>进行存储的。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150134.png" alt="blob"></p>
-<p>对于具有相同内容的不同文件，只存储一份。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151611.png" alt="BLOb"></p>
-<h3 id="Tree">Tree</h3><p><code>Tree</code>就对应着目录。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151741.png" alt="tree"></p>
-<p><code>tree</code>存储该目录下的目录和文件的信息（<code>mode</code>,<code>type</code>,<code>name</code>,<code>sha</code>）。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151752.png" alt="tree"></p>
-<h3 id="Commit">Commit</h3><p><code>commit</code>对象指向一个<code>tree</code>对象，然后额外保存了作者，提交者，提交信息和上次提交这些信息。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151804.png" alt="commit"></p>
-<p>第一次提交</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151816.png" alt="commit1"></p>
-<p>第二次提交</p>
-<p>在第二次提交中，就有了<code>parent</code>这一信息，指向上一次的提交对象。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151826.png" alt="commit2"></p>
-<h3 id="Tag">Tag</h3><p><code>Tag</code>对象指向一个特定的<code>commit</code>对象，保存<code>object</code>，<code>type</code>，<code>tag</code>，<code>tagger</code>和<code>message</code>信息。<code>type</code>一般就是<code>commit</code>，<code>object</code>就是这个<code>commit</code>的<code>SHA-1</code>值。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314153119.png" alt="tag"></p>
-<h2 id="Git_Data_Model">Git Data Model</h2><h3 id="The_Model">The Model</h3><p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154003.png" alt="model"></p>
-<p>带颜色是不可变对象。</p>
-<h3 id="Example">Example</h3><p>目录文件如下</p>
-<pre><code>|-- init.rb
- -- <span class="class"><span class="keyword">lib</span></span>
-    | -- base
-        | -- base_include.rb
-     -- my_plugin.rb
-</code></pre><p>第一次提交后，<code>Git Model</code>如下</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154004.png" alt="model"></p>
-<p><code>branch</code>指向最近的一次提交，<code>HEAD</code>指向当前的<code>branch</code>。</p>
-<p>现在修改<code>lib/base/base_include.rb</code>文件，然后提交，并创建一个<code>tag</code>。</p>
-<p>修改了文件，其父目录以及父目录的父目录直到最顶层目录的内容都被修改了，就会产生新的对象。对于没有改变的文件和目录则不会产生新对象。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154848.png" alt="model"></p>
-<p>现在修改<code>init.rb</code>文件，然后提交。</p>
-<p>由于只修改了<code>init.rb</code>文件，其他的子目录并没有变化，所以就不会产生其他的新对象。如下图所示。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314155544.png" alt="model"></p>
-<p>这样的一种模型，我们可以通过当前的<code>HEAD</code>得到所有的历史文件。</p>
-<h3 id="Traversal">Traversal</h3><p>当进行<code>checkout</code>的时候，通过查看<code>.git/refs</code>目录下的<code>branch</code>，<code>tag</code>，<code>remote</code>，将当前的<code>working directory</code>的内容切换到指定的<code>commit</code>的内容。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314160217.png" alt="traverse"></p>
-<h2 id="Branching_and_Merging">Branching and Merging</h2><p>在<code>Git</code>中，创建分支，切换分支是非常容易的，就是新建一个文件和写几个字符的事。</p>
-<p>在这个例子中，创建一个<code>experiment</code>分支，然后对<code>master</code>和<code>experiment</code>分支分别提交。现在就是下面这个样子。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161539.png" alt="branch"></p>
-<p>将<code>experiment</code>分支合并到<code>master</code>分支后就像下面这样。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161837.png" alt="branch"></p>
-<h3 id="Remotes">Remotes</h3><p>远程分支的名字类似与这样<code>origin/master</code>表示远程仓库<code>origin</code>的<code>master</code>分支。远程仓库的名字<code>origin</code>是可以自定义的，不一定就是<code>origin</code>。</p>
-<p>下面表示有三个分支，两个远程仓库分支<code>idea</code>和<code>master</code>，一个本地分支。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162032.png" alt="remote"></p>
-<p>对这三个分支进行合并，就成了下面这个样子。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162352.png" alt="remtoe"></p>
-<h3 id="Rebasing">Rebasing</h3><p>在多人合作开发时，将别人的代码合并到自己本地时，就会产生下面所示的情况。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163011.png" alt="rebase"></p>
-<p><code>C2</code>，<code>C4</code>，<code>C5</code>这些并没有什么实质的内容，只是进行合并产生的提交。当有大量的这些提交后，我们的提交历史就会变得不清晰。这时，我们可以使用<code>rebase</code>。</p>
-<p>使用<code>rebase</code>的效果和<code>merge</code>的效果如下所示。</p>
-<p>1是<code>rebase</code>产生的提交历史。<br>2是<code>merge</code>产生的提交历史。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163640.png" alt="rebase"></p>
-<blockquote>
-<p><code>rebase</code>只在本地分支上使用，不要在公共的分支上进行<code>rebase</code>!</p>
-</blockquote>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>Git Internals 读书笔记。</p>]]>
-    
-    </summary>
-    
-      <category term="Git" scheme="http://ztmark.github.io/tags/Git/"/>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[《Java并发编程的艺术》读书笔记三]]></title>
     <link href="http://ztmark.github.io/2015/11/30/%E3%80%8AJava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%89/"/>
     <id>http://ztmark.github.io/2015/11/30/《Java并发编程的艺术》读书笔记三/</id>
@@ -739,6 +732,86 @@
     </summary>
     
       <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Git Internals 读书笔记]]></title>
+    <link href="http://ztmark.github.io/2015/11/30/Git%20Internals%20%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <id>http://ztmark.github.io/2015/11/30/Git Internals 读书笔记/</id>
+    <published>2015-11-29T16:00:00.000Z</published>
+    <updated>2015-11-29T07:25:01.000Z</updated>
+    <content type="html"><![CDATA[<p>Git Internals 读书笔记。</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=2117030&auto=0&height=66"></iframe>
+
+<p><a href="https://github.com/pluralsight/git-internals-pdf" target="_blank" rel="external">Git Internals</a></p>
+<h2 id="Git_Object_Types">Git Object Types</h2><p><code>Git</code>有四种对象类型，分别是<code>Blob</code>、<code>Tree</code>、<code>Commit</code>和<code>Tag</code>，都存储在对象数据库里，都是通过<code>Zlib</code>压缩过的，使用<code>SHA-1</code>值（内容的哈希值）来表示。</p>
+<p>使用书上的例子：</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150116.png" alt="working"></p>
+<h3 id="Blob">Blob</h3><p>在<code>Git</code>中，文件的<strong>内容</strong>是作为<code>Blob</code>进行存储的。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150134.png" alt="blob"></p>
+<p>对于具有相同内容的不同文件，只存储一份。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151611.png" alt="BLOb"></p>
+<h3 id="Tree">Tree</h3><p><code>Tree</code>就对应着目录。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151741.png" alt="tree"></p>
+<p><code>tree</code>存储该目录下的目录和文件的信息（<code>mode</code>,<code>type</code>,<code>name</code>,<code>sha</code>）。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151752.png" alt="tree"></p>
+<h3 id="Commit">Commit</h3><p><code>commit</code>对象指向一个<code>tree</code>对象，然后额外保存了作者，提交者，提交信息和上次提交这些信息。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151804.png" alt="commit"></p>
+<p>第一次提交</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151816.png" alt="commit1"></p>
+<p>第二次提交</p>
+<p>在第二次提交中，就有了<code>parent</code>这一信息，指向上一次的提交对象。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151826.png" alt="commit2"></p>
+<h3 id="Tag">Tag</h3><p><code>Tag</code>对象指向一个特定的<code>commit</code>对象，保存<code>object</code>，<code>type</code>，<code>tag</code>，<code>tagger</code>和<code>message</code>信息。<code>type</code>一般就是<code>commit</code>，<code>object</code>就是这个<code>commit</code>的<code>SHA-1</code>值。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314153119.png" alt="tag"></p>
+<h2 id="Git_Data_Model">Git Data Model</h2><h3 id="The_Model">The Model</h3><p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154003.png" alt="model"></p>
+<p>带颜色是不可变对象。</p>
+<h3 id="Example">Example</h3><p>目录文件如下</p>
+<pre><code>|-- init.rb
+ -- <span class="class"><span class="keyword">lib</span></span>
+    | -- base
+        | -- base_include.rb
+     -- my_plugin.rb
+</code></pre><p>第一次提交后，<code>Git Model</code>如下</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154004.png" alt="model"></p>
+<p><code>branch</code>指向最近的一次提交，<code>HEAD</code>指向当前的<code>branch</code>。</p>
+<p>现在修改<code>lib/base/base_include.rb</code>文件，然后提交，并创建一个<code>tag</code>。</p>
+<p>修改了文件，其父目录以及父目录的父目录直到最顶层目录的内容都被修改了，就会产生新的对象。对于没有改变的文件和目录则不会产生新对象。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154848.png" alt="model"></p>
+<p>现在修改<code>init.rb</code>文件，然后提交。</p>
+<p>由于只修改了<code>init.rb</code>文件，其他的子目录并没有变化，所以就不会产生其他的新对象。如下图所示。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314155544.png" alt="model"></p>
+<p>这样的一种模型，我们可以通过当前的<code>HEAD</code>得到所有的历史文件。</p>
+<h3 id="Traversal">Traversal</h3><p>当进行<code>checkout</code>的时候，通过查看<code>.git/refs</code>目录下的<code>branch</code>，<code>tag</code>，<code>remote</code>，将当前的<code>working directory</code>的内容切换到指定的<code>commit</code>的内容。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314160217.png" alt="traverse"></p>
+<h2 id="Branching_and_Merging">Branching and Merging</h2><p>在<code>Git</code>中，创建分支，切换分支是非常容易的，就是新建一个文件和写几个字符的事。</p>
+<p>在这个例子中，创建一个<code>experiment</code>分支，然后对<code>master</code>和<code>experiment</code>分支分别提交。现在就是下面这个样子。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161539.png" alt="branch"></p>
+<p>将<code>experiment</code>分支合并到<code>master</code>分支后就像下面这样。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161837.png" alt="branch"></p>
+<h3 id="Remotes">Remotes</h3><p>远程分支的名字类似与这样<code>origin/master</code>表示远程仓库<code>origin</code>的<code>master</code>分支。远程仓库的名字<code>origin</code>是可以自定义的，不一定就是<code>origin</code>。</p>
+<p>下面表示有三个分支，两个远程仓库分支<code>idea</code>和<code>master</code>，一个本地分支。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162032.png" alt="remote"></p>
+<p>对这三个分支进行合并，就成了下面这个样子。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162352.png" alt="remtoe"></p>
+<h3 id="Rebasing">Rebasing</h3><p>在多人合作开发时，将别人的代码合并到自己本地时，就会产生下面所示的情况。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163011.png" alt="rebase"></p>
+<p><code>C2</code>，<code>C4</code>，<code>C5</code>这些并没有什么实质的内容，只是进行合并产生的提交。当有大量的这些提交后，我们的提交历史就会变得不清晰。这时，我们可以使用<code>rebase</code>。</p>
+<p>使用<code>rebase</code>的效果和<code>merge</code>的效果如下所示。</p>
+<p>1是<code>rebase</code>产生的提交历史。<br>2是<code>merge</code>产生的提交历史。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163640.png" alt="rebase"></p>
+<blockquote>
+<p><code>rebase</code>只在本地分支上使用，不要在公共的分支上进行<code>rebase</code>!</p>
+</blockquote>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Git Internals 读书笔记。</p>]]>
+    
+    </summary>
+    
+      <category term="Git" scheme="http://ztmark.github.io/tags/Git/"/>
     
   </entry>
   
