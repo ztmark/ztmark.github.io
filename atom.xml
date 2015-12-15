@@ -4,7 +4,7 @@
   <subtitle><![CDATA[I think therefore I am]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ztmark.github.io/"/>
-  <updated>2015-12-14T07:03:32.000Z</updated>
+  <updated>2015-12-15T13:40:01.000Z</updated>
   <id>http://ztmark.github.io/</id>
   
   <author>
@@ -13,6 +13,48 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Java中的IO流一]]></title>
+    <link href="http://ztmark.github.io/2015/12/15/Java%E4%B8%AD%E7%9A%84IO%E6%B5%81%E4%B8%80/"/>
+    <id>http://ztmark.github.io/2015/12/15/Java中的IO流一/</id>
+    <published>2015-12-14T16:00:00.000Z</published>
+    <updated>2015-12-15T13:40:01.000Z</updated>
+    <content type="html"><![CDATA[<p>Java的IO相关内容。</p>
+<a id="more"></a>
+<p>所有的流都实现了Closeable接口，所有流都又close方法，下面就不提close方法了。</p>
+<h2 id="字节流">字节流</h2><p>最基础就是InputStream和OutputStream，这两个都是抽象类。</p>
+<h3 id="InputStream/OutputStream">InputStream/OutputStream</h3><p>最主要的就的read方法，它有三个重载方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">read</span><span class="params">()</span> <span class="comment">// 读取一个字节，返回读取的字节数据 抽象方法，需子类实现</span></span><br><span class="line"><span class="keyword">int</span> <span class="title">read</span><span class="params">(<span class="keyword">byte</span> b[])</span> <span class="comment">// 读取b.length个字节并放入b数组中，返回实际读取的字节数</span></span><br><span class="line"><span class="keyword">int</span> <span class="title">read</span><span class="params">(<span class="keyword">byte</span> b[],<span class="keyword">int</span> off, <span class="keyword">int</span> len)</span> <span class="comment">// 读取len个自己放入数组b的off开始的位置，返回实际读取的字节</span></span></span><br></pre></td></tr></table></figure>
+<p>其他的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">available</span><span class="params">()</span> <span class="comment">// 流中还有多少可以读取的数据，返回字节个数</span></span><br><span class="line"><span class="title">mark</span><span class="params">(<span class="keyword">int</span>)</span> <span class="comment">// 做标记，reset后，流读取头会回到这个地方可以重读后面的数据，参数是可重读的最大字节数</span></span><br><span class="line"><span class="keyword">boolean</span> <span class="title">markSupported</span><span class="params">()</span> <span class="comment">// 流是否支持做标记</span></span><br><span class="line"><span class="title">reset</span><span class="params">()</span> <span class="comment">// 重置，见上面的mark方法</span></span><br><span class="line"><span class="keyword">long</span> <span class="title">skip</span><span class="params">(<span class="keyword">long</span>)</span> <span class="comment">// 跳过指定个数的字节数据</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="OutputStream">OutputStream</h3><p>OutputStream只有下面几个方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">flush() <span class="comment">// 将缓存中的数据写入的磁盘</span></span><br><span class="line">write(<span class="keyword">int</span> b) <span class="comment">// 写入一个字节数据</span></span><br><span class="line">write(<span class="keyword">byte</span> b[]) <span class="comment">// 写入b.length个字节数据</span></span><br><span class="line">write(<span class="keyword">byte</span> b[] <span class="keyword">int</span> off, <span class="keyword">int</span> len) <span class="comment">// 写入数组b的off开始的len个自己数据</span></span><br></pre></td></tr></table></figure>
+<h3 id="InputStream和OutputStream的增强">InputStream和OutputStream的增强</h3><p>InputStream是非常基本的输入流，为了能提供一些其他的特性，IO包中还其他的流。</p>
+<p>BufferedInputStream和BufferedOutputStream是提供内部缓冲区的流，以此可以提高性能，并支持标记和重置。其构造函数需要一个InputStream/OutputStream作为参数。</p>
+<p>DataInputStream和DataOutputStream提供了对读取和写入Java基本数据类的支持。</p>
+<p>ObjectInputStream和ObjectOutputStream提供了对Java对象的读写的支持。</p>
+<p>PushbackInputStream能将一个或多个已经读取的字节数据放回流中。</p>
+<h3 id="其他输入输出流">其他输入输出流</h3><p>FileInputStream和FileOutputStream是文件读取的相关流。</p>
+<p>ByteArrayInputStream和ByteArrayOutputStream是和字节数组相关的流。</p>
+<p>PipedInputStream和PipedOutputStream是管道流，两个类连接起来后，通过PipedOutputStream写入的数据可以让PipedInputStream读取到。</p>
+<p>SequenceInputStream可以将多个输入流按顺序连接起来，形成一个完整的输入流，该流会按顺序依次读取多个流中的数据。</p>
+<h2 id="字符流">字符流</h2><p>基本的字符流就是Reader和Writer，它们也都是抽象类。</p>
+<p>字符流和字节流其实类似，只是一个是对字符进行处理，一个是对字节进行处理，两种都有类似的类。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/Reader.png" alt=""></p>
+<p>Reader和其子类需要借助InputStreamReader使用InputStream来构造。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/Writer.png" alt=""></p>
+<p>Writer和其子类需要借助OutputStreamWriter使用OutputStream来构造。</p>
+<p>字符流需要注意的一点就是字符编码，在创建InputStreamReader和OutputStreamWriter的时候最好指定编码。<code>Charset.forName(charsetName)</code>可以创建一个给定名字的编码，或者使用<code>StandardCharsets</code>中的几个编码。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Java的IO相关内容。</p>]]>
+    
+    </summary>
+    
+      <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[《文法俱乐部》读书笔记第二章名词片语]]></title>
@@ -644,6 +686,86 @@ S V <span class="keyword">O</span> <span class="keyword">C</span>
   </entry>
   
   <entry>
+    <title><![CDATA[Git Internals 读书笔记]]></title>
+    <link href="http://ztmark.github.io/2015/11/30/Git%20Internals%20%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <id>http://ztmark.github.io/2015/11/30/Git Internals 读书笔记/</id>
+    <published>2015-11-29T16:00:00.000Z</published>
+    <updated>2015-11-29T07:25:01.000Z</updated>
+    <content type="html"><![CDATA[<p>Git Internals 读书笔记。</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=2117030&auto=0&height=66"></iframe>
+
+<p><a href="https://github.com/pluralsight/git-internals-pdf" target="_blank" rel="external">Git Internals</a></p>
+<h2 id="Git_Object_Types">Git Object Types</h2><p><code>Git</code>有四种对象类型，分别是<code>Blob</code>、<code>Tree</code>、<code>Commit</code>和<code>Tag</code>，都存储在对象数据库里，都是通过<code>Zlib</code>压缩过的，使用<code>SHA-1</code>值（内容的哈希值）来表示。</p>
+<p>使用书上的例子：</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150116.png" alt="working"></p>
+<h3 id="Blob">Blob</h3><p>在<code>Git</code>中，文件的<strong>内容</strong>是作为<code>Blob</code>进行存储的。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150134.png" alt="blob"></p>
+<p>对于具有相同内容的不同文件，只存储一份。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151611.png" alt="BLOb"></p>
+<h3 id="Tree">Tree</h3><p><code>Tree</code>就对应着目录。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151741.png" alt="tree"></p>
+<p><code>tree</code>存储该目录下的目录和文件的信息（<code>mode</code>,<code>type</code>,<code>name</code>,<code>sha</code>）。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151752.png" alt="tree"></p>
+<h3 id="Commit">Commit</h3><p><code>commit</code>对象指向一个<code>tree</code>对象，然后额外保存了作者，提交者，提交信息和上次提交这些信息。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151804.png" alt="commit"></p>
+<p>第一次提交</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151816.png" alt="commit1"></p>
+<p>第二次提交</p>
+<p>在第二次提交中，就有了<code>parent</code>这一信息，指向上一次的提交对象。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151826.png" alt="commit2"></p>
+<h3 id="Tag">Tag</h3><p><code>Tag</code>对象指向一个特定的<code>commit</code>对象，保存<code>object</code>，<code>type</code>，<code>tag</code>，<code>tagger</code>和<code>message</code>信息。<code>type</code>一般就是<code>commit</code>，<code>object</code>就是这个<code>commit</code>的<code>SHA-1</code>值。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314153119.png" alt="tag"></p>
+<h2 id="Git_Data_Model">Git Data Model</h2><h3 id="The_Model">The Model</h3><p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154003.png" alt="model"></p>
+<p>带颜色是不可变对象。</p>
+<h3 id="Example">Example</h3><p>目录文件如下</p>
+<pre><code>|-- init.rb
+ -- <span class="class"><span class="keyword">lib</span></span>
+    | -- base
+        | -- base_include.rb
+     -- my_plugin.rb
+</code></pre><p>第一次提交后，<code>Git Model</code>如下</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154004.png" alt="model"></p>
+<p><code>branch</code>指向最近的一次提交，<code>HEAD</code>指向当前的<code>branch</code>。</p>
+<p>现在修改<code>lib/base/base_include.rb</code>文件，然后提交，并创建一个<code>tag</code>。</p>
+<p>修改了文件，其父目录以及父目录的父目录直到最顶层目录的内容都被修改了，就会产生新的对象。对于没有改变的文件和目录则不会产生新对象。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154848.png" alt="model"></p>
+<p>现在修改<code>init.rb</code>文件，然后提交。</p>
+<p>由于只修改了<code>init.rb</code>文件，其他的子目录并没有变化，所以就不会产生其他的新对象。如下图所示。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314155544.png" alt="model"></p>
+<p>这样的一种模型，我们可以通过当前的<code>HEAD</code>得到所有的历史文件。</p>
+<h3 id="Traversal">Traversal</h3><p>当进行<code>checkout</code>的时候，通过查看<code>.git/refs</code>目录下的<code>branch</code>，<code>tag</code>，<code>remote</code>，将当前的<code>working directory</code>的内容切换到指定的<code>commit</code>的内容。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314160217.png" alt="traverse"></p>
+<h2 id="Branching_and_Merging">Branching and Merging</h2><p>在<code>Git</code>中，创建分支，切换分支是非常容易的，就是新建一个文件和写几个字符的事。</p>
+<p>在这个例子中，创建一个<code>experiment</code>分支，然后对<code>master</code>和<code>experiment</code>分支分别提交。现在就是下面这个样子。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161539.png" alt="branch"></p>
+<p>将<code>experiment</code>分支合并到<code>master</code>分支后就像下面这样。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161837.png" alt="branch"></p>
+<h3 id="Remotes">Remotes</h3><p>远程分支的名字类似与这样<code>origin/master</code>表示远程仓库<code>origin</code>的<code>master</code>分支。远程仓库的名字<code>origin</code>是可以自定义的，不一定就是<code>origin</code>。</p>
+<p>下面表示有三个分支，两个远程仓库分支<code>idea</code>和<code>master</code>，一个本地分支。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162032.png" alt="remote"></p>
+<p>对这三个分支进行合并，就成了下面这个样子。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162352.png" alt="remtoe"></p>
+<h3 id="Rebasing">Rebasing</h3><p>在多人合作开发时，将别人的代码合并到自己本地时，就会产生下面所示的情况。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163011.png" alt="rebase"></p>
+<p><code>C2</code>，<code>C4</code>，<code>C5</code>这些并没有什么实质的内容，只是进行合并产生的提交。当有大量的这些提交后，我们的提交历史就会变得不清晰。这时，我们可以使用<code>rebase</code>。</p>
+<p>使用<code>rebase</code>的效果和<code>merge</code>的效果如下所示。</p>
+<p>1是<code>rebase</code>产生的提交历史。<br>2是<code>merge</code>产生的提交历史。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163640.png" alt="rebase"></p>
+<blockquote>
+<p><code>rebase</code>只在本地分支上使用，不要在公共的分支上进行<code>rebase</code>!</p>
+</blockquote>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Git Internals 读书笔记。</p>]]>
+    
+    </summary>
+    
+      <category term="Git" scheme="http://ztmark.github.io/tags/Git/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[《Java并发编程的艺术》读书笔记三]]></title>
     <link href="http://ztmark.github.io/2015/11/30/%E3%80%8AJava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%89/"/>
     <id>http://ztmark.github.io/2015/11/30/《Java并发编程的艺术》读书笔记三/</id>
@@ -861,86 +983,6 @@ S V <span class="keyword">O</span> <span class="keyword">C</span>
     </summary>
     
       <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Git Internals 读书笔记]]></title>
-    <link href="http://ztmark.github.io/2015/11/30/Git%20Internals%20%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    <id>http://ztmark.github.io/2015/11/30/Git Internals 读书笔记/</id>
-    <published>2015-11-29T16:00:00.000Z</published>
-    <updated>2015-11-29T07:25:01.000Z</updated>
-    <content type="html"><![CDATA[<p>Git Internals 读书笔记。</p>
-<a id="more"></a>
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=2117030&auto=0&height=66"></iframe>
-
-<p><a href="https://github.com/pluralsight/git-internals-pdf" target="_blank" rel="external">Git Internals</a></p>
-<h2 id="Git_Object_Types">Git Object Types</h2><p><code>Git</code>有四种对象类型，分别是<code>Blob</code>、<code>Tree</code>、<code>Commit</code>和<code>Tag</code>，都存储在对象数据库里，都是通过<code>Zlib</code>压缩过的，使用<code>SHA-1</code>值（内容的哈希值）来表示。</p>
-<p>使用书上的例子：</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150116.png" alt="working"></p>
-<h3 id="Blob">Blob</h3><p>在<code>Git</code>中，文件的<strong>内容</strong>是作为<code>Blob</code>进行存储的。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150134.png" alt="blob"></p>
-<p>对于具有相同内容的不同文件，只存储一份。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151611.png" alt="BLOb"></p>
-<h3 id="Tree">Tree</h3><p><code>Tree</code>就对应着目录。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151741.png" alt="tree"></p>
-<p><code>tree</code>存储该目录下的目录和文件的信息（<code>mode</code>,<code>type</code>,<code>name</code>,<code>sha</code>）。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151752.png" alt="tree"></p>
-<h3 id="Commit">Commit</h3><p><code>commit</code>对象指向一个<code>tree</code>对象，然后额外保存了作者，提交者，提交信息和上次提交这些信息。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151804.png" alt="commit"></p>
-<p>第一次提交</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151816.png" alt="commit1"></p>
-<p>第二次提交</p>
-<p>在第二次提交中，就有了<code>parent</code>这一信息，指向上一次的提交对象。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151826.png" alt="commit2"></p>
-<h3 id="Tag">Tag</h3><p><code>Tag</code>对象指向一个特定的<code>commit</code>对象，保存<code>object</code>，<code>type</code>，<code>tag</code>，<code>tagger</code>和<code>message</code>信息。<code>type</code>一般就是<code>commit</code>，<code>object</code>就是这个<code>commit</code>的<code>SHA-1</code>值。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314153119.png" alt="tag"></p>
-<h2 id="Git_Data_Model">Git Data Model</h2><h3 id="The_Model">The Model</h3><p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154003.png" alt="model"></p>
-<p>带颜色是不可变对象。</p>
-<h3 id="Example">Example</h3><p>目录文件如下</p>
-<pre><code>|-- init.rb
- -- <span class="class"><span class="keyword">lib</span></span>
-    | -- base
-        | -- base_include.rb
-     -- my_plugin.rb
-</code></pre><p>第一次提交后，<code>Git Model</code>如下</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154004.png" alt="model"></p>
-<p><code>branch</code>指向最近的一次提交，<code>HEAD</code>指向当前的<code>branch</code>。</p>
-<p>现在修改<code>lib/base/base_include.rb</code>文件，然后提交，并创建一个<code>tag</code>。</p>
-<p>修改了文件，其父目录以及父目录的父目录直到最顶层目录的内容都被修改了，就会产生新的对象。对于没有改变的文件和目录则不会产生新对象。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154848.png" alt="model"></p>
-<p>现在修改<code>init.rb</code>文件，然后提交。</p>
-<p>由于只修改了<code>init.rb</code>文件，其他的子目录并没有变化，所以就不会产生其他的新对象。如下图所示。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314155544.png" alt="model"></p>
-<p>这样的一种模型，我们可以通过当前的<code>HEAD</code>得到所有的历史文件。</p>
-<h3 id="Traversal">Traversal</h3><p>当进行<code>checkout</code>的时候，通过查看<code>.git/refs</code>目录下的<code>branch</code>，<code>tag</code>，<code>remote</code>，将当前的<code>working directory</code>的内容切换到指定的<code>commit</code>的内容。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314160217.png" alt="traverse"></p>
-<h2 id="Branching_and_Merging">Branching and Merging</h2><p>在<code>Git</code>中，创建分支，切换分支是非常容易的，就是新建一个文件和写几个字符的事。</p>
-<p>在这个例子中，创建一个<code>experiment</code>分支，然后对<code>master</code>和<code>experiment</code>分支分别提交。现在就是下面这个样子。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161539.png" alt="branch"></p>
-<p>将<code>experiment</code>分支合并到<code>master</code>分支后就像下面这样。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161837.png" alt="branch"></p>
-<h3 id="Remotes">Remotes</h3><p>远程分支的名字类似与这样<code>origin/master</code>表示远程仓库<code>origin</code>的<code>master</code>分支。远程仓库的名字<code>origin</code>是可以自定义的，不一定就是<code>origin</code>。</p>
-<p>下面表示有三个分支，两个远程仓库分支<code>idea</code>和<code>master</code>，一个本地分支。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162032.png" alt="remote"></p>
-<p>对这三个分支进行合并，就成了下面这个样子。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162352.png" alt="remtoe"></p>
-<h3 id="Rebasing">Rebasing</h3><p>在多人合作开发时，将别人的代码合并到自己本地时，就会产生下面所示的情况。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163011.png" alt="rebase"></p>
-<p><code>C2</code>，<code>C4</code>，<code>C5</code>这些并没有什么实质的内容，只是进行合并产生的提交。当有大量的这些提交后，我们的提交历史就会变得不清晰。这时，我们可以使用<code>rebase</code>。</p>
-<p>使用<code>rebase</code>的效果和<code>merge</code>的效果如下所示。</p>
-<p>1是<code>rebase</code>产生的提交历史。<br>2是<code>merge</code>产生的提交历史。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163640.png" alt="rebase"></p>
-<blockquote>
-<p><code>rebase</code>只在本地分支上使用，不要在公共的分支上进行<code>rebase</code>!</p>
-</blockquote>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>Git Internals 读书笔记。</p>]]>
-    
-    </summary>
-    
-      <category term="Git" scheme="http://ztmark.github.io/tags/Git/"/>
     
   </entry>
   

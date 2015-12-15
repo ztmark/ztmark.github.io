@@ -34,10 +34,12 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Scheme," />
+  <meta name="keywords" content="Java," />
 
 
 
+
+  
 
 
   <link rel="alternate" href="/atom.xml" title="Mark's Notes" type="application/atom+xml" />
@@ -52,16 +54,18 @@
 
 
 
-<meta name="description" content="记录Scheme的安装和使用。">
+<meta name="description" content="Java的IO相关内容。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mac 下配置Scheme环境">
-<meta property="og:url" content="http://ztmark.github.io/2015/11/26/Mac 下安装Scheme环境/index.html">
+<meta property="og:title" content="Java中的IO流一">
+<meta property="og:url" content="http://ztmark.github.io/2015/12/15/Java中的IO流一/index.html">
 <meta property="og:site_name" content="Mark's Notes">
-<meta property="og:description" content="记录Scheme的安装和使用。">
-<meta property="og:updated_time" content="2015-11-27T06:48:54.000Z">
+<meta property="og:description" content="Java的IO相关内容。">
+<meta property="og:image" content="http://7u2r8z.com1.z0.glb.clouddn.com/Reader.png">
+<meta property="og:image" content="http://7u2r8z.com1.z0.glb.clouddn.com/Writer.png">
+<meta property="og:updated_time" content="2015-12-15T13:40:01.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mac 下配置Scheme环境">
-<meta name="twitter:description" content="记录Scheme的安装和使用。">
+<meta name="twitter:title" content="Java中的IO流一">
+<meta name="twitter:description" content="Java的IO相关内容。">
 
 
 
@@ -73,7 +77,7 @@
   };
 </script>
 
-  <title> Mac 下配置Scheme环境 | Mark's Notes </title>
+  <title> Java中的IO流一 | Mark's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -183,7 +187,7 @@
             
             
               
-                Mac 下配置Scheme环境
+                Java中的IO流一
               
             
           </h1>
@@ -192,8 +196,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-11-26T00:00:00+08:00" content="2015-11-26">
-              2015-11-26
+            <time itemprop="dateCreated" datetime="2015-12-15T00:00:00+08:00" content="2015-12-15">
+              2015-12-15
             </time>
           </span>
 
@@ -203,8 +207,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/11/26/Mac 下安装Scheme环境/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/26/Mac 下安装Scheme环境/" itemprop="commentsCount"></span>
+                <a href="/2015/12/15/Java中的IO流一/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/15/Java中的IO流一/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -223,32 +227,32 @@
       
 
       
-        <span itemprop="articleBody"><p>记录Scheme的安装和使用。</p>
+        <span itemprop="articleBody"><p>Java的IO相关内容。</p>
 <a id="more"></a>
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=28815250&auto=0&height=66"></iframe>
-
-<h2 id="安装">安装</h2><p>到<a href="http://www.gnu.org/software/mit-scheme/" target="_blank" rel="external">官网</a>下载对应的版本安装。</p>
-<h2 id="配置">配置</h2><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /<span class="constant">Applications</span>/<span class="constant">MIT</span>:<span class="constant">GNU</span>\ <span class="constant">Scheme</span>.app/<span class="constant">Contents</span>/<span class="constant">Resources</span> /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">mit</span>-<span class="title">scheme</span>-<span class="title">x86</span>-64</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">mit</span>-<span class="title">scheme</span>-<span class="title">x86</span>-64/<span class="title">mit</span>-<span class="title">scheme</span> /<span class="title">usr</span>/<span class="title">bin</span>/<span class="title">scheme</span></span></span><br></pre></td></tr></table></figure>
-<p>这一步会出现<code>not permitted</code>错误，办法是不要链接到<code>/usr/bin</code>下，而是链接到<code>/usr/local/bin</code>下，命令如下：</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">mit</span>-<span class="title">scheme</span>-<span class="title">x86</span>-64/<span class="title">mit</span>-<span class="title">scheme</span> /<span class="title">usr</span>//<span class="title">local</span>/<span class="title">bin</span>/<span class="title">scheme</span></span></span><br></pre></td></tr></table></figure>
-<p>这样，在命令行中敲入<code>scheme</code>就会出现scheme的交互环境了。</p>
-<h2 id="运行">运行</h2><p>在命令中输入<code>scheme</code>打开交互环境。</p>
-<p>在Scheme的交互环境中可以通过</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">pwd</span>)</span></span><br></pre></td></tr></table></figure>
-<p>查看当前路径。</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">cd</span> <span class="string">"~/demo"</span>)</span></span><br></pre></td></tr></table></figure>
-<p>切换目录。</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword"><span class="built_in">load</span></span> <span class="string">"test.scm"</span>)</span></span><br></pre></td></tr></table></figure>
-<p>加载Scheme源文件，加载后会执行这个文件中的代码。</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">disk-save</span> <span class="string">"demo-env"</span>)</span></span><br></pre></td></tr></table></figure>
-<p>保存当前交互环境，在当前目录下会有一个名为demo-env的文件。</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">disk-restore</span> <span class="string">"demo-env"</span>)</span></span><br></pre></td></tr></table></figure>
-<p>加载之前保存的交互环境。</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">quit</span>)</span></span><br></pre></td></tr></table></figure>
-<p>退出交互环境。</p>
-<h2 id="配置Sublime">配置Sublime</h2><p>安装<code>Scheme</code>和<code>SublimeREPL</code>两个插件，搜<code>Scheme</code>出来的都是主题相关的并不好找。</p>
-<p>安装好<code>SublimeREPL</code>后打开会提示无法加载<code>Scheme.tmLanguage</code>,可以到<a href="https://github.com/masondesu/sublime-scheme-syntax" target="_blank" rel="external">sublime-scheme-syntax</a>仓库中下载这些配置文件，然后放到Packages目录下即可。</p>
+<p>所有的流都实现了Closeable接口，所有流都又close方法，下面就不提close方法了。</p>
+<h2 id="字节流">字节流</h2><p>最基础就是InputStream和OutputStream，这两个都是抽象类。</p>
+<h3 id="InputStream/OutputStream">InputStream/OutputStream</h3><p>最主要的就的read方法，它有三个重载方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">read</span><span class="params">()</span> <span class="comment">// 读取一个字节，返回读取的字节数据 抽象方法，需子类实现</span></span><br><span class="line"><span class="keyword">int</span> <span class="title">read</span><span class="params">(<span class="keyword">byte</span> b[])</span> <span class="comment">// 读取b.length个字节并放入b数组中，返回实际读取的字节数</span></span><br><span class="line"><span class="keyword">int</span> <span class="title">read</span><span class="params">(<span class="keyword">byte</span> b[],<span class="keyword">int</span> off, <span class="keyword">int</span> len)</span> <span class="comment">// 读取len个自己放入数组b的off开始的位置，返回实际读取的字节</span></span></span><br></pre></td></tr></table></figure>
+<p>其他的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">available</span><span class="params">()</span> <span class="comment">// 流中还有多少可以读取的数据，返回字节个数</span></span><br><span class="line"><span class="title">mark</span><span class="params">(<span class="keyword">int</span>)</span> <span class="comment">// 做标记，reset后，流读取头会回到这个地方可以重读后面的数据，参数是可重读的最大字节数</span></span><br><span class="line"><span class="keyword">boolean</span> <span class="title">markSupported</span><span class="params">()</span> <span class="comment">// 流是否支持做标记</span></span><br><span class="line"><span class="title">reset</span><span class="params">()</span> <span class="comment">// 重置，见上面的mark方法</span></span><br><span class="line"><span class="keyword">long</span> <span class="title">skip</span><span class="params">(<span class="keyword">long</span>)</span> <span class="comment">// 跳过指定个数的字节数据</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="OutputStream">OutputStream</h3><p>OutputStream只有下面几个方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">flush() <span class="comment">// 将缓存中的数据写入的磁盘</span></span><br><span class="line">write(<span class="keyword">int</span> b) <span class="comment">// 写入一个字节数据</span></span><br><span class="line">write(<span class="keyword">byte</span> b[]) <span class="comment">// 写入b.length个字节数据</span></span><br><span class="line">write(<span class="keyword">byte</span> b[] <span class="keyword">int</span> off, <span class="keyword">int</span> len) <span class="comment">// 写入数组b的off开始的len个自己数据</span></span><br></pre></td></tr></table></figure>
+<h3 id="InputStream和OutputStream的增强">InputStream和OutputStream的增强</h3><p>InputStream是非常基本的输入流，为了能提供一些其他的特性，IO包中还其他的流。</p>
+<p>BufferedInputStream和BufferedOutputStream是提供内部缓冲区的流，以此可以提高性能，并支持标记和重置。其构造函数需要一个InputStream/OutputStream作为参数。</p>
+<p>DataInputStream和DataOutputStream提供了对读取和写入Java基本数据类的支持。</p>
+<p>ObjectInputStream和ObjectOutputStream提供了对Java对象的读写的支持。</p>
+<p>PushbackInputStream能将一个或多个已经读取的字节数据放回流中。</p>
+<h3 id="其他输入输出流">其他输入输出流</h3><p>FileInputStream和FileOutputStream是文件读取的相关流。</p>
+<p>ByteArrayInputStream和ByteArrayOutputStream是和字节数组相关的流。</p>
+<p>PipedInputStream和PipedOutputStream是管道流，两个类连接起来后，通过PipedOutputStream写入的数据可以让PipedInputStream读取到。</p>
+<p>SequenceInputStream可以将多个输入流按顺序连接起来，形成一个完整的输入流，该流会按顺序依次读取多个流中的数据。</p>
+<h2 id="字符流">字符流</h2><p>基本的字符流就是Reader和Writer，它们也都是抽象类。</p>
+<p>字符流和字节流其实类似，只是一个是对字符进行处理，一个是对字节进行处理，两种都有类似的类。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/Reader.png" alt=""></p>
+<p>Reader和其子类需要借助InputStreamReader使用InputStream来构造。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/Writer.png" alt=""></p>
+<p>Writer和其子类需要借助OutputStreamWriter使用OutputStream来构造。</p>
+<p>字符流需要注意的一点就是字符编码，在创建InputStreamReader和OutputStreamWriter的时候最好指定编码。<code>Charset.forName(charsetName)</code>可以创建一个给定名字的编码，或者使用<code>StandardCharsets</code>中的几个编码。</p>
 </span>
       
     </div>
@@ -257,7 +261,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Scheme/" rel="tag">#Scheme</a>
+            <a href="/tags/Java/" rel="tag">#Java</a>
           
         </div>
       
@@ -266,17 +270,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/11/19/git-basics/" rel="next" title="git basics">
-                <i class="fa fa-chevron-left"></i> git basics
+              <a href="/2015/12/14/《文法俱乐部》读书笔记之第二章名词片语/" rel="next" title="《文法俱乐部》读书笔记第二章名词片语">
+                <i class="fa fa-chevron-left"></i> 《文法俱乐部》读书笔记第二章名词片语
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/28/《Java并发编程的艺术》读书笔记一/" rel="prev" title="《Java并发编程的艺术》读书笔记一">
-                《Java并发编程的艺术》读书笔记一 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -303,8 +303,8 @@
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/11/26/Mac 下安装Scheme环境/"
-           data-title="Mac 下配置Scheme环境" data-url="http://ztmark.github.io/2015/11/26/Mac 下安装Scheme环境/">
+      <div class="ds-thread" data-thread-key="2015/12/15/Java中的IO流一/"
+           data-title="Java中的IO流一" data-url="http://ztmark.github.io/2015/12/15/Java中的IO流一/">
       </div>
     
   </div>
@@ -411,7 +411,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行"><span class="nav-number">3.</span> <span class="nav-text">运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Sublime"><span class="nav-number">4.</span> <span class="nav-text">配置Sublime</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#字节流"><span class="nav-number">1.</span> <span class="nav-text">字节流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#InputStream/OutputStream"><span class="nav-number">1.1.</span> <span class="nav-text">InputStream/OutputStream</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OutputStream"><span class="nav-number">1.2.</span> <span class="nav-text">OutputStream</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InputStream和OutputStream的增强"><span class="nav-number">1.3.</span> <span class="nav-text">InputStream和OutputStream的增强</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他输入输出流"><span class="nav-number">1.4.</span> <span class="nav-text">其他输入输出流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符流"><span class="nav-number">2.</span> <span class="nav-text">字符流</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
