@@ -39,6 +39,8 @@
 
 
 
+  
+
 
   <link rel="alternate" href="/atom.xml" title="Mark's Notes" type="application/atom+xml" />
 
@@ -52,16 +54,16 @@
 
 
 
-<meta name="description" content="《Java并发编程的艺术》读书笔记">
+<meta name="description" content="Java的IO相关内容。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《Java并发编程的艺术》读书笔记一">
-<meta property="og:url" content="http://ztmark.github.io/2015/11/28/《Java并发编程的艺术》读书笔记一/index.html">
+<meta property="og:title" content="Java中的IO流二">
+<meta property="og:url" content="http://ztmark.github.io/2015/12/16/Java中的IO流二/index.html">
 <meta property="og:site_name" content="Mark's Notes">
-<meta property="og:description" content="《Java并发编程的艺术》读书笔记">
-<meta property="og:updated_time" content="2015-11-28T06:37:37.000Z">
+<meta property="og:description" content="Java的IO相关内容。">
+<meta property="og:updated_time" content="2015-12-16T10:52:39.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="《Java并发编程的艺术》读书笔记一">
-<meta name="twitter:description" content="《Java并发编程的艺术》读书笔记">
+<meta name="twitter:title" content="Java中的IO流二">
+<meta name="twitter:description" content="Java的IO相关内容。">
 
 
 
@@ -73,7 +75,7 @@
   };
 </script>
 
-  <title> 《Java并发编程的艺术》读书笔记一 | Mark's Notes </title>
+  <title> Java中的IO流二 | Mark's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -183,7 +185,7 @@
             
             
               
-                《Java并发编程的艺术》读书笔记一
+                Java中的IO流二
               
             
           </h1>
@@ -192,8 +194,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-11-28T00:00:00+08:00" content="2015-11-28">
-              2015-11-28
+            <time itemprop="dateCreated" datetime="2015-12-16T00:00:00+08:00" content="2015-12-16">
+              2015-12-16
             </time>
           </span>
 
@@ -203,8 +205,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/11/28/《Java并发编程的艺术》读书笔记一/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/28/《Java并发编程的艺术》读书笔记一/" itemprop="commentsCount"></span>
+                <a href="/2015/12/16/Java中的IO流二/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/16/Java中的IO流二/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -223,71 +225,14 @@
       
 
       
-        <span itemprop="articleBody"><p>《Java并发编程的艺术》读书笔记</p>
+        <span itemprop="articleBody"><p>Java的IO相关内容。</p>
 <a id="more"></a>
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=27556211&auto=0&height=66"></iframe>
-
-<p>为什么要并发？现在的机器都是带多核处理器的，为了能充分发挥多核处理器的优势，并发编程就派上用场了。当然，在单核处理器的情况下，如果碰到了IO密集型的程序，并发编程也能重复利用处理器。并发的多线程程序通常响应更快。</p>
-<p>但是，并发程序更快并不是绝对的，线程之间的上下文切换是需要消耗时间的，如果上下文切换花费的时间多于多线程带来的程序执行的减少时间，那么并发程序反而比串行执行程序花费的时间更多。</p>
-<p>而且，编写并发程序往往要比编写串行程序难。</p>
-<h2 id="Java并发机制的底层实现原理">Java并发机制的底层实现原理</h2><h3 id="volatile">volatile</h3><p><code>volatile</code>关键字能够保证被修饰的变量的<strong>可见性</strong>和<strong>顺序性</strong>。</p>
-<p>由于CPU的速度和内存的速度有着巨大的差距，为了提高处理速度，CPU不直接与内存进行交互，而是先将数据读到CPU的高速缓存，然后CPU从高速缓存读取数据，写也先写到高速缓存中，然后再写入内存，每个CPU都有高速缓存，这样就会出现CPU读到的数据可能与内存中的数据不一致。</p>
-<p><code>volatile</code>变量的写，在写完高速缓存后会马上写入内存，每次读都会先使高速缓存实现，然后从内存读取。<code>volatile</code>变量也不会与其他变量发生重排序。</p>
-<h3 id="synchronized">synchronized</h3><p><code>synchronized</code>关键字可以修饰方法，也可以用在同步代码块中，修饰静态方法时，使用的锁是当前类的Class对象，修饰普通方法时，使用的锁是当前对象，用在同步代码块的时候需要自己指定锁。</p>
-<p>Java中的对象在对象头部分会存有HashCode值、分代年龄和锁标记。</p>
-<p><code>synchronized</code>使用的锁又4种状态：无锁状态、偏向锁状态、轻量级锁状态和重量级锁状态。</p>
-<h4 id="偏向锁">偏向锁</h4><p>研究发现，在多数情况下，锁总是由同一个线程多次获得，为了让线程获得锁的代价更低就引入了偏向锁。</p>
-<p>在锁对象的锁标记中会记录偏向的线程的ID，在该线程要获得该锁时，只要测试一下这个锁对象的锁标记是否指向该线程就可以了，如果不是，则测试一下该锁对象是否是偏向锁，是的话就通过CAS设置该锁指向当前线程，如果不是，则通过CAS来竞争锁。</p>
-<p>偏向锁使用了一种等到竞争出现才释放锁的机制，所以当其他线程尝试竞争锁时，持有该锁的线程才会释放锁。</p>
-<h4 id="轻量级锁">轻量级锁</h4><p>轻量级锁在获取的时候，会先将锁的对象头中的Mark Word数据复制到线程栈的锁记录中，然后通过CAS将锁的对象头中的标记指向该锁记录，如果成功则获得了锁。</p>
-<p>释放轻量级锁时，通过CAS将锁记录复制到锁对象的对象头中，如果失败则升级到重量级锁。</p>
-<h4 id="重量级锁">重量级锁</h4><p>重量级锁就是一般意义上的锁，会阻塞线程。</p>
-<h4 id="锁的对比">锁的对比</h4><table>
-<thead>
-<tr>
-<th>锁</th>
-<th>优点</th>
-<th>缺点</th>
-<th>使用场景</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>偏向锁</td>
-<td>加锁和解锁不需要额外的消耗</td>
-<td>如果线程间存在锁竞争，会带来额外的锁撤销消耗</td>
-<td>适用于只有一个线程访问同步块的场景</td>
-</tr>
-<tr>
-<td>轻量级锁</td>
-<td>竞争的线程不会阻塞，提供了程序的响应时间</td>
-<td>如果始终得不到锁，会自旋消耗CPU</td>
-<td>最近响应时间，同步代码块执行速度块</td>
-</tr>
-<tr>
-<td>重量级锁</td>
-<td>线程竞争不使用自旋，不会消耗CPU</td>
-<td>线程阻塞，响应时间缓慢</td>
-<td>最近吞吐量，同步代码块执行速度长</td>
-</tr>
-</tbody>
-</table>
-<h3 id="原子操作">原子操作</h3><p>原子操作是指不可被中断的一个或多个操作。</p>
-<p>CAS（比较并交换），输入两个值，一个旧值和一个新值，如果旧值没有变化，就将其设置为新值，如果变化了就不做处理。</p>
-<p>Java中可以通过锁和CAS来实现原子操作。从JDK1.5开始java.util.concurrent.atomic包中包含了一些支持原子操作的类。</p>
-<h4 id="CAS实现原子操作的问题">CAS实现原子操作的问题</h4><ul>
-<li><p>ABA问题</p>
-<p>  旧值从A变成B然后又变回A，这种情况，CAS无法感知，会认为旧值一直没变过。</p>
-</li>
-<li><p>循环时间长开销大</p>
-<p>  自旋CAS如果长时间不成功，会给CPU带来非常的开销。</p>
-</li>
-<li><p>只能保证一个共享变量的原子操作</p>
-<p>  如果要对个共享变量的操作，CAS就无力了。</p>
-</li>
-</ul>
-<h4 id="锁实现原子操作">锁实现原子操作</h4><p>使用锁实现原子操作，只有获得锁的线程才能进入代码块或方法，在锁所保护的代码块或方法内可以又任意多个操作。</p>
-<p>除了偏向锁，其他锁的获取都是通过CAS方式来获取的。</p>
+<h2 id="缓冲区">缓冲区</h2><p>java.nio包下面定义了一些缓存区类，基类是Buffer类，是一个抽象类。缓存区有3个状态变量，position、limit和capacity，position是指读写头的位置，limit是指读写头能够读到或写到的位置，capacity是指缓冲区的大小，缓冲区也是支持做标记，所以也有一个mark的变量，它们的关系是mark &lt;= position &lt;= limit &lt;= capacity，mark大于position时，mark就会失效。</p>
+<h3 id="Buffer">Buffer</h3><p>Buffer的子类都会提供两种get方法和put方法用来对缓冲区进行操作，Buffer自己提供了基本的对缓冲区状态的查询和设置操作，缓冲区的capacity是在构造的时候给定的，之后就无法修改，其他的都可以设置。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flip() <span class="comment">// limit = position;position = 0;mark = -1; 翻转操作，之前往缓存写，现在可以读取之前写入的数据；之前是从缓存里读，现在可以写入覆盖之前的数据</span></span><br><span class="line">hasRemaining() <span class="comment">// position &lt; limit 是否还有数据可读</span></span><br><span class="line">remaining() <span class="comment">// limit - position 可读数据个数</span></span><br><span class="line">rewind() <span class="comment">// position = 0;mark = -1; 可以重读或者重写</span></span><br><span class="line">clear() <span class="comment">// 清空缓存区</span></span><br></pre></td></tr></table></figure>
+<h3 id="Buffer子类">Buffer子类</h3><p>Buffer有一些针对基本数据类型的缓冲区子类：ByteBuffer,CharBuffer,ShortBuffer,IntBuffer,LongBuffer,FloatBuffer,DoubleBuffer。这些都又类似的方法，一些put个get方法，这些方法都是操作对应的基本数据类型。而ByteBuffer有针对其他基本数据类型的方法，ByteBuffer是直接操作字节的，所以ByteOrder对其是有影响的，ByteOrder有两个常量，BIG_EDIAN和LITTLE_EDIAN。大端表示字节的高位在前，小端表示字节的地位在前，ByteBuffer有对应的asXXXBuffer()方法来将ByteBuffer转换成其他Buffer。</p>
+<p>Buffer的子类的一些方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">allocate(capacity) <span class="comment">// 创建一个指定容量的缓冲区</span></span><br><span class="line">wrap(array) <span class="comment">// 通过对应的数组来创建缓冲区</span></span><br><span class="line">compact() <span class="comment">// 压缩，将未读的数据移到缓冲区的前面，position=remain，limit=capacity</span></span><br><span class="line">duplicate() <span class="comment">// 复制一个缓冲区对象，共享同一个缓冲区，各自管理各自的position,limit</span></span><br><span class="line">slice() <span class="comment">// 使用未读数据来创建一个缓冲区对象，共享同一个缓冲区，新缓冲区的position=0，capacity和limit=原缓冲区的remain</span></span><br></pre></td></tr></table></figure>
 </span>
       
     </div>
@@ -305,17 +250,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/11/26/Mac 下安装Scheme环境/" rel="next" title="Mac 下配置Scheme环境">
-                <i class="fa fa-chevron-left"></i> Mac 下配置Scheme环境
+              <a href="/2015/12/15/Java中的IO流一/" rel="next" title="Java中的IO流一">
+                <i class="fa fa-chevron-left"></i> Java中的IO流一
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/29/链表的几个问题/" rel="prev" title="链表的几个问题">
-                链表的几个问题 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -342,8 +283,8 @@
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/11/28/《Java并发编程的艺术》读书笔记一/"
-           data-title="《Java并发编程的艺术》读书笔记一" data-url="http://ztmark.github.io/2015/11/28/《Java并发编程的艺术》读书笔记一/">
+      <div class="ds-thread" data-thread-key="2015/12/16/Java中的IO流二/"
+           data-title="Java中的IO流二" data-url="http://ztmark.github.io/2015/12/16/Java中的IO流二/">
       </div>
     
   </div>
@@ -450,7 +391,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java并发机制的底层实现原理"><span class="nav-number">1.</span> <span class="nav-text">Java并发机制的底层实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#volatile"><span class="nav-number">1.1.</span> <span class="nav-text">volatile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronized"><span class="nav-number">1.2.</span> <span class="nav-text">synchronized</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#偏向锁"><span class="nav-number">1.2.1.</span> <span class="nav-text">偏向锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#轻量级锁"><span class="nav-number">1.2.2.</span> <span class="nav-text">轻量级锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重量级锁"><span class="nav-number">1.2.3.</span> <span class="nav-text">重量级锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#锁的对比"><span class="nav-number">1.2.4.</span> <span class="nav-text">锁的对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原子操作"><span class="nav-number">1.3.</span> <span class="nav-text">原子操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CAS实现原子操作的问题"><span class="nav-number">1.3.1.</span> <span class="nav-text">CAS实现原子操作的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#锁实现原子操作"><span class="nav-number">1.3.2.</span> <span class="nav-text">锁实现原子操作</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#缓冲区"><span class="nav-number">1.</span> <span class="nav-text">缓冲区</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffer"><span class="nav-number">1.1.</span> <span class="nav-text">Buffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffer子类"><span class="nav-number">1.2.</span> <span class="nav-text">Buffer子类</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
