@@ -4,7 +4,7 @@
   <subtitle><![CDATA[I think therefore I am]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ztmark.github.io/"/>
-  <updated>2015-12-16T10:52:39.000Z</updated>
+  <updated>2015-12-22T10:48:53.000Z</updated>
   <id>http://ztmark.github.io/</id>
   
   <author>
@@ -13,6 +13,52 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Java中的IO流三]]></title>
+    <link href="http://ztmark.github.io/2015/12/22/Java%E4%B8%AD%E7%9A%84IO%E6%B5%81%E4%B8%89/"/>
+    <id>http://ztmark.github.io/2015/12/22/Java中的IO流三/</id>
+    <published>2015-12-21T16:00:00.000Z</published>
+    <updated>2015-12-22T10:48:53.000Z</updated>
+    <content type="html"><![CDATA[<p>Java的IO相关内容。</p>
+<a id="more"></a>
+<h2 id="通道">通道</h2><p>Java的NIO中的通道都实现了java.nio.channels.Channel接口，Channel接口只有两个方法isOpen()和close()方法，close()方法是AutoCloseable接口中的方法。</p>
+<p>支持读操作的Channel可以实现ReadableByteChannel接口，该接口只有一个read方法，支持写操作的Channel可以实现WritableByteChannel接口，该接口只有一个write方法，支持读写操作以外的一些移动读写的Channel可以实现SeekableByteChannel，该接口有一些移动读取的方法。</p>
+<p>ReadableByteChannel接口的子接口ScatteringByteChannel提供了不同的read方法，使用一个ByteBuffer数组的read方法，将通道的数据读到多个ByteBuffer中。</p>
+<p>WritableByteChannel接口的子接口GatheringByteChannel提供了不同write方法，使用多个ByteBuffer，将多个ByteBuffer的数据写入通道。</p>
+<h3 id="文件通道">文件通道</h3><p>FileChannel实现了SeekableByteChannel, GatheringByteChannel, ScatteringByteChannel接口，而且提供了一些文件操作相关的功能。</p>
+<p>FileChannel可以通过open方法来创建，创建的时候可以传入OpenOption参数，StandardOpenOption枚举类定义了一些操作参数。</p>
+<p>FileChannel也可以从已有的FileInputStream、FileOutputStream和RandomAccessFile类的对象中通过getChannel方法得到。</p>
+<p>FileChannel的transferFrom和transferTo两个方法可以实现数据传输。</p>
+<h4 id="内存映射文件">内存映射文件</h4><p>在操作大文件的时候可以通过内存映射文件将大文件映射到内存，这样，可以直接通过内存操作来操作文件。</p>
+<p>FileChannel类的map方法可以把一个文件的全部或部分内容映射到内存中，所得到的是一个ByteBuffer类的子类MappedByteBuffer的对象，程序只要对这个MappedByteBuffer类的对象进行操作即可。对该对象的修改会自动同步到文件中。</p>
+<p>在进行内存映射的时候需要指定映射模式，一共有3种映射模式，定义在FileChannel.MapMode类中。</p>
+<ul>
+<li>READ_ONLY : 只能对映射后的MappedByteBuffer对象进行读操作</li>
+<li>READ_WRITE : 可以对映射后的MappedByteBuffer对象进行读写操作</li>
+<li>PRIVATE : 对映射后的MappedByteBuffer对象进行的操作不会同步到文件中</li>
+</ul>
+<p>FileChannel的force方法可以强制要求把更新同步到文件中。</p>
+<h4 id="文件锁定">文件锁定</h4><p>FileChannel的lock和tryLock方法可以将当前文件通道对应的文件进行加锁，加锁可以锁定全部内容，也可以锁定部分内容。</p>
+<p>文件加锁是用来与操作系统上的其他程序进行同步使用的。</p>
+<h3 id="套接字通道">套接字通道</h3><p>java.nio.channels.NetworkChannel接口表示的是一个套接字对应的通道。</p>
+<p>相对于Socket和ServerSocket类，Java NIO也提供了SocketChannel和ServerSocketChannel类。这两个都支持阻塞和非阻塞两种模式。</p>
+<h4 id="阻塞">阻塞</h4><p>例子：</p>
+<p>客户端套接字</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loadWebPageUseSocket</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">   <span class="keyword">try</span> (FileChannel dest = FileChannel.open(Paths.get(<span class="string">"pages.html"</span>), StandardOpenOption.WRITE, StandardOpenOption.CREATE);</span><br><span class="line">       SocketChannel channel = SocketChannel.open(<span class="keyword">new</span> InetSocketAddress(<span class="string">"www.baidu.com"</span>, <span class="number">80</span>))) &#123;</span><br><span class="line">       String request = <span class="string">"GET / HTTP/1.1\r\n\r\nHost:www.baidu.com\r\n\r\n"</span>;</span><br><span class="line">       ByteBuffer bb = ByteBuffer.wrap(request.getBytes(StandardCharsets.UTF_8));</span><br><span class="line">       channel.write(bb);</span><br><span class="line">       dest.transferFrom(channel, <span class="number">0</span>, Integer.MAX_VALUE);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>服务端套接字</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">startSimpleServer</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">   ServerSocketChannel server = ServerSocketChannel.open();</span><br><span class="line">   server.bind(<span class="keyword">new</span> InetSocketAddress(<span class="string">"localhost"</span>, <span class="number">8680</span>));</span><br><span class="line">   <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">       <span class="keyword">try</span> (SocketChannel channel = server.accept()) &#123;</span><br><span class="line">           channel.write(ByteBuffer.wrap(<span class="string">"hello there"</span>.getBytes(StandardCharsets.UTF_8)));</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="非阻塞">非阻塞</h4><p> 例子：</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.net.InetSocketAddress;</span><br><span class="line"><span class="keyword">import</span> java.net.SocketAddress;</span><br><span class="line"><span class="keyword">import</span> java.net.URL;</span><br><span class="line"><span class="keyword">import</span> java.nio.ByteBuffer;</span><br><span class="line"><span class="keyword">import</span> java.nio.channels.FileChannel;</span><br><span class="line"><span class="keyword">import</span> java.nio.channels.SelectionKey;</span><br><span class="line"><span class="keyword">import</span> java.nio.channels.Selector;</span><br><span class="line"><span class="keyword">import</span> java.nio.channels.SocketChannel;</span><br><span class="line"><span class="keyword">import</span> java.nio.charset.StandardCharsets;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Paths;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.StandardOpenOption;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoadWebPageUseSelector</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">load</span><span class="params">(Set&lt;URL&gt; urls)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        Map&lt;SocketAddress, String&gt; mapping = urlToSocketAddress(urls);</span><br><span class="line">        Selector selector = Selector.open();</span><br><span class="line">        <span class="keyword">for</span> (SocketAddress socketAddress : mapping.keySet()) &#123;</span><br><span class="line">            register(selector, socketAddress);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> finished = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> total = mapping.size();</span><br><span class="line">        ByteBuffer bb = ByteBuffer.allocate(<span class="number">10240</span>);</span><br><span class="line">        <span class="keyword">int</span> len = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (finished &lt; total) &#123;</span><br><span class="line">            <span class="keyword">for</span> (SelectionKey key : selector.selectedKeys()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (key.isValid() &amp;&amp; key.isReadable()) &#123;</span><br><span class="line">                    SocketChannel channel = (SocketChannel) key.channel();</span><br><span class="line">                    InetSocketAddress address = (InetSocketAddress) channel.getRemoteAddress();</span><br><span class="line">                    FileChannel fileChannel = FileChannel.open(Paths.get(address.getHostName() + <span class="string">".html"</span>), StandardOpenOption.APPEND, StandardOpenOption.CREATE);</span><br><span class="line">                    bb.clear();</span><br><span class="line">                    <span class="keyword">while</span> ((len = channel.read(bb)) &gt; <span class="number">0</span> || bb.position() != <span class="number">0</span>) &#123;</span><br><span class="line">                        bb.flip();</span><br><span class="line">                        fileChannel.write(bb);</span><br><span class="line">                        bb.compact();</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (len == -<span class="number">1</span>) &#123;</span><br><span class="line">                        finished++;</span><br><span class="line">                        key.cancel();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (key.isValid() &amp;&amp; key.isConnectable()) &#123;</span><br><span class="line">                    SocketChannel channel = (SocketChannel) key.channel();</span><br><span class="line">                    <span class="keyword">boolean</span> success = channel.finishConnect();</span><br><span class="line">                    <span class="keyword">if</span> (!success) &#123;</span><br><span class="line">                        finished++;</span><br><span class="line">                        key.cancel();</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        InetSocketAddress address = (InetSocketAddress) channel.getRemoteAddress();</span><br><span class="line">                        String path = mapping.get(address);</span><br><span class="line">                        String request = <span class="string">"GET "</span> + path + <span class="string">" HTTP/1.1\r\n\r\nHost:"</span> + address.getHostString() + <span class="string">"\r\n"</span>;</span><br><span class="line">                        ByteBuffer header = ByteBuffer.wrap(request.getBytes(StandardCharsets.UTF_8));</span><br><span class="line">                        channel.write(header);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(Selector selector, SocketAddress socketAddress)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        SocketChannel channel = SocketChannel.open();</span><br><span class="line">        channel.configureBlocking(<span class="keyword">false</span>);</span><br><span class="line">        channel.connect(socketAddress);</span><br><span class="line">        channel.register(selector, SelectionKey.OP_CONNECT|SelectionKey.OP_READ);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Map&lt;SocketAddress, String&gt; urlToSocketAddress(Set&lt;URL&gt; urls) &#123;</span><br><span class="line">        Map&lt;SocketAddress, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (URL url : urls) &#123;</span><br><span class="line">            <span class="keyword">int</span> port = url.getPort() != -<span class="number">1</span> ? url.getPort() : url.getDefaultPort();</span><br><span class="line">            SocketAddress address = <span class="keyword">new</span> InetSocketAddress(url.getHost(), port);</span><br><span class="line">            String path = url.getPath();</span><br><span class="line">            <span class="keyword">if</span> (url.getQuery() != <span class="keyword">null</span>) &#123;</span><br><span class="line">                path = path + <span class="string">"?"</span> + url.getQuery();</span><br><span class="line">            &#125;</span><br><span class="line">            map.put(address, path);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Java的IO相关内容。</p>]]>
+    
+    </summary>
+    
+      <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Java中的IO流二]]></title>
@@ -710,86 +756,6 @@ S V <span class="keyword">O</span> <span class="keyword">C</span>
   </entry>
   
   <entry>
-    <title><![CDATA[Git Internals 读书笔记]]></title>
-    <link href="http://ztmark.github.io/2015/11/30/Git%20Internals%20%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    <id>http://ztmark.github.io/2015/11/30/Git Internals 读书笔记/</id>
-    <published>2015-11-29T16:00:00.000Z</published>
-    <updated>2015-11-29T07:25:01.000Z</updated>
-    <content type="html"><![CDATA[<p>Git Internals 读书笔记。</p>
-<a id="more"></a>
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=2117030&auto=0&height=66"></iframe>
-
-<p><a href="https://github.com/pluralsight/git-internals-pdf" target="_blank" rel="external">Git Internals</a></p>
-<h2 id="Git_Object_Types">Git Object Types</h2><p><code>Git</code>有四种对象类型，分别是<code>Blob</code>、<code>Tree</code>、<code>Commit</code>和<code>Tag</code>，都存储在对象数据库里，都是通过<code>Zlib</code>压缩过的，使用<code>SHA-1</code>值（内容的哈希值）来表示。</p>
-<p>使用书上的例子：</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150116.png" alt="working"></p>
-<h3 id="Blob">Blob</h3><p>在<code>Git</code>中，文件的<strong>内容</strong>是作为<code>Blob</code>进行存储的。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150134.png" alt="blob"></p>
-<p>对于具有相同内容的不同文件，只存储一份。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151611.png" alt="BLOb"></p>
-<h3 id="Tree">Tree</h3><p><code>Tree</code>就对应着目录。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151741.png" alt="tree"></p>
-<p><code>tree</code>存储该目录下的目录和文件的信息（<code>mode</code>,<code>type</code>,<code>name</code>,<code>sha</code>）。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151752.png" alt="tree"></p>
-<h3 id="Commit">Commit</h3><p><code>commit</code>对象指向一个<code>tree</code>对象，然后额外保存了作者，提交者，提交信息和上次提交这些信息。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151804.png" alt="commit"></p>
-<p>第一次提交</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151816.png" alt="commit1"></p>
-<p>第二次提交</p>
-<p>在第二次提交中，就有了<code>parent</code>这一信息，指向上一次的提交对象。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151826.png" alt="commit2"></p>
-<h3 id="Tag">Tag</h3><p><code>Tag</code>对象指向一个特定的<code>commit</code>对象，保存<code>object</code>，<code>type</code>，<code>tag</code>，<code>tagger</code>和<code>message</code>信息。<code>type</code>一般就是<code>commit</code>，<code>object</code>就是这个<code>commit</code>的<code>SHA-1</code>值。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314153119.png" alt="tag"></p>
-<h2 id="Git_Data_Model">Git Data Model</h2><h3 id="The_Model">The Model</h3><p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154003.png" alt="model"></p>
-<p>带颜色是不可变对象。</p>
-<h3 id="Example">Example</h3><p>目录文件如下</p>
-<pre><code>|-- init.rb
- -- <span class="class"><span class="keyword">lib</span></span>
-    | -- base
-        | -- base_include.rb
-     -- my_plugin.rb
-</code></pre><p>第一次提交后，<code>Git Model</code>如下</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154004.png" alt="model"></p>
-<p><code>branch</code>指向最近的一次提交，<code>HEAD</code>指向当前的<code>branch</code>。</p>
-<p>现在修改<code>lib/base/base_include.rb</code>文件，然后提交，并创建一个<code>tag</code>。</p>
-<p>修改了文件，其父目录以及父目录的父目录直到最顶层目录的内容都被修改了，就会产生新的对象。对于没有改变的文件和目录则不会产生新对象。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154848.png" alt="model"></p>
-<p>现在修改<code>init.rb</code>文件，然后提交。</p>
-<p>由于只修改了<code>init.rb</code>文件，其他的子目录并没有变化，所以就不会产生其他的新对象。如下图所示。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314155544.png" alt="model"></p>
-<p>这样的一种模型，我们可以通过当前的<code>HEAD</code>得到所有的历史文件。</p>
-<h3 id="Traversal">Traversal</h3><p>当进行<code>checkout</code>的时候，通过查看<code>.git/refs</code>目录下的<code>branch</code>，<code>tag</code>，<code>remote</code>，将当前的<code>working directory</code>的内容切换到指定的<code>commit</code>的内容。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314160217.png" alt="traverse"></p>
-<h2 id="Branching_and_Merging">Branching and Merging</h2><p>在<code>Git</code>中，创建分支，切换分支是非常容易的，就是新建一个文件和写几个字符的事。</p>
-<p>在这个例子中，创建一个<code>experiment</code>分支，然后对<code>master</code>和<code>experiment</code>分支分别提交。现在就是下面这个样子。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161539.png" alt="branch"></p>
-<p>将<code>experiment</code>分支合并到<code>master</code>分支后就像下面这样。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161837.png" alt="branch"></p>
-<h3 id="Remotes">Remotes</h3><p>远程分支的名字类似与这样<code>origin/master</code>表示远程仓库<code>origin</code>的<code>master</code>分支。远程仓库的名字<code>origin</code>是可以自定义的，不一定就是<code>origin</code>。</p>
-<p>下面表示有三个分支，两个远程仓库分支<code>idea</code>和<code>master</code>，一个本地分支。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162032.png" alt="remote"></p>
-<p>对这三个分支进行合并，就成了下面这个样子。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162352.png" alt="remtoe"></p>
-<h3 id="Rebasing">Rebasing</h3><p>在多人合作开发时，将别人的代码合并到自己本地时，就会产生下面所示的情况。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163011.png" alt="rebase"></p>
-<p><code>C2</code>，<code>C4</code>，<code>C5</code>这些并没有什么实质的内容，只是进行合并产生的提交。当有大量的这些提交后，我们的提交历史就会变得不清晰。这时，我们可以使用<code>rebase</code>。</p>
-<p>使用<code>rebase</code>的效果和<code>merge</code>的效果如下所示。</p>
-<p>1是<code>rebase</code>产生的提交历史。<br>2是<code>merge</code>产生的提交历史。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163640.png" alt="rebase"></p>
-<blockquote>
-<p><code>rebase</code>只在本地分支上使用，不要在公共的分支上进行<code>rebase</code>!</p>
-</blockquote>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>Git Internals 读书笔记。</p>]]>
-    
-    </summary>
-    
-      <category term="Git" scheme="http://ztmark.github.io/tags/Git/"/>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[《Java并发编程的艺术》读书笔记三]]></title>
     <link href="http://ztmark.github.io/2015/11/30/%E3%80%8AJava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%89/"/>
     <id>http://ztmark.github.io/2015/11/30/《Java并发编程的艺术》读书笔记三/</id>
@@ -1007,6 +973,86 @@ S V <span class="keyword">O</span> <span class="keyword">C</span>
     </summary>
     
       <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Git Internals 读书笔记]]></title>
+    <link href="http://ztmark.github.io/2015/11/30/Git%20Internals%20%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <id>http://ztmark.github.io/2015/11/30/Git Internals 读书笔记/</id>
+    <published>2015-11-29T16:00:00.000Z</published>
+    <updated>2015-11-29T07:25:01.000Z</updated>
+    <content type="html"><![CDATA[<p>Git Internals 读书笔记。</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=2117030&auto=0&height=66"></iframe>
+
+<p><a href="https://github.com/pluralsight/git-internals-pdf" target="_blank" rel="external">Git Internals</a></p>
+<h2 id="Git_Object_Types">Git Object Types</h2><p><code>Git</code>有四种对象类型，分别是<code>Blob</code>、<code>Tree</code>、<code>Commit</code>和<code>Tag</code>，都存储在对象数据库里，都是通过<code>Zlib</code>压缩过的，使用<code>SHA-1</code>值（内容的哈希值）来表示。</p>
+<p>使用书上的例子：</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150116.png" alt="working"></p>
+<h3 id="Blob">Blob</h3><p>在<code>Git</code>中，文件的<strong>内容</strong>是作为<code>Blob</code>进行存储的。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150134.png" alt="blob"></p>
+<p>对于具有相同内容的不同文件，只存储一份。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151611.png" alt="BLOb"></p>
+<h3 id="Tree">Tree</h3><p><code>Tree</code>就对应着目录。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151741.png" alt="tree"></p>
+<p><code>tree</code>存储该目录下的目录和文件的信息（<code>mode</code>,<code>type</code>,<code>name</code>,<code>sha</code>）。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151752.png" alt="tree"></p>
+<h3 id="Commit">Commit</h3><p><code>commit</code>对象指向一个<code>tree</code>对象，然后额外保存了作者，提交者，提交信息和上次提交这些信息。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151804.png" alt="commit"></p>
+<p>第一次提交</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151816.png" alt="commit1"></p>
+<p>第二次提交</p>
+<p>在第二次提交中，就有了<code>parent</code>这一信息，指向上一次的提交对象。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151826.png" alt="commit2"></p>
+<h3 id="Tag">Tag</h3><p><code>Tag</code>对象指向一个特定的<code>commit</code>对象，保存<code>object</code>，<code>type</code>，<code>tag</code>，<code>tagger</code>和<code>message</code>信息。<code>type</code>一般就是<code>commit</code>，<code>object</code>就是这个<code>commit</code>的<code>SHA-1</code>值。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314153119.png" alt="tag"></p>
+<h2 id="Git_Data_Model">Git Data Model</h2><h3 id="The_Model">The Model</h3><p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154003.png" alt="model"></p>
+<p>带颜色是不可变对象。</p>
+<h3 id="Example">Example</h3><p>目录文件如下</p>
+<pre><code>|-- init.rb
+ -- <span class="class"><span class="keyword">lib</span></span>
+    | -- base
+        | -- base_include.rb
+     -- my_plugin.rb
+</code></pre><p>第一次提交后，<code>Git Model</code>如下</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154004.png" alt="model"></p>
+<p><code>branch</code>指向最近的一次提交，<code>HEAD</code>指向当前的<code>branch</code>。</p>
+<p>现在修改<code>lib/base/base_include.rb</code>文件，然后提交，并创建一个<code>tag</code>。</p>
+<p>修改了文件，其父目录以及父目录的父目录直到最顶层目录的内容都被修改了，就会产生新的对象。对于没有改变的文件和目录则不会产生新对象。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154848.png" alt="model"></p>
+<p>现在修改<code>init.rb</code>文件，然后提交。</p>
+<p>由于只修改了<code>init.rb</code>文件，其他的子目录并没有变化，所以就不会产生其他的新对象。如下图所示。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314155544.png" alt="model"></p>
+<p>这样的一种模型，我们可以通过当前的<code>HEAD</code>得到所有的历史文件。</p>
+<h3 id="Traversal">Traversal</h3><p>当进行<code>checkout</code>的时候，通过查看<code>.git/refs</code>目录下的<code>branch</code>，<code>tag</code>，<code>remote</code>，将当前的<code>working directory</code>的内容切换到指定的<code>commit</code>的内容。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314160217.png" alt="traverse"></p>
+<h2 id="Branching_and_Merging">Branching and Merging</h2><p>在<code>Git</code>中，创建分支，切换分支是非常容易的，就是新建一个文件和写几个字符的事。</p>
+<p>在这个例子中，创建一个<code>experiment</code>分支，然后对<code>master</code>和<code>experiment</code>分支分别提交。现在就是下面这个样子。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161539.png" alt="branch"></p>
+<p>将<code>experiment</code>分支合并到<code>master</code>分支后就像下面这样。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161837.png" alt="branch"></p>
+<h3 id="Remotes">Remotes</h3><p>远程分支的名字类似与这样<code>origin/master</code>表示远程仓库<code>origin</code>的<code>master</code>分支。远程仓库的名字<code>origin</code>是可以自定义的，不一定就是<code>origin</code>。</p>
+<p>下面表示有三个分支，两个远程仓库分支<code>idea</code>和<code>master</code>，一个本地分支。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162032.png" alt="remote"></p>
+<p>对这三个分支进行合并，就成了下面这个样子。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162352.png" alt="remtoe"></p>
+<h3 id="Rebasing">Rebasing</h3><p>在多人合作开发时，将别人的代码合并到自己本地时，就会产生下面所示的情况。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163011.png" alt="rebase"></p>
+<p><code>C2</code>，<code>C4</code>，<code>C5</code>这些并没有什么实质的内容，只是进行合并产生的提交。当有大量的这些提交后，我们的提交历史就会变得不清晰。这时，我们可以使用<code>rebase</code>。</p>
+<p>使用<code>rebase</code>的效果和<code>merge</code>的效果如下所示。</p>
+<p>1是<code>rebase</code>产生的提交历史。<br>2是<code>merge</code>产生的提交历史。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163640.png" alt="rebase"></p>
+<blockquote>
+<p><code>rebase</code>只在本地分支上使用，不要在公共的分支上进行<code>rebase</code>!</p>
+</blockquote>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Git Internals 读书笔记。</p>]]>
+    
+    </summary>
+    
+      <category term="Git" scheme="http://ztmark.github.io/tags/Git/"/>
     
   </entry>
   
