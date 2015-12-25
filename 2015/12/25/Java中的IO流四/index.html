@@ -1,0 +1,701 @@
+<!doctype html>
+<html class="theme-next   use-motion ">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="oWCfhuIJZg-7INMWjoR4dTDjJb2lmk7rJTt5L4UBa_E" />
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="Mark's Notes" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content="Java的IO相关内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java中的IO流四">
+<meta property="og:url" content="http://ztmark.github.io/2015/12/25/Java中的IO流四/index.html">
+<meta property="og:site_name" content="Mark's Notes">
+<meta property="og:description" content="Java的IO相关内容。">
+<meta property="og:updated_time" content="2015-12-25T07:25:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java中的IO流四">
+<meta name="twitter:description" content="Java的IO相关内容。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: '',
+    sidebar: 'post',
+    motion: true
+  };
+</script>
+
+  <title> Java中的IO流四 | Mark's Notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Mark's Notes</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">I think therefore I am</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Java中的IO流四
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-12-25T00:00:00+08:00" content="2015-12-25">
+              2015-12-25
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/12/25/Java中的IO流四/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/25/Java中的IO流四/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>Java的IO相关内容。</p>
+<a id="more"></a>
+<h2 id="NIO2">NIO2</h2><h3 id="文件系统访问">文件系统访问</h3><p>java.nio.file.Path类用来表示一个路径。该类有许多路径相关的方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">	Path path = Paths.get(<span class="string">"/Users/Mark/Project"</span>, <span class="string">"Base.java"</span>);</span><br><span class="line">   System.out.println(path); <span class="comment">// /Users/Mark/Project/Base.java</span></span><br><span class="line">   System.out.println(path.toAbsolutePath()); <span class="comment">// /Users/Mark/Project/Base.java</span></span><br><span class="line">   System.out.println(path.toRealPath()); <span class="comment">// /Users/Mark/Project/Base.java</span></span><br><span class="line">   System.out.println(path.getFileName()); <span class="comment">// Base.java</span></span><br><span class="line">   System.out.println(path.getNameCount()); <span class="comment">// 4</span></span><br><span class="line">   System.out.println(path.getRoot()); <span class="comment">// /</span></span><br><span class="line">   System.out.println(path.getParent()); <span class="comment">// /Users/Mark/Project</span></span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; path.getNameCount(); i++) &#123;</span><br><span class="line">       System.out.println(path.getName(i)); <span class="comment">// Users, Mark, Project, Base.java</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">//==================================</span></span><br><span class="line">	path = Paths.get(<span class="string">"src/main/java/"</span>, <span class="string">"com/mark/nio"</span>);</span><br><span class="line">	System.out.println(path); <span class="comment">// src/main/java/com/mark/nio</span></span><br><span class="line">	System.out.println(path.subpath(<span class="number">0</span>, <span class="number">3</span>)); <span class="comment">// src/main/java</span></span><br><span class="line">	</span><br><span class="line">	System.out.println(path.resolve(<span class="string">"test"</span>)); <span class="comment">// src/main/java/com/mark/nio/test</span></span><br><span class="line">	System.out.println(path.resolveSibling(<span class="string">"io"</span>)); <span class="comment">// src/main/java/com/mark/io</span></span><br><span class="line">	</span><br><span class="line">	Path other = Paths.get(<span class="string">"src/main/resources"</span>); </span><br><span class="line">	System.out.println(other.toAbsolutePath());  <span class="comment">// /Users/Mark/Project/idea/javademo/src/main/resources</span></span><br><span class="line">	path = path.relativize(other); </span><br><span class="line">	System.out.println(path); <span class="comment">// ../../../../resources</span></span><br><span class="line">	System.out.println(path.toAbsolutePath()); <span class="comment">// /Users/Mark/Project/idea/javademo/../../../../resources</span></span><br><span class="line">	System.out.println(path.toAbsolutePath().normalize()); <span class="comment">// /Users/resources</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>列出目录的子目录和文件可以使用File.list和File.listFiles方法，NIO2中可以使用java.nio.file.DirectoryStream来进行遍历目录。DirectoryStream接口实现了Closeable和Iterable接口。通过Files.newDirectoryStream方法获得DirectoryStream实例，可以通过DirectoryStream.Filter来过滤。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Path path = Paths.get(<span class="string">""</span>);</span><br><span class="line">DirectoryStream&lt;Path&gt; ds = Files.newDirectoryStream(path, <span class="string">"*.java"</span>); <span class="comment">// 只会列出当前目录下的文件和子目录，不会递归列出子目录下的文件和目录</span></span><br><span class="line"><span class="keyword">for</span> (Path d : ds) &#123;</span><br><span class="line">  System.out.println(d);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果想递归遍历整个目录，可以使用Files.walkFileTree方法和java.nio.file.FileVisitor接口。FileVisitor接口有四个方法</p>
+<ul>
+<li>visitFile  正在访问某个文件</li>
+<li>visitFileFailed 访问某个文件出现错误</li>
+<li>preVisitDirectory 在访问一个目录中的子目录和文件之前调用</li>
+<li>postVisitDirectory 在访问一个目录中的子目录和文件之后调用</li>
+</ul>
+<p>这四个方法都返回FileVisitResult，这是一个枚举类型，有四个值CONTINUE、TERMINATE、SKIP_SUBTREE 和 SKIP_SIBLINGS。<br>该接口有一个默认实现SimpleFileVisitor。我们可以继承这个类来实现我们自己的逻辑。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 列出当前目录下的所有Java文件</span></span><br><span class="line">Path start = Paths.get(<span class="string">""</span>);</span><br><span class="line">   Files.walkFileTree(start, <span class="keyword">new</span> SimpleFileVisitor&lt;Path&gt;() &#123;</span><br><span class="line">       <span class="annotation">@Override</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> FileVisitResult <span class="title">visitFile</span><span class="params">(Path file, BasicFileAttributes attrs)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">           <span class="keyword">if</span> (file.getFileName().toString().endsWith(<span class="string">".java"</span>)) &#123;</span><br><span class="line">               System.out.println(file.toAbsolutePath());</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">return</span> FileVisitResult.CONTINUE;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="annotation">@Override</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> FileVisitResult <span class="title">preVisitDirectory</span><span class="params">(Path dir, BasicFileAttributes attrs)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">       		<span class="comment">// 跳过 .git 和 .idea 目录</span></span><br><span class="line">           <span class="keyword">if</span> (<span class="string">".git"</span>.equals(dir.getFileName().toString()) || <span class="string">".idea"</span>.equals(dir.getFileName().toString())) &#123;</span><br><span class="line">               <span class="keyword">return</span> FileVisitResult.SKIP_SUBTREE;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">return</span> FileVisitResult.CONTINUE;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="annotation">@Override</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> FileVisitResult <span class="title">visitFileFailed</span><span class="params">(Path file, IOException exc)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">super</span>.visitFileFailed(file, exc);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="annotation">@Override</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> FileVisitResult <span class="title">postVisitDirectory</span><span class="params">(Path dir, IOException exc)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">super</span>.postVisitDirectory(dir, exc);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;);</span><br></pre></td></tr></table></figure>
+<p>文件的属性信息由java.nio.file.attribute.BasicFileAttributes、PosixFileAttributes、DosFileAttributes这几个接口定义。可以通过java.nio.file.attribute.BasicFileAttributeView、DosFileAttributeView、PosixFileAttributeView的readAttributes方法来得到。Files类也提供了一系列静态方法来获得文件的属性信息。不同类型的FileAttributes会有不同的方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Path path = Paths.get(<span class="string">"pom.xml"</span>);</span><br><span class="line">PosixFileAttributeView fav = Files.getFileAttributeView(path, PosixFileAttributeView.class);</span><br><span class="line">PosixFileAttributes attributes = fav.readAttributes();</span><br><span class="line">System.out.println(attributes.group());</span><br><span class="line">System.out.println(attributes.owner());</span><br><span class="line">System.out.println(attributes.permissions());</span><br><span class="line">System.out.println(attributes.creationTime());</span><br><span class="line">System.out.println(attributes.isRegularFile());</span><br><span class="line">System.out.println(attributes.lastAccessTime());</span><br><span class="line">System.out.println(attributes.lastModifiedTime());</span><br><span class="line">System.out.println(attributes.size());</span><br></pre></td></tr></table></figure>
+<p>对一个目录进行监视可以通过java.nio.file.WatchService接口来实现，通过将要监视的目录和感兴趣的事件注册到WatchService，事件类StandardWatchEventKinds中定义了一些事件，在事件发生的时候就可以通过WatchKey来获得事件列表。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Path this_dir = Paths.get(<span class="string">""</span>).toAbsolutePath();</span><br><span class="line">   System.out.println(<span class="string">"Now watching the current directory "</span> + this_dir.toString());</span><br><span class="line">   <span class="keyword">try</span> &#123;</span><br><span class="line">       WatchService watcher = this_dir.getFileSystem().newWatchService();</span><br><span class="line">       this_dir.register(watcher, StandardWatchEventKinds.ENTRY_CREATE);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">           WatchKey watchKey = watcher.take();</span><br><span class="line">           List&lt;WatchEvent&lt;?&gt;&gt; events = watchKey.pollEvents();</span><br><span class="line">           <span class="keyword">for</span> (WatchEvent event : events) &#123;</span><br><span class="line">               Path context = (Path) event.context(); <span class="comment">// 返回的是相对于监视目录的相对路径</span></span><br><span class="line">               context = this_dir.resolve(context); <span class="comment">// 转成绝对路径</span></span><br><span class="line">               System.out.println(<span class="string">"Someone just created the file "</span> + context.toString());</span><br><span class="line">               System.out.println(Files.size(context));</span><br><span class="line">           &#125;</span><br><span class="line">           watchKey.reset(); <span class="comment">// 不重置的话,之后相同的事件就无法被监视到</span></span><br><span class="line">       &#125;</span><br><span class="line">   &#125; <span class="keyword">catch</span> (IOException | InterruptedException e) &#123;</span><br><span class="line">       System.out.println(<span class="string">"Error: "</span> + e.toString());</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="zip/jar文件系统">zip/jar文件系统</h3><p>在Java中可以通过FileSystem和FileSystemProvider这两个抽象类来实现自定义的文件系统。</p>
+<p>Java类库中包含两种文件系统，基于操作系统的文件系统和zip/jar文件系统。</p>
+<p>例子：将一个文件添加到zip压缩包中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">   File testZip = <span class="keyword">new</span> File(<span class="string">"归档.zip"</span>);</span><br><span class="line">   File fileToAdd = <span class="keyword">new</span> File(<span class="string">"demo.txt"</span>);</span><br><span class="line">   <span class="keyword">if</span> (testZip.exists() &amp;&amp; fileToAdd.exists()) &#123;</span><br><span class="line">       addFile(testZip, fileToAdd);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span><br><span class="line">原先的方法：</span><br><span class="line">先创建一个tmp文件,然后将原压缩文件中的数据写入tmp文件,再把要加入的文件数据写入tmp文件</span><br><span class="line">最后删了原压缩文件,并把tmp文件改名为原压缩文件</span><br><span class="line">*/</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">addFile</span><span class="params">(File zip, File file)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">   File tmp = File.createTempFile(zip.getName(), <span class="keyword">null</span>);</span><br><span class="line">   <span class="keyword">int</span> len = -<span class="number">1</span>;</span><br><span class="line">   <span class="keyword">try</span> (ZipInputStream input = <span class="keyword">new</span> ZipInputStream(<span class="keyword">new</span> FileInputStream(zip));</span><br><span class="line">       ZipOutputStream output = <span class="keyword">new</span> ZipOutputStream(<span class="keyword">new</span> FileOutputStream(tmp))) &#123;</span><br><span class="line">       ZipEntry entry = input.getNextEntry();</span><br><span class="line">       <span class="keyword">byte</span>[] buf = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">10240</span>];</span><br><span class="line">       <span class="keyword">while</span> (entry != <span class="keyword">null</span>) &#123;</span><br><span class="line">           String name = entry.getName();</span><br><span class="line">           <span class="keyword">if</span> (!file.getName().equals(name)) &#123;</span><br><span class="line">               output.putNextEntry(<span class="keyword">new</span> ZipEntry(name));</span><br><span class="line">               <span class="keyword">while</span> ((len = input.read(buf)) != -<span class="number">1</span>) &#123;</span><br><span class="line">                   output.write(buf, <span class="number">0</span>, len);</span><br><span class="line">               &#125;</span><br><span class="line">               output.closeEntry();</span><br><span class="line">           &#125;</span><br><span class="line">           entry = input.getNextEntry();</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">try</span> (FileInputStream newFileInput = <span class="keyword">new</span> FileInputStream(file)) &#123;</span><br><span class="line">           output.putNextEntry(<span class="keyword">new</span> ZipEntry(file.getName()));</span><br><span class="line">           System.out.println(newFileInput.available());</span><br><span class="line">           <span class="keyword">while</span> ((len = newFileInput.read(buf)) != -<span class="number">1</span>) &#123;</span><br><span class="line">               output.write(buf, <span class="number">0</span>, len);</span><br><span class="line">           &#125;</span><br><span class="line">           output.closeEntry();</span><br><span class="line">       &#125;</span><br><span class="line">       zip.delete();</span><br><span class="line">       tmp.renameTo(zip);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用文件系统的方法</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">addFileToZip</span><span class="params">(File zip, File file)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">   Map&lt;String, String&gt; env = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">   env.put(<span class="string">"create"</span>, <span class="string">"true"</span>);</span><br><span class="line">   <span class="comment">// 这里的URI.create的参数是固定的 jar:+文件的URI</span></span><br><span class="line">   <span class="comment">// jar是jar文件系统的Scheme</span></span><br><span class="line">   <span class="comment">// 在操作压缩文件时,需要通过Paths.get(URI)方法来得到压缩文件</span></span><br><span class="line">   <span class="keyword">try</span> (FileSystem fs = FileSystems.newFileSystem(URI.create(<span class="string">"jar:"</span> + zip.toURI()), env)) &#123;</span><br><span class="line">       Path path = file.toPath();</span><br><span class="line">       Path pathInZip = fs.getPath(<span class="string">"/test/"</span> + file.getName());<span class="comment">// 指定压缩文件中的位置,这里是压缩文件中的test文件夹下</span></span><br><span class="line">       Files.copy(path, pathInZip, StandardCopyOption.REPLACE_EXISTING);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="异步I/O通道">异步I/O通道</h3><p>例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">server</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">   AsynchronousChannelGroup group = AsynchronousChannelGroup.withFixedThreadPool(<span class="number">10</span>, Executors.defaultThreadFactory());</span><br><span class="line">   AsynchronousServerSocketChannel channel = AsynchronousServerSocketChannel.open(group).bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">8680</span>));</span><br><span class="line">   channel.accept(<span class="keyword">null</span>, <span class="keyword">new</span> CompletionHandler&lt;AsynchronousSocketChannel, Void&gt;() &#123;</span><br><span class="line">       <span class="annotation">@Override</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">completed</span><span class="params">(AsynchronousSocketChannel result, Void attachment)</span> </span>&#123;</span><br><span class="line">       	   channel.accept(<span class="keyword">null</span>, <span class="keyword">this</span>);</span><br><span class="line">           <span class="keyword">try</span> &#123;</span><br><span class="line">               System.out.println(result.getRemoteAddress());</span><br><span class="line">               result.write(ByteBuffer.wrap(<span class="string">"hi there!"</span>.getBytes(StandardCharsets.UTF_8)));</span><br><span class="line">               result.close();</span><br><span class="line">           &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">               e.printStackTrace();</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="annotation">@Override</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">failed</span><span class="params">(Throwable exc, Void attachment)</span> </span>&#123;</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(exc);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">   &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">writeToFile</span><span class="params">()</span> <span class="keyword">throws</span> IOException, InterruptedException, ExecutionException </span>&#123;</span><br><span class="line">   AsynchronousFileChannel afc = AsynchronousFileChannel.open(Paths.get(<span class="string">"demo.txt"</span>), StandardOpenOption.CREATE, StandardOpenOption.WRITE);</span><br><span class="line">   Future&lt;Integer&gt; future = afc.write(ByteBuffer.wrap(<span class="string">"hello world"</span>.getBytes()), <span class="number">0</span>);</span><br><span class="line">   System.out.println(future.get());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>AsynchronousServerSocketChannel实现了NetworkChannel接口，该接口是是与网络套接字相关的通道，提供了绑定和配置相关的方法。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/22/Java中的IO流三/" rel="next" title="Java中的IO流三">
+                <i class="fa fa-chevron-left"></i> Java中的IO流三
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+        </div>
+
+        
+
+
+        
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/12/25/Java中的IO流四/"
+           data-title="Java中的IO流四" data-url="http://ztmark.github.io/2015/12/25/Java中的IO流四/">
+      </div>
+    
+  </div>
+
+
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Mark" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Mark</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">ztmark's blog | Java</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">标签</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ztmark" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> github
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NIO2"><span class="nav-number">1.</span> <span class="nav-text">NIO2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件系统访问"><span class="nav-number">1.1.</span> <span class="nav-text">文件系统访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zip/jar文件系统"><span class="nav-number">1.2.</span> <span class="nav-text">zip/jar文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步I/O通道"><span class="nav-number">1.3.</span> <span class="nav-text">异步I/O通道</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mark</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ztmark"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
+
+  
+  
+
+</body>
+</html>
