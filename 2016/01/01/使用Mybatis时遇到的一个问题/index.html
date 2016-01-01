@@ -39,6 +39,8 @@
 
 
 
+  
+
 
   <link rel="alternate" href="/atom.xml" title="Mark's Notes" type="application/atom+xml" />
 
@@ -52,16 +54,16 @@
 
 
 
-<meta name="description" content="Java反射相关内容。">
+<meta name="description" content="使用Mybatis时遇到的一个奇怪的问题。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java的反射">
-<meta property="og:url" content="http://ztmark.github.io/2015/12/11/Java的反射/index.html">
+<meta property="og:title" content="使用Mybatis时遇到的一个问题">
+<meta property="og:url" content="http://ztmark.github.io/2016/01/01/使用Mybatis时遇到的一个问题/index.html">
 <meta property="og:site_name" content="Mark's Notes">
-<meta property="og:description" content="Java反射相关内容。">
-<meta property="og:updated_time" content="2015-12-11T08:56:22.000Z">
+<meta property="og:description" content="使用Mybatis时遇到的一个奇怪的问题。">
+<meta property="og:updated_time" content="2016-01-01T13:26:10.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java的反射">
-<meta name="twitter:description" content="Java反射相关内容。">
+<meta name="twitter:title" content="使用Mybatis时遇到的一个问题">
+<meta name="twitter:description" content="使用Mybatis时遇到的一个奇怪的问题。">
 
 
 
@@ -73,7 +75,7 @@
   };
 </script>
 
-  <title> Java的反射 | Mark's Notes </title>
+  <title> 使用Mybatis时遇到的一个问题 | Mark's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -183,7 +185,7 @@
             
             
               
-                Java的反射
+                使用Mybatis时遇到的一个问题
               
             
           </h1>
@@ -192,8 +194,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-12-11T00:00:00+08:00" content="2015-12-11">
-              2015-12-11
+            <time itemprop="dateCreated" datetime="2016-01-01T00:00:00+08:00" content="2016-01-01">
+              2016-01-01
             </time>
           </span>
 
@@ -203,8 +205,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/12/11/Java的反射/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/11/Java的反射/" itemprop="commentsCount"></span>
+                <a href="/2016/01/01/使用Mybatis时遇到的一个问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/01/使用Mybatis时遇到的一个问题/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -223,31 +225,15 @@
       
 
       
-        <span itemprop="articleBody"><p>Java反射相关内容。</p>
+        <span itemprop="articleBody"><p>使用Mybatis时遇到的一个奇怪的问题。</p>
 <a id="more"></a>
-<h2 id="Class对象">Class对象</h2><p>Java中的反射最关键的一个类就是Class类，首先你要先得到这个类的对象，一般有两种方式，如果在编译时你知道那个类名，你可以直接<code>Class cls = MyObject.class;</code>来得到Class对象。如果编译时不知道类名，那需要使用<code>Class = Class.forname(&quot;com.mark.MyObject&quot;);</code>来得到Class对象，这里需要类的全限定名。</p>
-<p>当得到Class对象后，那基本就能通过Class对象得到关于这个类的一切数据：字段、方法、构造函数等等信息都可以通过这个Class对象的相对应方法来获取到。</p>
-<h3 id="内部类">内部类</h3><p>示例代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.mark.reflection;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericClass</span> </span>&#123;</span><br><span class="line">   <span class="class"><span class="keyword">class</span> <span class="title">InnerClass</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">"InnerClass method"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们知道内部类的类名是外部类+$+内部类名，所以，我门可以这样加载内部类：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class cls = Class.forName(<span class="string">"com.mark.reflection.GenericClass$InnerClass"</span>);</span><br></pre></td></tr></table></figure>
-<p>这样我们得到了内部类的Class对象，但是如果想试用Class对象来创建内部类实例，则会遇到问题。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GenericClass.InnerClass ic = (GenericClass.InnerClass) cls.getConstructor().newInstance(gc);</span><br></pre></td></tr></table></figure>
-<p>上面的代码运行将会报<code>NoSuchMethodException</code>的错误，也就是说没有找到无参构造函数。因为这个内部类并不是静态的，它需要一个外部类的实例引用。通过断点，可以发现在Class的<code>getConstructor</code>方法调用了<code>getConstructor0()）</code>方法，在<code>getConstructor0()）</code>方法中通过得到类的所有构造函数，然后比较参数来得到指定的构造函数，而通过debug发现，这个类只有一个带有GenericClass参数的构造函数。</p>
-<p>所以可以使用下面的方式来实例化一个内部类。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Class outerCls = cls.getEnclosingClass();</span><br><span class="line">GenericClass&lt;String&gt; gc = (GenericClass&lt;String&gt;) outerCls.&lt;String&gt;newInstance();</span><br><span class="line">GenericClass.InnerClass ic = (GenericClass.InnerClass) cls.getConstructor(GenericClass.class).newInstance(gc);</span><br></pre></td></tr></table></figure>
-<p><code>getEnclosingClass</code>方法可以获得外部类的Class对象。</p>
-<p>上面的方式实例化内部类略显麻烦，我们可以直接加载外部类的Class，然后实例化外部类对象再实例化内部类。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Class cls = Class.forName(<span class="string">"com.mark.reflection.GenericClass"</span>);</span><br><span class="line">GenericClass&lt;String&gt; gc = (GenericClass&lt;String&gt;) cls.&lt;String&gt;newInstance();</span><br><span class="line">GenericClass.InnerClass ic = gcs.new InnerClass();</span><br></pre></td></tr></table></figure>
-<h3 id="数组类型">数组类型</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Class cls = <span class="keyword">int</span>[].class;</span><br><span class="line">Class cls = Class.forName(<span class="string">"[I"</span>);</span><br><span class="line">System.out.println(cls.getComponentType());</span><br></pre></td></tr></table></figure>
-<p>可以通过上面两种方式来得到int数组的Class对象，其他的基本类型数组也是类似的。如果不知道forName的参数是什么，可以<code>System.out.println(boolean[].class);</code>看看就知道了。通过<code>cls.getComponentType()</code>可以得到数组元素的类型。</p>
-<p>数组实例无法直接<code>cls.newInstance()</code>得到，需要借助<code>java.lang.reflect.Array</code>类。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] ints = (<span class="keyword">int</span>[]) Array.newInstance(<span class="keyword">int</span>.class, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
-<p>创建一个长度为2的int数组。这也适用其他类型数组。</p>
-<h2 id="泛型信息">泛型信息</h2><p>示例代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.mark.reflection;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericClass</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> T val;</span><br><span class="line">    <span class="keyword">public</span> List&lt;T&gt; list;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">method1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">method2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>对于泛型类，可以通过Class对象得到泛型相关的信息。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Class cls = Class.forName(<span class="string">"com.mark.reflection.GenericClass"</span>);</span><br><span class="line">Method method = cls.getMethod(<span class="string">"method1"</span>, <span class="keyword">null</span>);</span><br><span class="line">System.out.println(method.getGenericReturnType()); <span class="comment">// T</span></span><br><span class="line">System.out.println(method.getReturnType()); <span class="comment">// class java.lang.Object</span></span><br><span class="line">method = cls.getMethod(<span class="string">"method2"</span>, <span class="keyword">null</span>);</span><br><span class="line">System.out.println(method.getGenericReturnType()); <span class="comment">// java.util.List&lt;T&gt;</span></span><br><span class="line">System.out.println(method.getReturnType()); <span class="comment">// interface java.util.List</span></span><br><span class="line">Field field = cls.getField(<span class="string">"val"</span>);</span><br><span class="line">System.out.println(field.getGenericType()); <span class="comment">// T</span></span><br><span class="line">System.out.println(field.getType()); <span class="comment">// class java.lang.Object</span></span><br><span class="line"></span><br><span class="line">method = cls.getMethod(<span class="string">"method4"</span>, List.class);</span><br><span class="line">Parameter parameter = method.getParameters()[<span class="number">0</span>];</span><br><span class="line">Type type = parameter.getType();</span><br><span class="line">System.out.println(type); <span class="comment">// interface java.util.List</span></span><br><span class="line">type = parameter.getParameterizedType();</span><br><span class="line"><span class="keyword">if</span> (type <span class="keyword">instanceof</span> ParameterizedType) &#123;</span><br><span class="line">  ParameterizedType pt = (ParameterizedType) type;</span><br><span class="line">  System.out.println(pt); <span class="comment">// java.util.List&lt;java.lang.String&gt;</span></span><br><span class="line">  System.out.println(Arrays.toString(pt.getActualTypeArguments())); <span class="comment">//[class java.lang.String]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在使用Mybatis的时候出现了如下问题：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org<span class="class">.apache</span><span class="class">.ibatis</span><span class="class">.binding</span><span class="class">.BindingException</span>: Invalid bound statement (not found)</span><br></pre></td></tr></table></figure>
+<p>出现这个一般都是Mapper的XML文件和Mapper的接口文件没有对应上。</p>
+<p>但是我仔细看了很久都没发现哪里出错了，网上也看了各种解决办法，也都没什么收获，我的用法都是正确的。</p>
+<p>最后我到命令行下看了一下Mapper的XML文件的所在路径后发现了问题所在。</p>
+<p>这些XML文件的路径是在<code>resources/com.mark.dao</code>文件夹下而不是<code>resources/com/mark/dao</code>文件夹下。</p>
+<p>原来我在用IDE在resources下创建文件夹的时候，输入文件夹名的时候我习惯性的和创建包名一样直接写了<code>com.mark.dao</code>，所以创建出来的文件夹是<code>com.mark.dao</code>而不是<code>com/mark/dao</code>。由于我在IDE中的Project View设置了compact empty midlle package项，导致这两者在IDE很难看出区别来。</p>
 </span>
       
     </div>
@@ -265,17 +251,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/12/09/《文法俱乐部》读书笔记之第一章基本句型/" rel="next" title="《文法俱乐部》读书笔记之第一章基本句型">
-                <i class="fa fa-chevron-left"></i> 《文法俱乐部》读书笔记之第一章基本句型
+              <a href="/2015/12/25/Java中的IO流四/" rel="next" title="Java中的IO流四">
+                <i class="fa fa-chevron-left"></i> Java中的IO流四
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/12/14/《文法俱乐部》读书笔记之第二章名词片语/" rel="prev" title="《文法俱乐部》读书笔记第二章名词片语">
-                《文法俱乐部》读书笔记第二章名词片语 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -302,8 +284,8 @@
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/12/11/Java的反射/"
-           data-title="Java的反射" data-url="http://ztmark.github.io/2015/12/11/Java的反射/">
+      <div class="ds-thread" data-thread-key="2016/01/01/使用Mybatis时遇到的一个问题/"
+           data-title="使用Mybatis时遇到的一个问题" data-url="http://ztmark.github.io/2016/01/01/使用Mybatis时遇到的一个问题/">
       </div>
     
   </div>
@@ -410,7 +392,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Class对象"><span class="nav-number">1.</span> <span class="nav-text">Class对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内部类"><span class="nav-number">1.1.</span> <span class="nav-text">内部类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组类型"><span class="nav-number">1.2.</span> <span class="nav-text">数组类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型信息"><span class="nav-number">2.</span> <span class="nav-text">泛型信息</span></a></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
