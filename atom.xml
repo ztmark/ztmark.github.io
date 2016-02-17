@@ -4,7 +4,7 @@
   <subtitle><![CDATA[I think therefore I am]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ztmark.github.io/"/>
-  <updated>2016-02-15T13:18:40.000Z</updated>
+  <updated>2016-02-17T15:29:26.000Z</updated>
   <id>http://ztmark.github.io/</id>
   
   <author>
@@ -13,6 +13,45 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[LeetCode Longest Increasing Subsequence 题解]]></title>
+    <link href="http://ztmark.github.io/2016/02/17/LeetCode%20Longest%20Increasing%20Subsequence%20%E9%A2%98%E8%A7%A3/"/>
+    <id>http://ztmark.github.io/2016/02/17/LeetCode Longest Increasing Subsequence 题解/</id>
+    <published>2016-02-16T16:00:00.000Z</published>
+    <updated>2016-02-17T15:29:26.000Z</updated>
+    <content type="html"><![CDATA[<p>LeetCode Longest Increasing Subsequence 题解。</p>
+<a id="more"></a>
+<p><a href="https://leetcode.com/problems/longest-increasing-subsequence/" target="_blank" rel="external">原题</a></p>
+<p>大意就是在一个未排序的数组中找出最长递增子序列的长度。</p>
+<h2 id="Constraints">Constraints</h2><ol>
+<li>未排序的int数组</li>
+<li>数组长度未说明，可能为0</li>
+<li>递增子序列：子序列就是从原数组中去除掉任意个元素（任意位置）所剩下的元素组成的序列（也就是说子序列中元素原先不必是相邻的），递增表示子序列后面的数比前面的大</li>
+<li>返回最长子序列的长度，如果数组为0就返回0</li>
+</ol>
+<h2 id="Ideas">Ideas</h2><h3 id="第一个想法">第一个想法</h3><p>先创建一个数组dp，dp[i]表示以数组中第i个元素结尾的最长递增子序列的长度。</p>
+<p>然后依次遍历数组中的每个元素，对于每一个遍历到的元素A，检查前面的所有子序列，看能不能将A添加到子序列末尾，如果能，这样就形成了一个更长的子序列。在所有能以A为结尾的子序列中找到最长的那个，然后更新dp数组对应的长度。</p>
+<p>最后，dp数组中最大值就是所要的结果。</p>
+<p>对于这个算法，每次遍历到一个数都要检查前面遍历过的数，时间复杂度是$O(n^2)$，因为要使用到dp数组，空间复杂度也为$O(n)$。</p>
+<h3 id="第二个想法">第二个想法</h3><p>先创建一个数组dp，dp[i]表示长度为i的递增子序列的最后一个数的最小值。</p>
+<p>然后依次遍历数组中的每个元素，在遍历到第i个元素时，查看dp数组中下标小于i的元素，如果有数比第i个元素大，就替换这个元素来保证dp[i]表示长度为i的递增子序列的最后一个数的最小值，如果有相等的就什么也不错，如果都比第i个元素小，那么将第i个元素值赋给dp[i]。</p>
+<p>最后，dp数组中最后一个有值的元素的下标就是所要的结果。</p>
+<p>对于这个算法，每次遍历到一个数都要检查前面遍历过的数，时间复杂度是$O(n^2)$，因为要使用到dp数组，空间复杂度也为$O(n)$。</p>
+<h3 id="第三个想法">第三个想法</h3><p>可以发现在第二个算法中的dp数组应该是一个递增数组。因为每次遍历到第i个数，都只在该数比dp[0..i-1]的数大才将这个数设置给dp[i],所以该数组是递增的。</p>
+<p>那么对于这个递增的数组我们可以使用二分查找来提升性能。</p>
+<p>这时时间复杂度是$O(nlog(n))$，因为要使用到dp数组，空间复杂度也为$O(n)$。</p>
+<h2 id="Code">Code</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LongestIncreasingSubsequence300</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 算法一</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLIS</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (nums == <span class="keyword">null</span> || nums.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> dp[] = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; dp.length; i++) &#123;</span><br><span class="line">            dp[i] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> res = dp[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> max = dp[i];</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (nums[j] &lt; nums[i]) &#123;</span><br><span class="line">                    <span class="keyword">int</span> tmp = dp[j] + <span class="number">1</span>;</span><br><span class="line">                    max = max &lt; tmp ? tmp : max;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            dp[i] = max;</span><br><span class="line">            <span class="keyword">if</span> (dp[i] &gt; res) &#123;</span><br><span class="line">                res = dp[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span><br><span class="line">    算法二</span><br><span class="line">    </span><br><span class="line">    dp[i]表示长度为i的递增子序列的最后一个数的可能的最小值  越小</span><br><span class="line">    那么就有更大的可能后面的的数比这个大 从而使整个递增子序列 更长</span><br><span class="line"></span><br><span class="line">    dp 数组是递增的  可以用反证法证明</span><br><span class="line">    */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLIS2</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (nums == <span class="keyword">null</span> || nums.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> dp[] = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length + <span class="number">1</span>]; <span class="comment">// dp[i]表示长度为i的递增子序列的最后一个数的可能的最小值</span></span><br><span class="line">        dp[<span class="number">0</span>] = Integer.MIN_VALUE;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (; j &lt; res; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (dp[j] == nums[i]) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (dp[j] &gt; nums[i]) &#123; <span class="comment">// 原来的长度为i的递增子序列的最后一个数的可能的最小值 大于 当前遍历到的数</span></span><br><span class="line">                    dp[j] = nums[i];</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (j == res) &#123; <span class="comment">// 当前遍历的数比dp之前的数都大，那么就出现了长度更长的递增子序列</span></span><br><span class="line">                dp[res++] = nums[i]; </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span><br><span class="line">    算法三</span><br><span class="line">    </span><br><span class="line">    对2的改进</span><br><span class="line">    因为dp是递增的，所以可以将线性遍历改为二分查找</span><br><span class="line">    */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLIS3</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (nums == <span class="keyword">null</span> || nums.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> dp[] = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length + <span class="number">1</span>]; <span class="comment">// dp[i]表示长度为i的递增子序列的最后一个数的可能的最小值</span></span><br><span class="line">        dp[<span class="number">0</span>] = Integer.MIN_VALUE;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            <span class="comment">// Arrays.binarySearch 在 数组的 [fromIndex, toIndex) 不包含toIndex 查找指定的数</span></span><br><span class="line">            <span class="comment">// 找不到 返回  -insertIndex-1</span></span><br><span class="line">            <span class="keyword">int</span> p = Arrays.binarySearch(dp, <span class="number">0</span>, res + <span class="number">1</span>, nums[i]);</span><br><span class="line">            <span class="keyword">if</span> (p &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                p = - (p + <span class="number">1</span>);</span><br><span class="line">                dp[p] = nums[i];</span><br><span class="line">                res = p &gt; res ? p : res;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Test">Test</h2><p>LeetCode测试通过。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>LeetCode Longest Increasing Subsequence 题解。</p>]]>
+    
+    </summary>
+    
+      <category term="Algorithm" scheme="http://ztmark.github.io/tags/Algorithm/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[githug 通关攻略]]></title>
@@ -1579,48 +1618,6 @@ S V <span class="keyword">O</span> <span class="keyword">C</span>
     </summary>
     
       <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Mac 下配置Scheme环境]]></title>
-    <link href="http://ztmark.github.io/2015/11/26/Mac%20%E4%B8%8B%E5%AE%89%E8%A3%85Scheme%E7%8E%AF%E5%A2%83/"/>
-    <id>http://ztmark.github.io/2015/11/26/Mac 下安装Scheme环境/</id>
-    <published>2015-11-25T16:00:00.000Z</published>
-    <updated>2015-11-27T06:48:54.000Z</updated>
-    <content type="html"><![CDATA[<p>记录Scheme的安装和使用。</p>
-<a id="more"></a>
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=28815250&auto=0&height=66"></iframe>
-
-<h2 id="安装">安装</h2><p>到<a href="http://www.gnu.org/software/mit-scheme/" target="_blank" rel="external">官网</a>下载对应的版本安装。</p>
-<h2 id="配置">配置</h2><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /<span class="constant">Applications</span>/<span class="constant">MIT</span>:<span class="constant">GNU</span>\ <span class="constant">Scheme</span>.app/<span class="constant">Contents</span>/<span class="constant">Resources</span> /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">mit</span>-<span class="title">scheme</span>-<span class="title">x86</span>-64</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">mit</span>-<span class="title">scheme</span>-<span class="title">x86</span>-64/<span class="title">mit</span>-<span class="title">scheme</span> /<span class="title">usr</span>/<span class="title">bin</span>/<span class="title">scheme</span></span></span><br></pre></td></tr></table></figure>
-<p>这一步会出现<code>not permitted</code>错误，办法是不要链接到<code>/usr/bin</code>下，而是链接到<code>/usr/local/bin</code>下，命令如下：</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">mit</span>-<span class="title">scheme</span>-<span class="title">x86</span>-64/<span class="title">mit</span>-<span class="title">scheme</span> /<span class="title">usr</span>//<span class="title">local</span>/<span class="title">bin</span>/<span class="title">scheme</span></span></span><br></pre></td></tr></table></figure>
-<p>这样，在命令行中敲入<code>scheme</code>就会出现scheme的交互环境了。</p>
-<h2 id="运行">运行</h2><p>在命令中输入<code>scheme</code>打开交互环境。</p>
-<p>在Scheme的交互环境中可以通过</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">pwd</span>)</span></span><br></pre></td></tr></table></figure>
-<p>查看当前路径。</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">cd</span> <span class="string">"~/demo"</span>)</span></span><br></pre></td></tr></table></figure>
-<p>切换目录。</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword"><span class="built_in">load</span></span> <span class="string">"test.scm"</span>)</span></span><br></pre></td></tr></table></figure>
-<p>加载Scheme源文件，加载后会执行这个文件中的代码。</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">disk-save</span> <span class="string">"demo-env"</span>)</span></span><br></pre></td></tr></table></figure>
-<p>保存当前交互环境，在当前目录下会有一个名为demo-env的文件。</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">disk-restore</span> <span class="string">"demo-env"</span>)</span></span><br></pre></td></tr></table></figure>
-<p>加载之前保存的交互环境。</p>
-<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="list">(<span class="keyword">quit</span>)</span></span><br></pre></td></tr></table></figure>
-<p>退出交互环境。</p>
-<h2 id="配置Sublime">配置Sublime</h2><p>安装<code>Scheme</code>和<code>SublimeREPL</code>两个插件，搜<code>Scheme</code>出来的都是主题相关的并不好找。</p>
-<p>安装好<code>SublimeREPL</code>后打开会提示无法加载<code>Scheme.tmLanguage</code>,可以到<a href="https://github.com/masondesu/sublime-scheme-syntax" target="_blank" rel="external">sublime-scheme-syntax</a>仓库中下载这些配置文件，然后放到Packages目录下即可。</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>记录Scheme的安装和使用。</p>]]>
-    
-    </summary>
-    
-      <category term="Scheme" scheme="http://ztmark.github.io/tags/Scheme/"/>
     
   </entry>
   
