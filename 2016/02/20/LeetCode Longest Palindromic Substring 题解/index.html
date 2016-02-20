@@ -39,6 +39,8 @@
 
 
 
+  
+
 
   <link rel="alternate" href="/atom.xml" title="Mark's Notes" type="application/atom+xml" />
 
@@ -52,16 +54,16 @@
 
 
 
-<meta name="description" content="一道有趣的算法题。">
+<meta name="description" content="LeetCode Longest Palindromic Substring 题解。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一道有趣的题">
-<meta property="og:url" content="http://ztmark.github.io/2015/12/04/一道有趣的题/index.html">
+<meta property="og:title" content="LeetCode Longest Palindromic Substring 和 Manacher 算法">
+<meta property="og:url" content="http://ztmark.github.io/2016/02/20/LeetCode Longest Palindromic Substring 题解/index.html">
 <meta property="og:site_name" content="Mark's Notes">
-<meta property="og:description" content="一道有趣的算法题。">
-<meta property="og:updated_time" content="2015-12-04T04:38:57.000Z">
+<meta property="og:description" content="LeetCode Longest Palindromic Substring 题解。">
+<meta property="og:updated_time" content="2016-02-20T09:17:11.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一道有趣的题">
-<meta name="twitter:description" content="一道有趣的算法题。">
+<meta name="twitter:title" content="LeetCode Longest Palindromic Substring 和 Manacher 算法">
+<meta name="twitter:description" content="LeetCode Longest Palindromic Substring 题解。">
 
 
 
@@ -73,7 +75,7 @@
   };
 </script>
 
-  <title> 一道有趣的题 | Mark's Notes </title>
+  <title> LeetCode Longest Palindromic Substring 和 Manacher 算法 | Mark's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -183,7 +185,7 @@
             
             
               
-                一道有趣的题
+                LeetCode Longest Palindromic Substring 和 Manacher 算法
               
             
           </h1>
@@ -192,8 +194,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-12-04T00:00:00+08:00" content="2015-12-04">
-              2015-12-04
+            <time itemprop="dateCreated" datetime="2016-02-20T00:00:00+08:00" content="2016-02-20">
+              2016-02-20
             </time>
           </span>
 
@@ -203,8 +205,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/12/04/一道有趣的题/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/04/一道有趣的题/" itemprop="commentsCount"></span>
+                <a href="/2016/02/20/LeetCode Longest Palindromic Substring 题解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/20/LeetCode Longest Palindromic Substring 题解/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -223,17 +225,74 @@
       
 
       
-        <span itemprop="articleBody"><p>一道有趣的算法题。</p>
+        <span itemprop="articleBody"><p>LeetCode Longest Palindromic Substring 题解。</p>
 <a id="more"></a>
-<p>看《算法设计与分析基础》第三版的时候，1.1节习题中又这么一道题：</p>
-<blockquote>
-<p><strong>带锁的门</strong>：在走廊上有n个带锁的门，从1到n一次编号。最初所有的门都是关着的。我们从门前经过n次，每次都从1号门开始。在第i次经过时(i=1，2，3，…，n)我们改变i的整数倍号锁的状态：如果门是关着的，就打开它；如果门是打开的，就关上它。在最后一次经过，哪些门是打开的，哪些门是关上的？有多少打开的门？</p>
-</blockquote>
-<p>一开始没什么头绪，不过我们可以写个例子看看，比如取n等于10。</p>
+<p><a href="https://leetcode.com/problems/longest-palindromic-substring/" target="_blank" rel="external">题目</a></p>
+<p>题目就是要求找出给定字符串的最长回文子串。</p>
+<h2 id="Constraints">Constraints</h2><ol>
+<li>输入是一个字符串</li>
+<li>字符串的长度范围为0~1000</li>
+<li>字符串中一定存在一个唯一最长回文子字符串</li>
+<li>要求返回这个子字符串</li>
+</ol>
+<h2 id="Ideas">Ideas</h2><h3 id="蛮力">蛮力</h3><p>从字符串的第一个字符作为回文子串的中心字符，检查这个回文子串的长度，再从第一个字符和第二个字符之间的空格作为回文子串的中心字符，检查这个回文子串的长度，依次类推，遍历完后返回最长的那个子串。</p>
+<p>这个算法的时间复杂度为$O(n^2)$，空间复杂度为$O(1)$。</p>
+<h3 id="Manacher_算法">Manacher 算法</h3><p>见<a href="https://en.wikipedia.org/wiki/Longest_palindromic_substring" target="_blank" rel="external">wikipedia</a></p>
+<p>对于上面的蛮力算法，需要对回文子串的中心字符是原始字符串中的字符还是空白字符分别做处理。Manacher算法通过先对字符串做预处理使得之后不用考虑这个问题。<code>abba</code>变成<code>#a#b#b#a#</code>,这样子串的中心字符要么是<code>#</code>表示空白字符（这个字符可以任意只要不在原字符串中出现即可），要么就是原始字符串中的字符。</p>
+<p>这里有一个问题，是否可以这么处理<code>abba</code>变成<code>a#b#b#a</code>,看样子是可以，但是还是会出现问题，比如这个<code>abb</code>变成<code>a#b#b</code>，在原始字符串中最长回文子串是<code>bb</code>，但在处理后的字符串<code>a#b#b</code>，以第一个<code>b</code>为中心字符的<code>#b#</code>长度为3，和以第二个<code>#</code>为中心的字符串<code>b#b</code>也为3。但是在原始字符串中，以第一个<code>b</code>为中心的回文子串长度为1，以第一个<code>b</code>和第二个<code>b</code>之间的空白字符为中心的回文子串<code>bb</code>才是长度最长的。</p>
+<p>接下来，就可以查找出处理后的字符串的最长回文子串了。</p>
+<p>首先需要一个数组R来保存以每一个字符作为中心字符的回文子串的半径长度。例如：</p>
 <table>
 <thead>
 <tr>
-<th>n/门号</th>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>s</td>
+<td><code>#</code></td>
+<td>a</td>
+<td><code>#</code></td>
+<td>b</td>
+<td><code>#</code></td>
+<td>b</td>
+<td><code>#</code></td>
+<td>a</td>
+<td><code>#</code></td>
+</tr>
+<tr>
+<td>R</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>4</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0  </td>
+</tr>
+</tbody>
+</table>
+<p>可以发现R中的最大值就是原字符串的最长回文子串的长度。</p>
+<p>其实这个也挺好理解的，处理后的字符串长度是原先的字符串长度的2倍加1，因为添加了length+1个<code>#</code>。在处理后的字符串s中，回文子串都是以s中的字符为中心的，去除了中心这个字符，回文子串的长度就是原串中回文子串长度的两倍，那么s的回文子串的半径长度就是原串中回文子串长度。</p>
+<p>接下来就是要求这个R数组。</p>
+<p>我们可以借助回文子串对称的特点来加快R的求解。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
 <th>1</th>
 <th>2</th>
 <th>3</th>
@@ -243,163 +302,43 @@
 <th>7</th>
 <th>8</th>
 <th>9</th>
-<th>10</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>0</strong></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
+<td>s</td>
+<td>a</td>
+<td>a</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>a</td>
+<td>a</td>
+<td>b</td>
 </tr>
 <tr>
-<td><strong>1</strong></td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td><strong>2</strong></td>
-<td>1</td>
+<td>R</td>
 <td>0</td>
 <td>1</td>
 <td>0</td>
 <td>1</td>
-<td>0</td>
+<td>4</td>
 <td>1</td>
 <td>0</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td><strong>3</strong></td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td><strong>4</strong></td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td><strong>5</strong></td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr>
-<td><strong>6</strong></td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr>
-<td><strong>7</strong></td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr>
-<td><strong>8</strong></td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr>
-<td><strong>9</strong></td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td><strong>10</strong></td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 </tbody>
 </table>
-<p>n为0表示初始状态，0表示关闭，1表示打开。</p>
-<p>在写这个例子的时候，我们会发现门号如果能被k(第k次经过)整除，该门的状态就会发生变化，当k&gt;$\sqrt{k}$时，只会改变第k个门的状态。</p>
-<p>我接着就能发现状态改变偶数次后，状态不变，也就是说，对于第k个门，如果k有偶数个约数，那么这扇门的状态最后还是和初始状态一样，这样我们的问题就是找出哪些数有偶数个约数。</p>
-<p>我们观察上面的例子，发现1,4和9的最后状态是与初始状态不一样外，其他门的状态都一样。到这里，我们可能很容易就猜想到1，4，9等这些是某个数的平方的数有奇数个约数，当然，我们可以取n的值16，25再看看。能想到这里，其实为什么这些数有奇数个约数也很容易想到。</p>
-<p>如果k是n的一个约数，那么n除以k等于$\frac nk$余0，那么$\frac nk$也是n的一个约数，这样，n的约数一般都是成对出现，只有一种情况就是k等于$\frac nk$的时候，即这两个约数相等，那么这时只算一个约数。而只有像1，4，9这些数会出现这种情况，1比较特别。</p>
-<p>这样也就回答了上面的那个问题。</p>
-<p>下面是代码演示：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">	printState(<span class="number">10</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printState</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;=n; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (isSquared(i)) &#123;</span><br><span class="line">			System.out.println(<span class="string">"Door "</span> + i  + <span class="string">" is opened"</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			System.out.println(<span class="string">"Door "</span> + i  + <span class="string">" is closed"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isSquared</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> (i * i &lt; n) i++;</span><br><span class="line">	<span class="keyword">return</span> i * i == n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当我们在求R[7]的时候，我们已经求出了R[0]到R[6]的值，知道R[4]等于4，即R[0..8]是回文串，R[0]和R[8]相等，R[1]和R[7]相等,R[2]和R[6]相等，R[3]和R[5]相等，由此，我们知道以s[1]为中心的回文子串在没有超出s[0..8]中的字符是和以s[7]为中心的回文子串在没有超出s[0..8]中的字符相同的。所以，R[7]至少等于Min(R[1], 4+R[4] - 7)=1。</p>
+<p>对于超出s[0..8]范围的字符，这里就只剩下s[9]了，我们只能按照蛮力的方式来计算了。</p>
+<p>这里我们要用maxR记录已经算出的回文子串的最右边界,用id记录这个回文子串的中心字符的下标。</p>
+<p>这个算法的时间复杂度为$O(n)$，空间复杂度为$O(n)$。这个时间复杂度主要看maxR是如何增长的，因为处理i&lt;maxR的情况时借助了前面已经计算出来的值，这一步为常数，而超出maxR范围的时候，每对比一次，maxR其实就增长1，当maxR为字符串长度时，之后的计算都只是使用之前已经计算的值而已。</p>
+<h2 id="Code">Code</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">longestPalindrome</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (s == <span class="keyword">null</span> || s.length() == <span class="number">0</span> || s.length() == <span class="number">1</span>) <span class="keyword">return</span> s;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 添加#符号</span></span><br><span class="line">        <span class="comment">// 这里应该有一个候选的符号列表，从该符号列表选取符号</span></span><br><span class="line">        <span class="comment">// 先检测字符串s是否包含该符号，如果包含就重新选一个，不包含才进行添加</span></span><br><span class="line">        StringBuilder sb = <span class="keyword">new</span> StringBuilder(s.length() * <span class="number">2</span> + <span class="number">1</span>);</span><br><span class="line">        sb.append(<span class="string">'#'</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">            sb.append(s.charAt(i)).append(<span class="string">'#'</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        String origin = s;</span><br><span class="line">        s = sb.toString();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span>[] R = <span class="keyword">new</span> <span class="keyword">int</span>[s.length()];</span><br><span class="line">        <span class="keyword">int</span> id = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> maxR = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (i &lt; maxR) &#123;</span><br><span class="line">                <span class="comment">// 2 * id - i是i关于id的对称点</span></span><br><span class="line">                <span class="comment">// 因为题目里有说s的length最大为1000</span></span><br><span class="line">                <span class="comment">// 所以这里 2 * id是安全的</span></span><br><span class="line">                R[i] = Math.min(R[<span class="number">2</span> * id - i], maxR - i);</span><br><span class="line">            &#125; </span><br><span class="line">            <span class="comment">//else &#123;</span></span><br><span class="line">              <span class="comment">//  R[i] = 0; // 默认也是0</span></span><br><span class="line">            <span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span> (i - R[i] &gt;= <span class="number">0</span> &amp;&amp; i + R[i] &lt; s.length() &amp;&amp; s.charAt(i - R[i]) == s.charAt(i + R[i])) &#123;</span><br><span class="line">                R[i]++;</span><br><span class="line">            &#125;</span><br><span class="line">            R[i]--; <span class="comment">// 减去s[i-0] == s[i+0]时加的</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (i + R[i] &gt; maxR) &#123;</span><br><span class="line">                maxR = i + R[i];</span><br><span class="line">                id = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        id = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; R.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (R[i] &gt; R[id]) &#123;</span><br><span class="line">                id = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 慢一些 36ms</span></span><br><span class="line">        <span class="comment">//return s.substring(id - R[id], id + R[id]).replaceAll("#", "");</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 计算出在原始字符串的位置 快一些 18ms</span></span><br><span class="line">        <span class="keyword">int</span> start = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> end = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (s.charAt(mid) == <span class="string">'#'</span>) &#123;</span><br><span class="line">            start = mid / <span class="number">2</span> - max / <span class="number">2</span>;</span><br><span class="line">            end = mid / <span class="number">2</span> + max / <span class="number">2</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            start = (mid - <span class="number">1</span>) / <span class="number">2</span> - (max - <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line">            end = (mid - <span class="number">1</span>) / <span class="number">2</span> + (max + <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> origin.substring(start, end);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Test">Test</h2><p>LeetCode测试通过</p>
 </span>
       
     </div>
@@ -417,17 +356,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/12/02/《Java并发编程的艺术》读书笔记五/" rel="next" title="《Java并发编程的艺术》读书笔记五">
-                <i class="fa fa-chevron-left"></i> 《Java并发编程的艺术》读书笔记五
+              <a href="/2016/02/17/LeetCode Longest Increasing Subsequence 题解/" rel="next" title="LeetCode Longest Increasing Subsequence 题解">
+                <i class="fa fa-chevron-left"></i> LeetCode Longest Increasing Subsequence 题解
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/12/08/Singleton/" rel="prev" title="Singleton Pattern">
-                Singleton Pattern <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -454,8 +389,8 @@
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/12/04/一道有趣的题/"
-           data-title="一道有趣的题" data-url="http://ztmark.github.io/2015/12/04/一道有趣的题/">
+      <div class="ds-thread" data-thread-key="2016/02/20/LeetCode Longest Palindromic Substring 题解/"
+           data-title="LeetCode Longest Palindromic Substring 和 Manacher 算法" data-url="http://ztmark.github.io/2016/02/20/LeetCode Longest Palindromic Substring 题解/">
       </div>
     
   </div>
@@ -562,7 +497,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Constraints"><span class="nav-number">1.</span> <span class="nav-text">Constraints</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ideas"><span class="nav-number">2.</span> <span class="nav-text">Ideas</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#蛮力"><span class="nav-number">2.1.</span> <span class="nav-text">蛮力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Manacher_算法"><span class="nav-number">2.2.</span> <span class="nav-text">Manacher 算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code"><span class="nav-number">3.</span> <span class="nav-text">Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test"><span class="nav-number">4.</span> <span class="nav-text">Test</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
