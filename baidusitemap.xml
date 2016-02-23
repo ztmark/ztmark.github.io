@@ -4,6 +4,125 @@
 
     
   <url>
+    <loc>http://ztmark.github.io/2015/11/19/gRPC%20%E7%BC%96%E8%AF%91proto%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90android%E7%89%88Java%E7%B1%BB%E6%96%87%E4%BB%B6/</loc>
+    <lastmod>2016-02-23T03:48:41.000Z</lastmod>
+    <data>
+        <display>
+        <title>gRPC 编译proto文件生成android版Java类文件</title>
+        <pubTime>2015-11-19T07:00:00.000Z</pubTime>
+        
+        <tag>gRPC</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://ztmark.github.io/2015/11/19/gRPC%20TLS/</loc>
+    <lastmod>2016-02-23T03:48:19.000Z</lastmod>
+    <data>
+        <display>
+        <title>gRPC使用TLS</title>
+        <pubTime>2015-11-19T04:00:00.000Z</pubTime>
+        
+        <tag>gRPC</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://ztmark.github.io/2015/11/19/proto3%20map%E5%AD%97%E6%AE%B5%20%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E7%9A%84java%E7%B1%BB%E4%B8%AD%E6%B2%A1%E6%9C%89%E5%AF%B9%E5%BA%94%E7%9A%84put%E6%96%B9%E6%B3%95%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
+    <lastmod>2016-02-23T03:47:18.000Z</lastmod>
+    <data>
+        <display>
+        <title>proto3 map字段 自动生成的java类中没有对应的put方法解决方案</title>
+        <pubTime>2015-11-19T02:30:00.000Z</pubTime>
+        
+        <tag>gRPC</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://ztmark.github.io/2015/11/19/gRPC%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%A6%82%E4%BD%95%E5%93%8D%E5%BA%94%E8%AF%B7%E6%B1%82/</loc>
+    <lastmod>2016-02-23T03:43:19.000Z</lastmod>
+    <data>
+        <display>
+        <title>gRPC服务端如何响应请求</title>
+        <pubTime>2015-11-19T06:00:00.000Z</pubTime>
+        
+        <tag>gRPC</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://ztmark.github.io/2015/11/19/gRPC%E7%AE%80%E4%BB%8B/</loc>
+    <lastmod>2016-02-23T03:43:01.000Z</lastmod>
+    <data>
+        <display>
+        <title>gRPC简介</title>
+        <pubTime>2015-11-19T03:00:00.000Z</pubTime>
+        
+        <tag>gRPC</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://ztmark.github.io/2015/11/19/Proto3%20%E7%AE%80%E4%BB%8B/</loc>
+    <lastmod>2016-02-23T03:42:53.000Z</lastmod>
+    <data>
+        <display>
+        <title>Proto3 简介</title>
+        <pubTime>2015-11-19T02:00:00.000Z</pubTime>
+        
+        <tag>gRPC</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://ztmark.github.io/2015/11/19/gRPC%E5%A6%82%E4%BD%95%E5%8F%91%E8%B5%B7%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8/</loc>
+    <lastmod>2016-02-23T03:42:41.000Z</lastmod>
+    <data>
+        <display>
+        <title>gRPC如何发起远程调用</title>
+        <pubTime>2015-11-19T05:00:00.000Z</pubTime>
+        
+        <tag>gRPC</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://ztmark.github.io/2016/01/19/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/</loc>
     <lastmod>2016-02-21T14:32:16.000Z</lastmod>
     <data>
