@@ -4,7 +4,7 @@
   <subtitle><![CDATA[I think therefore I am]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ztmark.github.io/"/>
-  <updated>2016-02-20T09:17:11.000Z</updated>
+  <updated>2016-02-29T07:38:20.000Z</updated>
   <id>http://ztmark.github.io/</id>
   
   <author>
@@ -13,6 +13,302 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[KMP算法]]></title>
+    <link href="http://ztmark.github.io/2016/02/29/KMP%E7%AE%97%E6%B3%95/"/>
+    <id>http://ztmark.github.io/2016/02/29/KMP算法/</id>
+    <published>2016-02-28T16:00:00.000Z</published>
+    <updated>2016-02-29T07:38:20.000Z</updated>
+    <content type="html"><![CDATA[<p>KMP算法笔记。</p>
+<a id="more"></a>
+<p>详见<a href="https://zh.wikipedia.org/wiki/%E5%85%8B%E5%8A%AA%E6%96%AF-%E8%8E%AB%E9%87%8C%E6%96%AF-%E6%99%AE%E6%8B%89%E7%89%B9%E7%AE%97%E6%B3%95" target="_blank" rel="external">KMP算法wiki</a></p>
+<p>KMP算法对蛮力的改进主要在当失配的时候，模式串不是移动一位，而是根据模式串本身的特性进行移动多位，来提升匹配的速度。</p>
+<p>这里关键一步就是求出失配时该移动多少位，也就是常说的next数组。</p>
+<p><a href="http://www.ruanyifeng.com/blog/2013/05/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm.html" target="_blank" rel="external">这篇</a>文章对next数组的讲解比较简单易懂。</p>
+<p><strong>next数组就是模式串的最长的相等的前缀和后缀的长度</strong>。比如<code>ababacb</code></p>
+<ul>
+<li>next[0]: <code>a</code>的前缀和后缀是都是空，则next[0]=0</li>
+<li>next[1]: <code>ab</code>的前缀是[<code>a</code>]，后缀是[<code>b</code>]，没有相等的前缀和后缀，所有next[1]=0</li>
+<li>next[2]: <code>aba</code>的前缀[<code>a</code>，<code>ab</code>]，后缀是[<code>a</code>，<code>ba</code>]，最长的相等的前缀和后缀是<code>a</code>，所有next[2]=1</li>
+<li>next[3]: <code>abab</code>的前缀[<code>a</code>，<code>ab</code>，<code>aba</code>]，后缀是[<code>a</code>，<code>ab</code>，<code>bab</code>]，最长的相等的前缀和后缀是<code>ab</code>，所有next[3]=2</li>
+<li>next[4]: <code>ababa</code>的前缀[<code>a</code>，<code>ab</code>，<code>aba</code>，<code>abab</code>]，后缀是[<code>a</code>，<code>ba</code>，<code>aba</code>，<code>baba</code>]，最长的相等的前缀和后缀是<code>aba</code>，所有next[4]=3</li>
+<li>next[5]: <code>ababac</code>的前缀[<code>a</code>，<code>ab</code>，<code>aba</code>，<code>abab</code>，<code>ababa</code>]，后缀是[<code>c</code>，<code>ac</code>，<code>bac</code>，<code>abac</code>，<code>babac</code>]，没有相等的前缀和后缀，所有next[5]=0</li>
+<li>next[6]: <code>ababacb</code>的前缀[<code>a</code>，<code>ab</code>，<code>aba</code>，<code>abab</code>，<code>ababa</code>，<code>ababac</code>]，后缀是[<code>b</code>，<code>cb</code>，<code>acb</code>，<code>bacb</code>，<code>abacb</code>,<code>babacb</code>]，没有相等的前缀和后缀，所有next[6]=0</li>
+</ul>
+<p>那么到底该怎么求这个next数组呢？</p>
+<p><strong>求next数组就是模式串和自己匹配的过程</strong>。</p>
+<p>其实有一点可以很容易想到，在求next[j]的时候，我们已经求出了next[0]到next[j-1]了，比如<code>ababacb</code>，</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>p</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>c</td>
+<td>b</td>
+</tr>
+<tr>
+<td>next</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>在求next[4]的时候，我们已经求出了next[0..3]，我们知道next[3]=2，也就是说p[0..1]=p[2..3]，那么，要是p[2]=p[4]，next[4]就等于next[3]+1。p[2]也就是p[next[3]]。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>p</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>c</td>
+<td>b</td>
+</tr>
+<tr>
+<td>p</td>
+<td></td>
+<td></td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+</tr>
+</tbody>
+</table>
+<p>求next[4]的时候，不管怎样，我们先将字符串p向右移动2个字符使得p[2]和p[4]对齐，看看p[2]和p[4]是否相等。</p>
+<p>让哪个字符和p[4]对其是这么算的，因为知道next[3]=2，p[0..1]=p[2..3]，也就是p[2]应该和p[4]对齐，就是p[next[3]]。</p>
+<p>如果相等，next[4]就等于next[3]+1。这里正好相等，所以next[4]=2+1=3。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>p</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>c</td>
+<td>b</td>
+</tr>
+<tr>
+<td>next</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>现在求next[5]，不管怎样，我们先将字符串p向右移动2个字符使得p[3]和p[5]对齐，看看p[3]和p[5]是否相等。为什么是p[3]，因为next[4]=3。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>p</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>c</td>
+<td>b</td>
+</tr>
+<tr>
+<td>p</td>
+<td></td>
+<td></td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+</tr>
+</tbody>
+</table>
+<p>这里p[5]不等于p[3]，那怎么办呢，之前说了，求next其实就是模式串的自我匹配，这里匹配不成功，那我们就需要将下面的p进行右移，移动多少个字符，还是要看next数组，因为是p[3]匹配不成功，但是p[0..2]是匹配的，那就右移使得p[next[2]]和p[5]对齐。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>p</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>c</td>
+<td>b</td>
+</tr>
+<tr>
+<td>p</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+</tr>
+</tbody>
+</table>
+<p>这时p[1]和p[5]对齐，发现p[1]不等于p[5]，我们继续右移，使得p[next[1]]和p[5]对齐。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>p</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>c</td>
+<td>b</td>
+</tr>
+<tr>
+<td>p</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>a</td>
+<td>b</td>
+</tr>
+</tbody>
+</table>
+<p>这时p[0]和p[5]对齐，但p[0]不等于p[5]，此时，我们无法在进行右移了，所以直接让next[5]=0。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>p</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>b</td>
+<td>a</td>
+<td>c</td>
+<td>b</td>
+</tr>
+<tr>
+<td>next</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>现在求next[6]，因为next[5]=0，所以应该让p[0]和p[6]对齐，看看p[0]是否等于p[6]，不相等，而next[0]=0，所以直接让next[6]=0。</p>
+<p>求出next数组之后，KMP算法就算完成一大半了。KMP算法主体和蛮力匹配类似，但是在不匹配的时候文本串不动，移动模式串。</p>
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">kmp</span><span class="params">(String text, String pattern)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">int</span>[] next = next(pattern);</span><br><span class="line">   <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; text.length(); i++) &#123;</span><br><span class="line">       <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">           <span class="keyword">if</span> (j == pattern.length()) &#123;</span><br><span class="line">               <span class="keyword">return</span> i - j;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">if</span> (text.charAt(i) == pattern.charAt(j)) &#123;</span><br><span class="line">               j++;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125; <span class="keyword">else</span> <span class="keyword">if</span> (j == <span class="number">0</span>)&#123;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">               j = next[j - <span class="number">1</span>];</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span>[] next(String pattern) &#123;</span><br><span class="line">   <span class="keyword">int</span>[] next = <span class="keyword">new</span> <span class="keyword">int</span>[pattern.length()];</span><br><span class="line">   next[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; pattern.length(); i++) &#123;</span><br><span class="line">       <span class="keyword">int</span> j = i - <span class="number">1</span>;</span><br><span class="line">       <span class="keyword">while</span> (j &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">           <span class="keyword">if</span> (pattern.charAt(next[j]) == pattern.charAt(i)) &#123;</span><br><span class="line">               next[i] = next[j] + <span class="number">1</span>;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125; <span class="keyword">else</span> <span class="keyword">if</span> (next[j] == <span class="number">0</span>)&#123;</span><br><span class="line">               next[i] = <span class="number">0</span>;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">               j = next[j - <span class="number">1</span>];</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>KMP算法笔记。</p>]]>
+    
+    </summary>
+    
+      <category term="Algorithm" scheme="http://ztmark.github.io/tags/Algorithm/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[LeetCode Longest Palindromic Substring 和 Manacher 算法]]></title>
@@ -1384,6 +1680,86 @@ S V <span class="keyword">O</span> <span class="keyword">C</span>
   </entry>
   
   <entry>
+    <title><![CDATA[Git Internals 读书笔记]]></title>
+    <link href="http://ztmark.github.io/2015/11/30/Git%20Internals%20%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <id>http://ztmark.github.io/2015/11/30/Git Internals 读书笔记/</id>
+    <published>2015-11-29T16:00:00.000Z</published>
+    <updated>2015-11-29T07:25:01.000Z</updated>
+    <content type="html"><![CDATA[<p>Git Internals 读书笔记。</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=2117030&auto=0&height=66"></iframe>
+
+<p><a href="https://github.com/pluralsight/git-internals-pdf" target="_blank" rel="external">Git Internals</a></p>
+<h2 id="Git_Object_Types">Git Object Types</h2><p><code>Git</code>有四种对象类型，分别是<code>Blob</code>、<code>Tree</code>、<code>Commit</code>和<code>Tag</code>，都存储在对象数据库里，都是通过<code>Zlib</code>压缩过的，使用<code>SHA-1</code>值（内容的哈希值）来表示。</p>
+<p>使用书上的例子：</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150116.png" alt="working"></p>
+<h3 id="Blob">Blob</h3><p>在<code>Git</code>中，文件的<strong>内容</strong>是作为<code>Blob</code>进行存储的。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150134.png" alt="blob"></p>
+<p>对于具有相同内容的不同文件，只存储一份。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151611.png" alt="BLOb"></p>
+<h3 id="Tree">Tree</h3><p><code>Tree</code>就对应着目录。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151741.png" alt="tree"></p>
+<p><code>tree</code>存储该目录下的目录和文件的信息（<code>mode</code>,<code>type</code>,<code>name</code>,<code>sha</code>）。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151752.png" alt="tree"></p>
+<h3 id="Commit">Commit</h3><p><code>commit</code>对象指向一个<code>tree</code>对象，然后额外保存了作者，提交者，提交信息和上次提交这些信息。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151804.png" alt="commit"></p>
+<p>第一次提交</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151816.png" alt="commit1"></p>
+<p>第二次提交</p>
+<p>在第二次提交中，就有了<code>parent</code>这一信息，指向上一次的提交对象。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151826.png" alt="commit2"></p>
+<h3 id="Tag">Tag</h3><p><code>Tag</code>对象指向一个特定的<code>commit</code>对象，保存<code>object</code>，<code>type</code>，<code>tag</code>，<code>tagger</code>和<code>message</code>信息。<code>type</code>一般就是<code>commit</code>，<code>object</code>就是这个<code>commit</code>的<code>SHA-1</code>值。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314153119.png" alt="tag"></p>
+<h2 id="Git_Data_Model">Git Data Model</h2><h3 id="The_Model">The Model</h3><p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154003.png" alt="model"></p>
+<p>带颜色是不可变对象。</p>
+<h3 id="Example">Example</h3><p>目录文件如下</p>
+<pre><code>|-- init.rb
+ -- <span class="class"><span class="keyword">lib</span></span>
+    | -- base
+        | -- base_include.rb
+     -- my_plugin.rb
+</code></pre><p>第一次提交后，<code>Git Model</code>如下</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154004.png" alt="model"></p>
+<p><code>branch</code>指向最近的一次提交，<code>HEAD</code>指向当前的<code>branch</code>。</p>
+<p>现在修改<code>lib/base/base_include.rb</code>文件，然后提交，并创建一个<code>tag</code>。</p>
+<p>修改了文件，其父目录以及父目录的父目录直到最顶层目录的内容都被修改了，就会产生新的对象。对于没有改变的文件和目录则不会产生新对象。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154848.png" alt="model"></p>
+<p>现在修改<code>init.rb</code>文件，然后提交。</p>
+<p>由于只修改了<code>init.rb</code>文件，其他的子目录并没有变化，所以就不会产生其他的新对象。如下图所示。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314155544.png" alt="model"></p>
+<p>这样的一种模型，我们可以通过当前的<code>HEAD</code>得到所有的历史文件。</p>
+<h3 id="Traversal">Traversal</h3><p>当进行<code>checkout</code>的时候，通过查看<code>.git/refs</code>目录下的<code>branch</code>，<code>tag</code>，<code>remote</code>，将当前的<code>working directory</code>的内容切换到指定的<code>commit</code>的内容。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314160217.png" alt="traverse"></p>
+<h2 id="Branching_and_Merging">Branching and Merging</h2><p>在<code>Git</code>中，创建分支，切换分支是非常容易的，就是新建一个文件和写几个字符的事。</p>
+<p>在这个例子中，创建一个<code>experiment</code>分支，然后对<code>master</code>和<code>experiment</code>分支分别提交。现在就是下面这个样子。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161539.png" alt="branch"></p>
+<p>将<code>experiment</code>分支合并到<code>master</code>分支后就像下面这样。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161837.png" alt="branch"></p>
+<h3 id="Remotes">Remotes</h3><p>远程分支的名字类似与这样<code>origin/master</code>表示远程仓库<code>origin</code>的<code>master</code>分支。远程仓库的名字<code>origin</code>是可以自定义的，不一定就是<code>origin</code>。</p>
+<p>下面表示有三个分支，两个远程仓库分支<code>idea</code>和<code>master</code>，一个本地分支。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162032.png" alt="remote"></p>
+<p>对这三个分支进行合并，就成了下面这个样子。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162352.png" alt="remtoe"></p>
+<h3 id="Rebasing">Rebasing</h3><p>在多人合作开发时，将别人的代码合并到自己本地时，就会产生下面所示的情况。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163011.png" alt="rebase"></p>
+<p><code>C2</code>，<code>C4</code>，<code>C5</code>这些并没有什么实质的内容，只是进行合并产生的提交。当有大量的这些提交后，我们的提交历史就会变得不清晰。这时，我们可以使用<code>rebase</code>。</p>
+<p>使用<code>rebase</code>的效果和<code>merge</code>的效果如下所示。</p>
+<p>1是<code>rebase</code>产生的提交历史。<br>2是<code>merge</code>产生的提交历史。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163640.png" alt="rebase"></p>
+<blockquote>
+<p><code>rebase</code>只在本地分支上使用，不要在公共的分支上进行<code>rebase</code>!</p>
+</blockquote>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Git Internals 读书笔记。</p>]]>
+    
+    </summary>
+    
+      <category term="Git" scheme="http://ztmark.github.io/tags/Git/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[《Java并发编程的艺术》读书笔记三]]></title>
     <link href="http://ztmark.github.io/2015/11/30/%E3%80%8AJava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%89/"/>
     <id>http://ztmark.github.io/2015/11/30/《Java并发编程的艺术》读书笔记三/</id>
@@ -1601,167 +1977,6 @@ S V <span class="keyword">O</span> <span class="keyword">C</span>
     </summary>
     
       <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Git Internals 读书笔记]]></title>
-    <link href="http://ztmark.github.io/2015/11/30/Git%20Internals%20%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    <id>http://ztmark.github.io/2015/11/30/Git Internals 读书笔记/</id>
-    <published>2015-11-29T16:00:00.000Z</published>
-    <updated>2015-11-29T07:25:01.000Z</updated>
-    <content type="html"><![CDATA[<p>Git Internals 读书笔记。</p>
-<a id="more"></a>
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=2117030&auto=0&height=66"></iframe>
-
-<p><a href="https://github.com/pluralsight/git-internals-pdf" target="_blank" rel="external">Git Internals</a></p>
-<h2 id="Git_Object_Types">Git Object Types</h2><p><code>Git</code>有四种对象类型，分别是<code>Blob</code>、<code>Tree</code>、<code>Commit</code>和<code>Tag</code>，都存储在对象数据库里，都是通过<code>Zlib</code>压缩过的，使用<code>SHA-1</code>值（内容的哈希值）来表示。</p>
-<p>使用书上的例子：</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150116.png" alt="working"></p>
-<h3 id="Blob">Blob</h3><p>在<code>Git</code>中，文件的<strong>内容</strong>是作为<code>Blob</code>进行存储的。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314150134.png" alt="blob"></p>
-<p>对于具有相同内容的不同文件，只存储一份。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151611.png" alt="BLOb"></p>
-<h3 id="Tree">Tree</h3><p><code>Tree</code>就对应着目录。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151741.png" alt="tree"></p>
-<p><code>tree</code>存储该目录下的目录和文件的信息（<code>mode</code>,<code>type</code>,<code>name</code>,<code>sha</code>）。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151752.png" alt="tree"></p>
-<h3 id="Commit">Commit</h3><p><code>commit</code>对象指向一个<code>tree</code>对象，然后额外保存了作者，提交者，提交信息和上次提交这些信息。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151804.png" alt="commit"></p>
-<p>第一次提交</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151816.png" alt="commit1"></p>
-<p>第二次提交</p>
-<p>在第二次提交中，就有了<code>parent</code>这一信息，指向上一次的提交对象。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314151826.png" alt="commit2"></p>
-<h3 id="Tag">Tag</h3><p><code>Tag</code>对象指向一个特定的<code>commit</code>对象，保存<code>object</code>，<code>type</code>，<code>tag</code>，<code>tagger</code>和<code>message</code>信息。<code>type</code>一般就是<code>commit</code>，<code>object</code>就是这个<code>commit</code>的<code>SHA-1</code>值。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314153119.png" alt="tag"></p>
-<h2 id="Git_Data_Model">Git Data Model</h2><h3 id="The_Model">The Model</h3><p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154003.png" alt="model"></p>
-<p>带颜色是不可变对象。</p>
-<h3 id="Example">Example</h3><p>目录文件如下</p>
-<pre><code>|-- init.rb
- -- <span class="class"><span class="keyword">lib</span></span>
-    | -- base
-        | -- base_include.rb
-     -- my_plugin.rb
-</code></pre><p>第一次提交后，<code>Git Model</code>如下</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154004.png" alt="model"></p>
-<p><code>branch</code>指向最近的一次提交，<code>HEAD</code>指向当前的<code>branch</code>。</p>
-<p>现在修改<code>lib/base/base_include.rb</code>文件，然后提交，并创建一个<code>tag</code>。</p>
-<p>修改了文件，其父目录以及父目录的父目录直到最顶层目录的内容都被修改了，就会产生新的对象。对于没有改变的文件和目录则不会产生新对象。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314154848.png" alt="model"></p>
-<p>现在修改<code>init.rb</code>文件，然后提交。</p>
-<p>由于只修改了<code>init.rb</code>文件，其他的子目录并没有变化，所以就不会产生其他的新对象。如下图所示。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314155544.png" alt="model"></p>
-<p>这样的一种模型，我们可以通过当前的<code>HEAD</code>得到所有的历史文件。</p>
-<h3 id="Traversal">Traversal</h3><p>当进行<code>checkout</code>的时候，通过查看<code>.git/refs</code>目录下的<code>branch</code>，<code>tag</code>，<code>remote</code>，将当前的<code>working directory</code>的内容切换到指定的<code>commit</code>的内容。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314160217.png" alt="traverse"></p>
-<h2 id="Branching_and_Merging">Branching and Merging</h2><p>在<code>Git</code>中，创建分支，切换分支是非常容易的，就是新建一个文件和写几个字符的事。</p>
-<p>在这个例子中，创建一个<code>experiment</code>分支，然后对<code>master</code>和<code>experiment</code>分支分别提交。现在就是下面这个样子。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161539.png" alt="branch"></p>
-<p>将<code>experiment</code>分支合并到<code>master</code>分支后就像下面这样。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314161837.png" alt="branch"></p>
-<h3 id="Remotes">Remotes</h3><p>远程分支的名字类似与这样<code>origin/master</code>表示远程仓库<code>origin</code>的<code>master</code>分支。远程仓库的名字<code>origin</code>是可以自定义的，不一定就是<code>origin</code>。</p>
-<p>下面表示有三个分支，两个远程仓库分支<code>idea</code>和<code>master</code>，一个本地分支。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162032.png" alt="remote"></p>
-<p>对这三个分支进行合并，就成了下面这个样子。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314162352.png" alt="remtoe"></p>
-<h3 id="Rebasing">Rebasing</h3><p>在多人合作开发时，将别人的代码合并到自己本地时，就会产生下面所示的情况。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163011.png" alt="rebase"></p>
-<p><code>C2</code>，<code>C4</code>，<code>C5</code>这些并没有什么实质的内容，只是进行合并产生的提交。当有大量的这些提交后，我们的提交历史就会变得不清晰。这时，我们可以使用<code>rebase</code>。</p>
-<p>使用<code>rebase</code>的效果和<code>merge</code>的效果如下所示。</p>
-<p>1是<code>rebase</code>产生的提交历史。<br>2是<code>merge</code>产生的提交历史。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150314163640.png" alt="rebase"></p>
-<blockquote>
-<p><code>rebase</code>只在本地分支上使用，不要在公共的分支上进行<code>rebase</code>!</p>
-</blockquote>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>Git Internals 读书笔记。</p>]]>
-    
-    </summary>
-    
-      <category term="Git" scheme="http://ztmark.github.io/tags/Git/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[链表的几个问题]]></title>
-    <link href="http://ztmark.github.io/2015/11/29/%E9%93%BE%E8%A1%A8%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98/"/>
-    <id>http://ztmark.github.io/2015/11/29/链表的几个问题/</id>
-    <published>2015-11-28T16:00:00.000Z</published>
-    <updated>2016-02-21T14:29:16.000Z</updated>
-    <content type="html"><![CDATA[<p>链表的几个问题和答案的代码实现。</p>
-<a id="more"></a>
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=27902187&auto=0&height=66"></iframe>
-
-<ul>
-<li><a href="#给出单链表中一个节点的指针（不是最后的那个节点），删除该节点">给出单链表中一个节点的指针（不是最后的那个节点），删除该节点</a></li>
-<li><a href="#单链表的转置">单链表的转置</a></li>
-<li><a href="#求单链表倒数第k个节点">求单链表倒数第k个节点</a></li>
-<li><a href="#求链表的中间节点">求链表的中间节点</a></li>
-<li><a href="#判断两个链表是否相交">判断两个链表是否相交</a></li>
-<li><a href="#求两链表相交的交点">求两链表相交的交点</a></li>
-<li><a href="#判断单链表是否存在环">判断单链表是否存在环</a></li>
-<li><a href="#找到环的入口">找到环的入口</a></li>
-<li><a href="#链表有环，如何判断相交">链表有环，如何判断相交</a></li>
-</ul>
-<p>简单链表的结构</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LkList</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">        Node header;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">LkList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.header = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(T v)</span> </span>&#123;</span><br><span class="line">            Node n = <span class="keyword">new</span> Node(v, header);</span><br><span class="line">            header = n;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">            T item;</span><br><span class="line">            Node next;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(T item, Node next)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">this</span>.item = item;</span><br><span class="line">                <span class="keyword">this</span>.next = next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="给出单链表中一个节点的指针p（不是最后的那个节点），删除该节点">给出单链表中一个节点的指针p（不是最后的那个节点），删除该节点</h2><p>思路：由于是单链表，所以无法得到该节点的前一个节点，但是我们可以容易地得到该节点之后的节点。所以要是删除该节点之后的节点，我们是可以容易做到的。对于删除节点，其实就是将该节点的数据从链表中删除，而对于该节点本身在不在链表中我们并不关心。所以我们可以想到，为了删除本节点的数据，我们可以用其他数据覆盖掉本节点的数据，我们可以用该节点之后的节点的数据覆盖掉本节点的数据，然后将之后的那个节点删除，这样就相当于删除了本节点。就是下图显示的那样。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/link1.jpg" alt="link1"></p>
-<p>代码实现：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> LkList.<span class="function">Node <span class="title">deleteNode</span><span class="params">(LkList.Node p)</span> </span>&#123;</span><br><span class="line">    LkList.Node deleted = p.next; </span><br><span class="line">    p.item = deleted.item;</span><br><span class="line">    p.next = deleted.next;</span><br><span class="line">    deleted.next = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">return</span> deleted;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="单链表的转置">单链表的转置</h2><p>思路：对该单链表进行遍历，对于每个节点，进行头插法，插入到另一个链表，然后将该链表返回。</p>
-<p>代码实现</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> LkList&lt;Integer&gt; <span class="title">reverseList</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    LkList&lt;Integer&gt; nl = <span class="keyword">new</span> LkList&lt;&gt;();</span><br><span class="line">    LkList.Node p;</span><br><span class="line">    <span class="keyword">while</span> (list.header != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p = list.header.next;</span><br><span class="line">        list.header.next = nl.header;</span><br><span class="line">        nl.header = list.header;</span><br><span class="line">        list.header = p;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> nl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="求单链表倒数第k个节点">求单链表倒数第k个节点</h2><p>思路：</p>
-<ol>
-<li><p>求倒数第k个节点，就相当于第len-k+1(len是单链表的长度)个节点，所以可以先遍历一遍链表，求出链表的长度，然后再求第len-k+1个节点。</p>
-</li>
-<li><p>求倒数第k个节点，也就是说求一个节点，该节点距离链表的末尾k个距离，那么，问题就是如何测量这段距离，我们可以使用一个指针p1,从头遍历到第k+1个节点，那么从开始节点到p1指向的节点就的距离相差k，我们可以把这段距离当作一把尺来测试每个节点是否到链表末尾距离为k。所以，方法就是：可以使用两个指针p1,p2，先让p1遍历到第k+1个节点，然后p1，p2一起向后遍历，当p1遍历到末尾null时，p2指向的节点就是倒数第k个节点。</p>
-</li>
-</ol>
-<p>比如说想要求倒数第3个节点，我们可以先让p1遍历到第4个节点（节点6），然后p1,p2一起往后遍历，直到p1到null，此时，p2指向的节点就是倒数第3个节点。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/link3.jpg" alt="link2"></p>
-<p>代码实现</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line"> * assume k is less than the size of list</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> LkList.<span class="function">Node <span class="title">lastKth</span><span class="params">(LkList&lt;Integer&gt; list, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    LkList.Node p1 = list.header;</span><br><span class="line">    LkList.Node p2 = list.header;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k &amp;&amp; p1 != <span class="keyword">null</span>; i++) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (p1 != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="求链表的中间节点">求链表的中间节点</h2><p>思路：看着与上面那题挺相似的，但是我们中间那个节点是第几个节点我们并不知道，单是中间节点是挺特殊的位置，正好是整个链表的一半。可以使用两个指针，一个一次遍历一个节点，另一个一次遍历两个节点。这样就能找到中间节点。需要的注意的是当链表中的节点是奇数个和偶数个的区别。</p>
-<p>奇数个的情况：<br><img src="http://7u2r8z.com1.z0.glb.clouddn.com/link4.jpg" alt="link3"></p>
-<p>偶数个的情况：<br><img src="http://7u2r8z.com1.z0.glb.clouddn.com/link5.jpg" alt="link4"></p>
-<p>代码实现</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> LkList.<span class="function">Node <span class="title">findMidNode</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    LkList.Node p1 = list.header;</span><br><span class="line">    LkList.Node p2;</span><br><span class="line">    <span class="keyword">if</span> (p1 == <span class="keyword">null</span>) &#123; <span class="comment">// 链表为空</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (p1.next == <span class="keyword">null</span>) &#123; <span class="comment">//链表只有一个节点</span></span><br><span class="line">        <span class="keyword">return</span> p1;</span><br><span class="line">    &#125;</span><br><span class="line">    p2 = p1.next;</span><br><span class="line">    <span class="keyword">while</span> (p2.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">        <span class="keyword">if</span> (p2.next == <span class="keyword">null</span>) &#123; <span class="comment">//链表有偶数个节点的时候，p2走到最后一个节点</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="判断两个链表是否相交">判断两个链表是否相交</h2><p>思路：判断两个链表的最后一个节点是否是同一个节点</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150210174318.png" alt="link6"></p>
-<p>代码实现</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isIntersect</span><span class="params">(LkList&lt;Integer&gt; lk1, LkList&lt;Integer&gt; lk2)</span> </span>&#123;</span><br><span class="line">    LkList.Node p1 = lk1.header;</span><br><span class="line">    LkList.Node p2 = lk2.header;</span><br><span class="line">    <span class="keyword">if</span> (p1 == <span class="keyword">null</span> || p2 == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">while</span> (p1.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (p2.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p1 == p2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="求两链表相交的交点">求两链表相交的交点</h2><p>思路：求出两个链表的长度差k，然长的链表先遍历k个节点，然后两个链表一起遍历，直到遍历到同一个节点，这个节点就是两个链表相交的交点。</p>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/20150210175728.png" alt="link7"></p>
-<p>代码实现</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> LkList.<span class="function">Node <span class="title">findIntersect</span><span class="params">(LkList&lt;Integer&gt; lk1, LkList&lt;Integer&gt; lk2)</span> </span>&#123;</span><br><span class="line">    LkList.Node p1 = lk1.header;</span><br><span class="line">    LkList.Node p2 = lk2.header;</span><br><span class="line">    <span class="keyword">if</span> (p1 == <span class="keyword">null</span> || p2 == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">int</span> len1 = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> len2 = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (p1.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        len1++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (p2.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">        len2++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p1 != p2) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">int</span> k = Math.abs(len1 - len2);</span><br><span class="line">    p1 = lk1.header;</span><br><span class="line">    p2 = lk2.header;</span><br><span class="line">    <span class="keyword">if</span> (len1 &gt; len2) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">            p1 = p1.next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">            p2 = p2.next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (p1 != <span class="keyword">null</span> &amp;&amp; p2 != <span class="keyword">null</span> &amp;&amp; p1 != p2) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="判断单链表是否存在环">判断单链表是否存在环</h2><p>思路：</p>
-<ol>
-<li>使用<code>HashSet</code>来保存遍历过的节点，在遍历新节点的时候，进行查询是否之前遍历过，如果遍历过，就表示有环，能遍历完整个链表就表示没有环。</li>
-<li>使用两个指针，一个每次遍历一个几点，另一个每次遍历两个节点，如果有环，则，在某一次遍历后两个节点会相遇，如果没有环，快的那个节点会变为null。对于有环的链表，两个指针总会在环中循环遍历，遍历速度快的那个指针每次比慢的多遍历一个节点，在某一个时间点，快的指针会将慢的指针套圈（就像跑步一样，跑的快的会将跑的慢的套圈。），两个指针相遇。</li>
-</ol>
-<p>代码实现</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//两个指针的方式</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasCircle</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    LkList.Node p1 = list.header;</span><br><span class="line">    <span class="keyword">if</span> (p1 == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    LkList.Node p2 = list.header.next;</span><br><span class="line">    LkList.Node node = getMeetNode(p1, p2);</span><br><span class="line">    <span class="keyword">return</span> node != <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> LkList.<span class="function">Node <span class="title">getMeetNode</span><span class="params">(LkList.Node p1, LkList.Node p2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (p1 != <span class="keyword">null</span> &amp;&amp; p2 != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">        <span class="keyword">if</span> (p2 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            p2 = p2.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (p1 == p2) &#123;</span><br><span class="line">            <span class="keyword">return</span> p1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用HashSet</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasCircleUseSet</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    HashSet&lt;LkList.Node&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    LkList.Node p = list.header;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (set.contains(p)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        set.add(p);</span><br><span class="line">        p = p.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="找到环的入口">找到环的入口</h2><p>思路：</p>
-<ol>
-<li>与上一题的方法一一样，还是使用<code>HashSet</code>，第一个遍历过的节点就是入口。</li>
-<li>只有两个指针，先使用上面的方法二找到两个指针相遇的节点m，设入口节点为n,第一个节点为h,我们使用一个指针p1,从h遍历到m,计算出h到m的长度x,然后使用指针p2从m节点开始遍历，遍历一圈环，计算出环的长度y,计算出|x-y|,这个差值就是hn与mn的长度差，如果hn较长，则p1从h开始先遍历|x-y|个节点，然后p1和p2（指向m）开始一起遍历，当p1和p2遍历到同一个节点时，这个节点就是环的入口，对mn较长的情况同理。</li>
-</ol>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/link7.png" alt="link5"></p>
-<p>代码实现</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用两个指针方式</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> LkList.<span class="function">Node <span class="title">findIntersection</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!hasCircle(list)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    LkList.Node p1 = list.header;</span><br><span class="line">    LkList.Node p2 = list.header;</span><br><span class="line">    LkList.Node node = getMeetNode(p1, p2);</span><br><span class="line">    <span class="keyword">int</span> len1 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (p1 != node) &#123;</span><br><span class="line">        len1++;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    p2 = node.next;</span><br><span class="line">    <span class="keyword">int</span> lenCircle = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (p2 != node) &#123;</span><br><span class="line">        lenCircle++;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    p1 = list.header;</span><br><span class="line">    <span class="keyword">int</span> diffLen = Math.abs(len1 - lenCircle);</span><br><span class="line">    <span class="keyword">if</span> (len1 &gt; lenCircle) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; diffLen; i++) &#123;</span><br><span class="line">            p1 = p1.next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; diffLen; i++) &#123;</span><br><span class="line">            p2 = p2.next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (p1 != p2) &#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p1;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//使用HashSet方式</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> LkList.<span class="function">Node <span class="title">findIntersectionUseSet</span><span class="params">(LkList&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!hasCircle(list)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    HashSet&lt;LkList.Node&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">    LkList.Node p = list.header;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (set.contains(p)) &#123;</span><br><span class="line">            <span class="keyword">return</span> p;</span><br><span class="line">        &#125;</span><br><span class="line">        set.add(p);</span><br><span class="line">        p = p.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="链表有环，如何判断相交">链表有环，如何判断相交</h2><p>思路：和判断链表是否有环同样的方式。分别对两个链表进行判断是否有环，如果两个都有环，再对其中一个链表的环中的一个节点判断是否再另一个链表的环中即可。</p>
-<p>代码实现</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span><br><span class="line">判断两个链表（链表可能有环）是否相交</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">intersect</span><span class="params">(LkList&lt;Integer&gt; lk1, LkList&lt;Integer&gt; lk2)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">boolean</span> lk1hasCircle = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">boolean</span> lk2hasCircle = <span class="keyword">true</span>;</span><br><span class="line">    </span><br><span class="line">    LkList.Node p11 = lk1.header;</span><br><span class="line">    <span class="keyword">if</span> (p11 == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    LkList.Node p12 = lk1.header;</span><br><span class="line">    <span class="keyword">while</span> (p11 != <span class="keyword">null</span> &amp;&amp; p12 != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p11 = p11.next;</span><br><span class="line">        p12 = p12.next;</span><br><span class="line">        <span class="keyword">if</span> (p12 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            p12 = p12.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (p11 == p12) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p11 != p12) &#123;</span><br><span class="line">        lk1hasCircle = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    LkList.Node p21 = lk2.header;</span><br><span class="line">    <span class="keyword">if</span> (p21 == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    LkList.Node p22 = p21.next;</span><br><span class="line">    <span class="keyword">while</span> (p21 != <span class="keyword">null</span> &amp;&amp; p22 != <span class="keyword">null</span>) &#123;</span><br><span class="line">        p21 = p21.next;</span><br><span class="line">        p22 = p22.next;</span><br><span class="line">        <span class="keyword">if</span> (p22 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            p22 = p22.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (p21 == p22) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p21 != p22) &#123;</span><br><span class="line">        lk2hasCircle = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (!lk1hasCircle &amp;&amp; !lk2hasCircle) &#123; <span class="comment">// 两个链表都没有环</span></span><br><span class="line">        <span class="keyword">return</span> isIntersect(lk1, lk2); <span class="comment">//之前判断两个链表是否相交的方法</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (lk1hasCircle &amp;&amp; !lk2hasCircle || !lk1hasCircle) &#123; <span class="comment">//lk1hasCircle &amp;&amp; !lk2hasCircle || !lk1hasCircle &amp;&amp; lk2hasCircle  只有一个链表有环</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//两个都有环</span></span><br><span class="line">    <span class="keyword">if</span> (p11 == p21) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    p21 = p21.next;</span><br><span class="line">    <span class="keyword">while</span> (p21 != p22) &#123;</span><br><span class="line">        <span class="keyword">if</span> (p11 == p21) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        p21 = p21.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>链表的几个问题和答案的代码实现。</p>]]>
-    
-    </summary>
-    
-      <category term="Algorithm" scheme="http://ztmark.github.io/tags/Algorithm/"/>
     
   </entry>
   
