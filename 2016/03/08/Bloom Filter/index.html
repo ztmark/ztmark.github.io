@@ -39,6 +39,8 @@
 
 
 
+  
+
 
   <link rel="alternate" href="/atom.xml" title="Mark's Notes" type="application/atom+xml" />
 
@@ -52,16 +54,17 @@
 
 
 
-<meta name="description" content="KMP算法笔记。">
+<meta name="description" content="Bloom Filter简介。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="KMP算法">
-<meta property="og:url" content="http://ztmark.github.io/2016/02/29/KMP算法/index.html">
+<meta property="og:title" content="Bloom Filter">
+<meta property="og:url" content="http://ztmark.github.io/2016/03/08/Bloom Filter/index.html">
 <meta property="og:site_name" content="Mark's Notes">
-<meta property="og:description" content="KMP算法笔记。">
-<meta property="og:updated_time" content="2016-02-29T07:38:20.000Z">
+<meta property="og:description" content="Bloom Filter简介。">
+<meta property="og:image" content="http://7u2r8z.com1.z0.glb.clouddn.com/Bloom_filter.png">
+<meta property="og:updated_time" content="2016-03-08T11:53:56.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="KMP算法">
-<meta name="twitter:description" content="KMP算法笔记。">
+<meta name="twitter:title" content="Bloom Filter">
+<meta name="twitter:description" content="Bloom Filter简介。">
 
 
 
@@ -73,7 +76,7 @@
   };
 </script>
 
-  <title> KMP算法 | Mark's Notes </title>
+  <title> Bloom Filter | Mark's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -183,7 +186,7 @@
             
             
               
-                KMP算法
+                Bloom Filter
               
             
           </h1>
@@ -192,8 +195,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2016-02-29T00:00:00+08:00" content="2016-02-29">
-              2016-02-29
+            <time itemprop="dateCreated" datetime="2016-03-08T19:53:56+08:00" content="2016-03-08">
+              2016-03-08
             </time>
           </span>
 
@@ -203,8 +206,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/02/29/KMP算法/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/29/KMP算法/" itemprop="commentsCount"></span>
+                <a href="/2016/03/08/Bloom Filter/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/08/Bloom Filter/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -223,286 +226,19 @@
       
 
       
-        <span itemprop="articleBody"><p>KMP算法笔记。</p>
+        <span itemprop="articleBody"><p>Bloom Filter简介。</p>
 <a id="more"></a>
-<p>详见<a href="https://zh.wikipedia.org/wiki/%E5%85%8B%E5%8A%AA%E6%96%AF-%E8%8E%AB%E9%87%8C%E6%96%AF-%E6%99%AE%E6%8B%89%E7%89%B9%E7%AE%97%E6%B3%95" target="_blank" rel="external">KMP算法wiki</a></p>
-<p>KMP算法对蛮力的改进主要在当失配的时候，模式串不是移动一位，而是根据模式串本身的特性进行移动多位，来提升匹配的速度。</p>
-<p>这里关键一步就是求出失配时该移动多少位，也就是常说的next数组。</p>
-<p><a href="http://www.ruanyifeng.com/blog/2013/05/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm.html" target="_blank" rel="external">这篇</a>文章对next数组的讲解比较简单易懂。</p>
-<p><strong>next数组就是模式串的最长的相等的前缀和后缀的长度</strong>。比如<code>ababacb</code></p>
-<ul>
-<li>next[0]: <code>a</code>的前缀和后缀是都是空，则next[0]=0</li>
-<li>next[1]: <code>ab</code>的前缀是[<code>a</code>]，后缀是[<code>b</code>]，没有相等的前缀和后缀，所有next[1]=0</li>
-<li>next[2]: <code>aba</code>的前缀[<code>a</code>，<code>ab</code>]，后缀是[<code>a</code>，<code>ba</code>]，最长的相等的前缀和后缀是<code>a</code>，所有next[2]=1</li>
-<li>next[3]: <code>abab</code>的前缀[<code>a</code>，<code>ab</code>，<code>aba</code>]，后缀是[<code>a</code>，<code>ab</code>，<code>bab</code>]，最长的相等的前缀和后缀是<code>ab</code>，所有next[3]=2</li>
-<li>next[4]: <code>ababa</code>的前缀[<code>a</code>，<code>ab</code>，<code>aba</code>，<code>abab</code>]，后缀是[<code>a</code>，<code>ba</code>，<code>aba</code>，<code>baba</code>]，最长的相等的前缀和后缀是<code>aba</code>，所有next[4]=3</li>
-<li>next[5]: <code>ababac</code>的前缀[<code>a</code>，<code>ab</code>，<code>aba</code>，<code>abab</code>，<code>ababa</code>]，后缀是[<code>c</code>，<code>ac</code>，<code>bac</code>，<code>abac</code>，<code>babac</code>]，没有相等的前缀和后缀，所有next[5]=0</li>
-<li>next[6]: <code>ababacb</code>的前缀[<code>a</code>，<code>ab</code>，<code>aba</code>，<code>abab</code>，<code>ababa</code>，<code>ababac</code>]，后缀是[<code>b</code>，<code>cb</code>，<code>acb</code>，<code>bacb</code>，<code>abacb</code>,<code>babacb</code>]，没有相等的前缀和后缀，所有next[6]=0</li>
-</ul>
-<p>那么到底该怎么求这个next数组呢？</p>
-<p><strong>求next数组就是模式串和自己匹配的过程</strong>。</p>
-<p>其实有一点可以很容易想到，在求next[j]的时候，我们已经求出了next[0]到next[j-1]了，比如<code>ababacb</code>，</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>p</td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-<td>c</td>
-<td>b</td>
-</tr>
-<tr>
-<td>next</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>2</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>在求next[4]的时候，我们已经求出了next[0..3]，我们知道next[3]=2，也就是说p[0..1]=p[2..3]，那么，要是p[2]=p[4]，next[4]就等于next[3]+1。p[2]也就是p[next[3]]。</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>p</td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-<td>c</td>
-<td>b</td>
-</tr>
-<tr>
-<td>p</td>
-<td></td>
-<td></td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-</tr>
-</tbody>
-</table>
-<p>求next[4]的时候，不管怎样，我们先将字符串p向右移动2个字符使得p[2]和p[4]对齐，看看p[2]和p[4]是否相等。</p>
-<p>让哪个字符和p[4]对其是这么算的，因为知道next[3]=2，p[0..1]=p[2..3]，也就是p[2]应该和p[4]对齐，就是p[next[3]]。</p>
-<p>如果相等，next[4]就等于next[3]+1。这里正好相等，所以next[4]=2+1=3。</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>p</td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-<td>c</td>
-<td>b</td>
-</tr>
-<tr>
-<td>next</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>现在求next[5]，不管怎样，我们先将字符串p向右移动2个字符使得p[3]和p[5]对齐，看看p[3]和p[5]是否相等。为什么是p[3]，因为next[4]=3。</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>p</td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-<td>c</td>
-<td>b</td>
-</tr>
-<tr>
-<td>p</td>
-<td></td>
-<td></td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-</tr>
-</tbody>
-</table>
-<p>这里p[5]不等于p[3]，那怎么办呢，之前说了，求next其实就是模式串的自我匹配，这里匹配不成功，那我们就需要将下面的p进行右移，移动多少个字符，还是要看next数组，因为是p[3]匹配不成功，但是p[0..2]是匹配的，那就右移使得p[next[2]]和p[5]对齐。</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>p</td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-<td>c</td>
-<td>b</td>
-</tr>
-<tr>
-<td>p</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-</tr>
-</tbody>
-</table>
-<p>这时p[1]和p[5]对齐，发现p[1]不等于p[5]，我们继续右移，使得p[next[1]]和p[5]对齐。</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>p</td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-<td>c</td>
-<td>b</td>
-</tr>
-<tr>
-<td>p</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>a</td>
-<td>b</td>
-</tr>
-</tbody>
-</table>
-<p>这时p[0]和p[5]对齐，但p[0]不等于p[5]，此时，我们无法在进行右移了，所以直接让next[5]=0。</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>p</td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-<td>b</td>
-<td>a</td>
-<td>c</td>
-<td>b</td>
-</tr>
-<tr>
-<td>next</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>现在求next[6]，因为next[5]=0，所以应该让p[0]和p[6]对齐，看看p[0]是否等于p[6]，不相等，而next[0]=0，所以直接让next[6]=0。</p>
-<p>求出next数组之后，KMP算法就算完成一大半了。KMP算法主体和蛮力匹配类似，但是在不匹配的时候文本串不动，移动模式串。</p>
-<p>代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">kmp</span><span class="params">(String text, String pattern)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">int</span>[] next = next(pattern);</span><br><span class="line">   <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; text.length(); i++) &#123;</span><br><span class="line">       <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">           <span class="keyword">if</span> (j == pattern.length()) &#123;</span><br><span class="line">               <span class="keyword">return</span> i - j;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">if</span> (text.charAt(i) == pattern.charAt(j)) &#123;</span><br><span class="line">               j++;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125; <span class="keyword">else</span> <span class="keyword">if</span> (j == <span class="number">0</span>)&#123;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">               j = next[j - <span class="number">1</span>];</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span>[] next(String pattern) &#123;</span><br><span class="line">   <span class="keyword">int</span>[] next = <span class="keyword">new</span> <span class="keyword">int</span>[pattern.length()];</span><br><span class="line">   next[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; pattern.length(); i++) &#123;</span><br><span class="line">       <span class="keyword">int</span> j = i - <span class="number">1</span>;</span><br><span class="line">       <span class="keyword">while</span> (j &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">           <span class="keyword">if</span> (pattern.charAt(next[j]) == pattern.charAt(i)) &#123;</span><br><span class="line">               next[i] = next[j] + <span class="number">1</span>;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125; <span class="keyword">else</span> <span class="keyword">if</span> (next[j] == <span class="number">0</span>)&#123;</span><br><span class="line">               next[i] = <span class="number">0</span>;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">               j = next[j - <span class="number">1</span>];</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://zh.wikipedia.org/wiki/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8" target="_blank" rel="external">布隆过滤器</a>是用来判断一个元素是否在集合中的数据结构，它使用一系列Hash函数和一个位数组来判断。</p>
+<p>首先需要准备一个长度为m的位数组，每一位初始化为0，然后在存元素的时候通过k个Hash函数分别将元素映射到数组的k个位置，并设置为1。之后在判断某一元素是否存在于集合中就只需要判断通过k个Hash函数分别将元素映射到数组的k个位是否都为1，如果不是，那么该元素一定不在集合中，如果是，那么元素有一定概率在集合中，这个概率是多少，取决于m，k和存储在集合中的元素个数n。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/Bloom_filter.png" alt="Bloom Filter"></p>
+<p>上图将x,y,z存入集合，将对应的位设为1，然后查询w是否在集合中，由于通过3个Hash函数计算出来的对应位置有一位不为1，则表示w不在集合中。</p>
+<p>概率如何计算：<a href="https://en.wikipedia.org/wiki/Bloom_filter#Probability_of_false_positives" target="_blank" rel="external">Probability of false positives</a>这里讲的比较详细了。</p>
+<p>其实我们可以发现如果m越长，n越少，k越多那么误判的几率就越低。</p>
+<p>k的选择需要考虑m和n的值，可以详看上面的链接，这里直接给出k取$(\frac mn)ln2$为最佳。</p>
+<p>Bloom Filter的时间和空间优势还是挺明显的，相比较HashSet等其他方式来判断是否在集合中，空间上由于Bloom Filter并不存储数据本身，而只用了一个位数组，这能极大的节省空间，时间上面需要通过k个Hash函数，可以认为是常数的复杂度。缺点就是会出现误判，也不支持删除操作。</p>
+<p>虽然Bloom Filter通过合理的选择m和k能有效降低误判，但是还是免不了出现误判，所以Bloom Filter适合哪些不要求百分百正确的场景，比如垃圾邮件，黑名单等等。</p>
+<p>代码如下（<a href="https://github.com/ztmark/bfj" target="_blank" rel="external">Github地址</a>）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> io.github.ztmark;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.google.common.collect.ImmutableList;</span><br><span class="line"><span class="keyword">import</span> com.google.common.hash.HashFunction;</span><br><span class="line"><span class="keyword">import</span> com.google.common.hash.Hashing;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.BitSet;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Random;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BloomFilter</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> BitSet bitSet;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> bitSize;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> expectedNumberOfElements;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ImmutableList&lt;HashFunction&gt; hashFunctions;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> k;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> addedNumberOfElements;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BloomFilter</span><span class="params">(<span class="keyword">int</span> bitSize, <span class="keyword">int</span> expectedNumberOfElements)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (bitSize &lt;= <span class="number">0</span> || expectedNumberOfElements &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"wrong parameters bitSize and expectedNumberOfElements should greater than zero."</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.bitSize = bitSize;</span><br><span class="line">        bitSet = <span class="keyword">new</span> BitSet(bitSize);</span><br><span class="line">        <span class="keyword">this</span>.expectedNumberOfElements = expectedNumberOfElements;</span><br><span class="line">        <span class="comment">// k = m / n * ln2</span></span><br><span class="line">        k = (<span class="keyword">int</span>) Math.round(<span class="number">1.0</span> * bitSize / expectedNumberOfElements * Math.log(<span class="number">2</span>));</span><br><span class="line">        hashFunctions = HashFunctionGenerator.generateKHashFunctions(k);</span><br><span class="line">        addedNumberOfElements = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(T elem)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (HashFunction function : hashFunctions) &#123;</span><br><span class="line">            bitSet.set(Math.abs(function.hashInt(elem.hashCode()).asInt() / bitSize));</span><br><span class="line">        &#125;</span><br><span class="line">        addedNumberOfElements++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">contains</span><span class="params">(T elem)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (HashFunction function : hashFunctions) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!bitSet.get(Math.abs(function.hashInt(elem.hashCode()).asInt() / bitSize))) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getFalsePositiveProbability</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// p = (1 - e^(-k * n / m)) ^ k</span></span><br><span class="line">        <span class="keyword">return</span> Math.pow((<span class="number">1</span> - Math.exp(-k * <span class="number">1.0</span> * addedNumberOfElements / bitSize)), k);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAddedNumberOfElements</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> addedNumberOfElements;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getBitSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> bitSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getExpectedNumberOfElements</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> expectedNumberOfElements;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNumberOfHashFunction</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> k;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">HashFunctionGenerator</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HashFunction <span class="title">generateAHashFunction</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> Hashing.murmur3_128(<span class="keyword">new</span> Random(System.currentTimeMillis()).nextInt());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ImmutableList&lt;HashFunction&gt; <span class="title">generateKHashFunctions</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">            Random random = <span class="keyword">new</span> Random(System.currentTimeMillis());</span><br><span class="line">            List&lt;HashFunction&gt; hashFunctions = <span class="keyword">new</span> ArrayList&lt;HashFunction&gt;();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">                hashFunctions.add(Hashing.murmur3_128(random.nextInt()));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> ImmutableList.copyOf(hashFunctions);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </span>
       
     </div>
@@ -520,17 +256,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/02/20/LeetCode Longest Palindromic Substring 题解/" rel="next" title="LeetCode Longest Palindromic Substring 和 Manacher 算法">
-                <i class="fa fa-chevron-left"></i> LeetCode Longest Palindromic Substring 和 Manacher 算法
+              <a href="/2016/02/29/KMP算法/" rel="next" title="KMP算法">
+                <i class="fa fa-chevron-left"></i> KMP算法
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/03/08/Bloom Filter/" rel="prev" title="Bloom Filter">
-                Bloom Filter <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -557,8 +289,8 @@
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/02/29/KMP算法/"
-           data-title="KMP算法" data-url="http://ztmark.github.io/2016/02/29/KMP算法/">
+      <div class="ds-thread" data-thread-key="2016/03/08/Bloom Filter/"
+           data-title="Bloom Filter" data-url="http://ztmark.github.io/2016/03/08/Bloom Filter/">
       </div>
     
   </div>
