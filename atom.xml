@@ -4,7 +4,7 @@
   <subtitle><![CDATA[I think therefore I am]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://ztmark.github.io/"/>
-  <updated>2016-03-08T11:53:56.000Z</updated>
+  <updated>2016-03-14T07:29:36.000Z</updated>
   <id>http://ztmark.github.io/</id>
   
   <author>
@@ -13,6 +13,68 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[二叉查找树]]></title>
+    <link href="http://ztmark.github.io/2016/03/14/%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/"/>
+    <id>http://ztmark.github.io/2016/03/14/二叉查找树/</id>
+    <published>2016-03-13T16:00:00.000Z</published>
+    <updated>2016-03-14T07:29:36.000Z</updated>
+    <content type="html"><![CDATA[<p>二叉查找树代码实现，包括遍历的递归和非递归实现。</p>
+<a id="more"></a>
+<p><a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E5%85%83%E6%90%9C%E5%B0%8B%E6%A8%B9" target="_blank" rel="external">二叉查找树</a>又叫二叉搜索树，它是一棵二叉树，它的根节点的左孩子的值小于其根节点的值，根节点的右孩子的值大于根节点的值，并且根节点的左孩子和由孩子也是二叉查找树。可见其定义具有递归性质，二叉搜索树的操作基本上可以使用递归来完成。</p>
+<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/bst.png" alt="bst"></p>
+<p>这就是一棵二叉搜索树。</p>
+<p>二叉搜索树的期望高度为$O(logN)$，所以它的搜索，插入，删除等操作的时间复杂度是$O(logN)$，但也可能会出现坏的情况，比如在构造二叉搜索树的时候依次插入1,2,3,4,5那么，二叉搜索树就退化成一个链表了。</p>
+<h2 id="二叉搜索树的构造">二叉搜索树的构造</h2><p>二叉搜索树的节点需要保存值，父节点指针，左孩子和由孩子的指针。值一般会是一个对象类型，该对象类型要实现比较的功能，在Java中，就是要实现Comparable接口。这里使用最简单的int整型。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">   <span class="keyword">private</span> Node parent;</span><br><span class="line">   <span class="keyword">private</span> Node left;</span><br><span class="line">   <span class="keyword">private</span> Node right;</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">int</span> value;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">this</span>.value = value;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>插入节点：如果二叉搜索树为空，插入的节点就当做根节点，如果二叉搜索已经包含了要插入的节点那就直接返回，否则，就从根节点开始往下找，找到适合的位置插入。还有一种递归的方式就是如果根节点为空，就把要插入的节点返回，否则比较根节点和要插入的值，如果小于根节点的值，就插入根节点的左孩子，否则插入到右孩子。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span>(<span class="params"><span class="keyword">int</span> <span class="keyword">value</span></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">   Node node = <span class="keyword">new</span> Node(<span class="keyword">value</span>);</span><br><span class="line">   <span class="keyword">if</span> (isEmpty()) &#123;</span><br><span class="line">       root = node;</span><br><span class="line">       <span class="keyword">return</span>;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> (contains(<span class="keyword">value</span>)) &#123;</span><br><span class="line">       <span class="keyword">return</span>;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   Node p = <span class="keyword">null</span>;</span><br><span class="line">   Node cur = root;</span><br><span class="line">   <span class="keyword">while</span> (cur != <span class="keyword">null</span>) &#123;</span><br><span class="line">       p = cur;</span><br><span class="line">       <span class="keyword">if</span> (cur.<span class="keyword">value</span> &lt; <span class="keyword">value</span>) &#123;</span><br><span class="line">           cur = cur.right;</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           cur = cur.left;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   node.parent = p;</span><br><span class="line">   <span class="keyword">if</span> (p.<span class="keyword">value</span> &lt; <span class="keyword">value</span>) &#123;</span><br><span class="line">       p.right = node;</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       p.left = node;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="节点的删除">节点的删除</h2><p>节点的删除分三种情况：</p>
+<ol>
+<li>该节点没有左子树和右子树</li>
+<li>该节点只有左子树</li>
+<li>该节点只有右子树</li>
+</ol>
+<p>第一种情况，直接删除节点即可。</p>
+<p>第二种情况，找到左子树的最大值节点，交换该最大值节点的值，然后删除最大值节点。</p>
+<p>第三种情况，找到右子树的最小值节点，交换最小值节点的值，然后删除最小值节点。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">   Node val = find(value);</span><br><span class="line">   removeNode(val);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">removeNode</span><span class="params">(Node val)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (val == <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"SBT is not contain "</span> + val.value);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span> (val.left == <span class="keyword">null</span> &amp;&amp; val.right == <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">if</span> (val.parent == root) &#123;</span><br><span class="line">           root = <span class="keyword">null</span>;</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (val.parent.left == val)&#123;</span><br><span class="line">           val.parent.left = <span class="keyword">null</span>;</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           val.parent.right = <span class="keyword">null</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125; <span class="keyword">else</span> <span class="keyword">if</span> (val.left != <span class="keyword">null</span>) &#123;</span><br><span class="line">       Node max = maxNode(val.left);</span><br><span class="line">       swap(max, val);</span><br><span class="line">       removeNode(max);</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       Node min = minNode(val.right);</span><br><span class="line">       swap(min, val);</span><br><span class="line">       removeNode(min);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(Node n1, Node n2)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">int</span> tmp = n1.value;</span><br><span class="line">   n1.value = n2.value;</span><br><span class="line">   n2.value = tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="节点的查找">节点的查找</h2><p>二叉搜索树的查找，即判断二叉搜索树是否包含给定的值，只要从根节点开始往下比较即可。递归的思路就是如果根节点不是要找的值就根据根节点和要找的值的大小来递归调用在子树中查找。</p>
+<p>找最小值就是一直最左下方的那个值，最大值就是最右下方的那个值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">contains</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">   Node cur = root;</span><br><span class="line">   <span class="keyword">while</span> (cur != <span class="keyword">null</span> &amp;&amp; cur.value != value) &#123;</span><br><span class="line">       <span class="keyword">if</span> (cur.value &lt; value) &#123;</span><br><span class="line">           cur = cur.right;</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           cur = cur.left;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> cur != <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">max</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (isEmpty()) &#123;</span><br><span class="line">       <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"BST is empty."</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> maxNode(root).value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> Node <span class="title">maxNode</span><span class="params">(Node root)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   Node cur = root;</span><br><span class="line">   <span class="keyword">while</span> (cur.right != <span class="keyword">null</span>) &#123;</span><br><span class="line">       cur = cur.right;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> cur;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">min</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (isEmpty()) &#123;</span><br><span class="line">       <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"BST is empty"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   Node min = minNode(root);</span><br><span class="line">   <span class="keyword">return</span> min.value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> Node <span class="title">minNode</span><span class="params">(Node root)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   Node cur = root;</span><br><span class="line">   <span class="keyword">while</span> (cur.left != <span class="keyword">null</span>) &#123;</span><br><span class="line">       cur = cur.left;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> cur;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="寻找节点的前驱节点和后继节点">寻找节点的前驱节点和后继节点</h2><p>前驱和后继节点就是在中序遍历序列中，与节点紧邻的前一个节点和后一个节点。</p>
+<p>前驱：如果节点有左子树，那么前驱就是左子树中的最大节点，否则就要寻找离该节点最近的那个节点，使得该节点位于那个节点的左子树中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">predecessor</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (!contains(value)) &#123;</span><br><span class="line">       <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"BST not contains "</span> + value);</span><br><span class="line">   &#125;</span><br><span class="line">   Node val = find(value);</span><br><span class="line">   <span class="keyword">if</span> (val.left != <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> maxNode(val.left).value;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   Node p = val.parent;</span><br><span class="line">   <span class="keyword">while</span> (p != <span class="keyword">null</span> &amp;&amp; p.left == val) &#123;</span><br><span class="line">       val = p;</span><br><span class="line">       p = val.parent;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span> (p == <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> Integer.MIN_VALUE; <span class="comment">// 不存在 该如何处理 ？抛异常？</span></span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> p.value;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>后继：后继和前驱类似，如果节点有右子树，那么前驱就是右子树中的最小节点，否则就要寻找离该节点最近的那个节点，使得该节点位于那个节点的右子树中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">successor</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (!contains(value)) &#123;</span><br><span class="line">       <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"BST is not contain "</span> + value);</span><br><span class="line">   &#125;</span><br><span class="line">   Node val = find(value);</span><br><span class="line">   <span class="keyword">if</span> (val.right != <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> minNode(val.right).value;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   Node p = val.parent;</span><br><span class="line">   <span class="keyword">while</span> (p != <span class="keyword">null</span> &amp;&amp; p.right == val) &#123;</span><br><span class="line">       val = p;</span><br><span class="line">       p = val.parent;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span> (p == <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> Integer.MAX_VALUE; <span class="comment">// 不存在 该如何处理 ？抛异常？</span></span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> p.value;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="二叉搜索树的遍历">二叉搜索树的遍历</h2><h3 id="前序遍历">前序遍历</h3><p>前序遍历：就是先处理根节点，再分别递归处理左子树中的节点和右子树中的节点。</p>
+<p>递归的方式很简单，这里主要讲一下如何实现非递归方式。</p>
+<p>非递归这里有两种方式：</p>
+<ul>
+<li>首先一直向左下方遍历，即先一直处理左孩子并添加到栈中，直到左孩子为空，然后查看栈顶元素（就算当前节点的父节点）的右孩子是否就是当前节点，如果是就弹出栈顶元素作为当前节点，继续判断栈顶元素的右孩子是否就是当前节点，直到栈为空，或者当前节点不是栈顶元素的右孩子，那么就开始处理栈顶元素的右孩子。</li>
+<li>先将根节点添加到栈中，然后不断弹出栈顶元素，处理该元素，然后分别将栈的右孩子和左孩子压人栈中，这样之后弹出的就先是左孩子然后才是右孩子。</li>
+</ul>
+<p>显然，第二种方式更加的简单。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">preorder</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="comment">// return preOrder(root);</span></span><br><span class="line">   <span class="keyword">return</span> preOrderNonRecursive();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> List&lt;Integer&gt; <span class="title">preOrder</span><span class="params">(Node root)</span> </span>&#123;</span><br><span class="line">   List&lt;Integer&gt; order = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">   <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> order;</span><br><span class="line">   &#125;</span><br><span class="line">   order.add(root.value);</span><br><span class="line">   order.addAll(preOrder(root.left));</span><br><span class="line">   order.addAll(preOrder(root.right));</span><br><span class="line">   <span class="keyword">return</span> order;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> List&lt;Integer&gt; <span class="title">preOrderNonRecursive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   List&lt;Integer&gt; order = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">   <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> order;</span><br><span class="line">   &#125;</span><br><span class="line">   Stack&lt;Node&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">   stack.push(root);</span><br><span class="line">   order.add(root.value);</span><br><span class="line">   Node cur = root.left;</span><br><span class="line">   Node p;</span><br><span class="line">   <span class="keyword">while</span> (!stack.isEmpty()) &#123;</span><br><span class="line">       <span class="keyword">while</span> (cur != <span class="keyword">null</span>) &#123;</span><br><span class="line">           order.add(cur.value);</span><br><span class="line">           stack.push(cur);</span><br><span class="line">           cur = cur.left;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">while</span> (!stack.isEmpty()) &#123;</span><br><span class="line">           p = cur;</span><br><span class="line">           cur = stack.peek().right;</span><br><span class="line">           <span class="keyword">if</span> (p == cur) &#123;</span><br><span class="line">               cur = stack.pop();</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> order;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> List&lt;Integer&gt; <span class="title">preOrderNonRecursive1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   List&lt;Integer&gt; order = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">   <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> order;</span><br><span class="line">   &#125;</span><br><span class="line">   Stack&lt;Node&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">   stack.push(root);</span><br><span class="line">   Node cur;</span><br><span class="line">   <span class="keyword">while</span> (!stack.isEmpty()) &#123;</span><br><span class="line">       cur = stack.pop();</span><br><span class="line">       order.add(cur.value);</span><br><span class="line">       <span class="keyword">if</span> (cur.right != <span class="keyword">null</span>) &#123;</span><br><span class="line">           stack.push(cur.right);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">if</span> (cur.left != <span class="keyword">null</span>) &#123;</span><br><span class="line">           stack.push(cur.left);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> order;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="中序遍历">中序遍历</h3><p>中序遍历：就是先递归处理左子树，再分处理根节点，最后递归处理右子树中的节点。</p>
+<p>递归的方式很简单，这里主要讲一下如何实现非递归方式。</p>
+<p>非递归的方式就是先一直将节点的左孩子压入栈中知道左孩子为空，这时候弹出栈顶元素，处理该元素，然后如果其有右孩子就将其右孩子压入栈，然后继续处理左孩子，如果没有右孩子，则弹出栈顶元素。以此往复。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">inorder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> inOrder(root);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> List&lt;Integer&gt; <span class="title">inOrder</span><span class="params">(Node root)</span> </span>&#123;</span><br><span class="line">   List&lt;Integer&gt; order = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">   <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> order;</span><br><span class="line">   &#125;</span><br><span class="line">   order.addAll(inOrder(root.left));</span><br><span class="line">   order.add(root.value);</span><br><span class="line">   order.addAll(inOrder(root.right));</span><br><span class="line">   <span class="keyword">return</span> order;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> List&lt;Integer&gt; <span class="title">inOrderNonRecursive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   List&lt;Integer&gt; order = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">   <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> order;</span><br><span class="line">   &#125;</span><br><span class="line">   Stack&lt;Node&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">   Node cur = root;</span><br><span class="line">   <span class="keyword">while</span> (cur != <span class="keyword">null</span> || !stack.isEmpty()) &#123;</span><br><span class="line">       <span class="keyword">while</span> (cur != <span class="keyword">null</span>) &#123;</span><br><span class="line">           stack.push(cur);</span><br><span class="line">           cur = cur.left;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">if</span> (!stack.isEmpty()) &#123;</span><br><span class="line">           cur = stack.pop();</span><br><span class="line">           order.add(cur.value);</span><br><span class="line">           cur = cur.right;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> order;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="后序遍历">后序遍历</h3><p>后序遍历：就是先分别递归处理左子树中的节点和右子树中的节点，再处理根节点。</p>
+<p>递归的方式很简单，这里主要讲一下如何实现非递归方式。</p>
+<p>非递归的方式主要难点是在判断节点的右孩子是否已经处理过了。这里在处理完一个节点时，先判断该节点是否是父节点的右孩子，如果是，就不再处理父节点的右孩子，直接处理父节点，如果不是，再处理父节点的右孩子。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">postorder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> postOrder(root);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> List&lt;Integer&gt; <span class="title">postOrder</span><span class="params">(Node root)</span> </span>&#123;</span><br><span class="line">   List&lt;Integer&gt; order = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">   <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> order;</span><br><span class="line">   &#125;</span><br><span class="line">   order.addAll(postOrder(root.left));</span><br><span class="line">   order.addAll(postOrder(root.right));</span><br><span class="line">   order.add(root.value);</span><br><span class="line">   <span class="keyword">return</span> order;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> List&lt;Integer&gt; <span class="title">postOrderNonRecursive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   List&lt;Integer&gt; order = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">   <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">       <span class="keyword">return</span> order;</span><br><span class="line">   &#125;</span><br><span class="line">   Stack&lt;Node&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">   Node cur = root;</span><br><span class="line">   stack.push(cur);</span><br><span class="line">   cur = root.left;</span><br><span class="line">   Node p;</span><br><span class="line">   <span class="keyword">while</span> (!stack.isEmpty()) &#123;</span><br><span class="line">       <span class="keyword">while</span> (cur != <span class="keyword">null</span>) &#123;</span><br><span class="line">           stack.add(cur);</span><br><span class="line">           cur = cur.left;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">while</span> (!stack.isEmpty()) &#123;</span><br><span class="line">           p = cur;</span><br><span class="line">           cur = stack.peek().right;</span><br><span class="line">           <span class="keyword">if</span> (p == cur) &#123;</span><br><span class="line">               cur = stack.pop();</span><br><span class="line">               order.add(cur.value);</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> order;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完成代码见<a href="https://github.com/ztmark/Java-Playground/blob/master/src/main/java/com/mark/datastructure/BinarySearchTree.java" target="_blank" rel="external">Githug</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>二叉查找树代码实现，包括遍历的递归和非递归实现。</p>]]>
+    
+    </summary>
+    
+      <category term="Algorithm" scheme="http://ztmark.github.io/tags/Algorithm/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Bloom Filter]]></title>
@@ -1698,227 +1760,6 @@ S V <span class="keyword">O</span> <span class="keyword">C</span>
 <li>AtomicLongFieldUpdater</li>
 <li>AtomicStampedReference</li>
 </ul>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>《Java并发编程的艺术》读书笔记</p>]]>
-    
-    </summary>
-    
-      <category term="Java" scheme="http://ztmark.github.io/tags/Java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[《Java并发编程的艺术》读书笔记三]]></title>
-    <link href="http://ztmark.github.io/2015/11/30/%E3%80%8AJava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%89/"/>
-    <id>http://ztmark.github.io/2015/11/30/《Java并发编程的艺术》读书笔记三/</id>
-    <published>2015-11-29T16:00:00.000Z</published>
-    <updated>2015-11-30T07:14:50.000Z</updated>
-    <content type="html"><![CDATA[<p>《Java并发编程的艺术》读书笔记</p>
-<a id="more"></a>
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&id=1297650&auto=0&height=66"></iframe>
-
-<h2 id="线程基本概念">线程基本概念</h2><p>Java中通过继承Thread类，并重写run方法，然后调用start方法开启线程，或者通过向Thread构造函数中传入实现Runnable的类的实例然后调用start方法来开启线程。</p>
-<p>线程创建后可以设置其是否为守护线程，守护线程在所有的非守护线程退出后自动退出，该属性必须在启动线程之前设置。</p>
-<p>线程可以通过其他线程调用该线程的interrupt方法来中断该线程，被中断的线程可以调用isInterrupted方法来测试，这个方法不会影响线程的中断标识。通过静态方法interrupted也可以测试当前线程的中断情况，不过这个方法会重置线程的中断标识。</p>
-<p>方法suspend、resume、stop已标识过期，不推荐使用。停止线程可以通过在run方法中测试中断标识或者测试自定义的表示来实现。</p>
-<p>在Java中的线程有六种状态：</p>
-<table>
-<thead>
-<tr>
-<th>状态名称</th>
-<th>说明 </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>New</td>
-<td>初始状态，线程被构建，但是还没有调用start方法</td>
-</tr>
-<tr>
-<td>Runnable</td>
-<td>运行状态，Java线程将操作系统中的就绪和运行两种状态笼统地称为运行中</td>
-</tr>
-<tr>
-<td>Block</td>
-<td>阻塞状态，表示线程阻塞于锁</td>
-</tr>
-<tr>
-<td>Waiting</td>
-<td>等待状态，进入该状态表示当前线程需要等待其他线程做出一些特定动作（通知或中断）</td>
-</tr>
-<tr>
-<td>Time_Waiting</td>
-<td>超时等待，不同于Waiting，它是可以在指定时间自行返回</td>
-</tr>
-<tr>
-<td>Terminated</td>
-<td>终止状态，表示当前线程已经执行完毕</td>
-</tr>
-</tbody>
-</table>
-<p><img src="http://7u2r8z.com1.z0.glb.clouddn.com/threadstate.gif" alt="thread state"></p>
-<h2 id="线程间通信">线程间通信</h2><p>线程间通信可以通过等待通知机制来实现。也就是通过Object类中的wait、notify和notifyAll方法来实现。这些方法一般都是在获得了该对象锁后调用的，调用了wait方法后，线程会阻塞在该对象上，在其他线程在该对象上调用notify或notifyAll方法后会唤醒阻塞在该对象上的线程，notify会唤醒阻塞队列中的第一个线程，而notifyAll将会唤醒阻塞在该对象上的所有线程。</p>
-<p>thread.join方法会使当前线程等待thread线程执行完返回后再继续执行。</p>
-<h2 id="Java中的锁">Java中的锁</h2><p>Java中锁相关的类在java.util.concurrent.locks包下。</p>
-<p>Lock接口定义了锁的主要API。</p>
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>void lock()</td>
-<td>获取锁，调用该方法的当前线程会获取锁，在获得锁后，从该方法返回</td>
-</tr>
-<tr>
-<td>void lockInterruptibly()</td>
-<td>可中断地获取锁，和lock方法不同的地方是该方法会响应中断，在锁的获取中可以中断当前线程</td>
-</tr>
-<tr>
-<td>boolean tryLock()</td>
-<td>尝试非阻塞获取锁，调用该方法后立即返回，如果能获取则返回true，否则返回false</td>
-</tr>
-<tr>
-<td>boolean tryLock(long time, TimeUnit unit)</td>
-<td>超时的获取锁</td>
-</tr>
-<tr>
-<td>void unlock()</td>
-<td>释放锁</td>
-</tr>
-<tr>
-<td>Condition newCondition()</td>
-<td>获取等待通知组件，该组件和当前的锁绑定，当前线程只有在获取锁后才能调用该组件的wait方法，调用后，当前线程将释放锁</td>
-</tr>
-</tbody>
-</table>
-<h3 id="重入锁">重入锁</h3><p>重入锁是指在获取锁后的代码块中再次获取锁也能成功而不会阻塞的锁。synchronized支持可重入，ReentrantLock类是重入锁的一个实现。通过构造函数可以创建一个公平或非公平的ReentrantLock类实例，公平锁会将锁给最早获取锁的线程。</p>
-<p>可重入锁需要自己维护一个锁获取次数，同一个线程在每次获取锁的时候都要增加该次数，在每次释放锁的时候减少该次数，在减少到0时表示该线程释放了锁。</p>
-<h3 id="读写锁">读写锁</h3><p>读写锁是将读操作和写操作分别使用不同的锁来进行同步的锁，分读锁和写锁，读锁是该共享锁，写锁是独占锁。这样的设计能提高多线程读的操作，特别适合读操作多而写操作少的情况。</p>
-<p>ReentrantReadWriteLock是一个读写锁的实现，它同时也是该重入锁，它使用一个整型变量来维护读写状态，变量高16位维护读状态，低16位维护写状态。</p>
-<h3 id="Condition">Condition</h3><p>Object类的wait、notify和notifyAll方法和synchronized一起来实现等待通知机制，而Condition类和Lock也可以实现这个，而且还比前者更灵活，Condition必须通过Lock的newCondition方法来获得。</p>
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>await()</td>
-<td>当前线程进入等待状态直到被通知(signal)或中断</td>
-</tr>
-<tr>
-<td>awaitUninterruptibly()</td>
-<td>不可中断的等待</td>
-</tr>
-<tr>
-<td>awaitNanos(long timeout)</td>
-<td>超时等待。</td>
-</tr>
-<tr>
-<td>awaitUtil(Date deadline)</td>
-<td>当前线程进入等待状态直到被通知、中毒或到某个时间点</td>
-</tr>
-<tr>
-<td>signal()</td>
-<td>唤醒一个在Condition上等待的线程</td>
-</tr>
-<tr>
-<td>signalAll()</td>
-<td>唤醒所有在Condition上等待的线程</td>
-</tr>
-</tbody>
-</table>
-<h2 id="队列同步器（AbstractQueuedSynchronizer）">队列同步器（AbstractQueuedSynchronizer）</h2><p>队列同步器是用来构建锁或者其他同步组件的基础框架，它使用一个int成员变量表示同步状态，通过内置的FIFO队列来完成资源获取线程的排队工作。</p>
-<p>同步器主要使用方式是继承，子类通过继承同步器并实现它的抽象方法来管理同步状态，同步器提供了3该方法(getState()、setState(int newState)和compareAndSetState(int expect, int update))来进行操作，它们能够保证安全的改变状态。</p>
-<p>子类推荐被定义为自定义同步组件的静态内部类，同步器可以支持独占式的获取同步状态，也可以支持共享式的获取同步状态。</p>
-<p>同步器可重写方法：</p>
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>boolean tryAcquire(int arg)</td>
-<td>独占式获取同步状态，实现该方法需要查询当前状态并判断同步状态是否符合预期，然后再进行CAS设置同步状态</td>
-</tr>
-<tr>
-<td>boolean tryRelease(int arg)</td>
-<td>独占式释放同步状态</td>
-</tr>
-<tr>
-<td>int tryAcquireShared(int arg)</td>
-<td>共享式获取同步状态，返回大于0的值，表示获取成功</td>
-</tr>
-<tr>
-<td>boolean tryReleaseShared(int arg)</td>
-<td>共享式释放同步状态</td>
-</tr>
-<tr>
-<td>boolean isHeldExclusively()</td>
-<td>当前线程是否在独占式模式下被线程占用，一般表示是否被当前线程锁独占</td>
-</tr>
-</tbody>
-</table>
-<p>同步器提供的模板方法：</p>
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>void acquire(int arg)</td>
-<td>独占式获取同步状态</td>
-</tr>
-<tr>
-<td>void acquireInterruptibly(int arg)</td>
-<td>与acquire相同，但是能响应中断</td>
-</tr>
-<tr>
-<td>boolean tryAcquireNanos(int arg, long nanos)</td>
-<td>在acquireInterruptibly基础上加了超时限制</td>
-</tr>
-<tr>
-<td>void acquireShared(int arg)</td>
-<td>共享式获取同步状态</td>
-</tr>
-<tr>
-<td>void acquireSharedInterruptibly(int arg)</td>
-<td>与acquireShared，但能响应中断</td>
-</tr>
-<tr>
-<td>boolean tryAcquireSharedNanos(int arg, long nanos)</td>
-<td>在acquireSharedInterruptibly基础上加了超时限制</td>
-</tr>
-<tr>
-<td>boolean release(int arg)</td>
-<td>独占式释放同步状态</td>
-</tr>
-<tr>
-<td>boolean releaseShared(int arg)</td>
-<td>共享式释放同步状态</td>
-</tr>
-<tr>
-<td>Collection<thread> getQueuedThread()</thread></td>
-<td>获取等待在同步队列上的线程集合</td>
-</tr>
-</tbody>
-</table>
-<p>示例代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.AbstractQueuedSynchronizer;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.Condition;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.Lock;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Mutex</span> <span class="keyword">implements</span> <span class="title">Lock</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Sync sync = <span class="keyword">new</span> Sync();</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        sync.acquire(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lockInterruptibly</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        sync.acquireInterruptibly(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">tryLock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sync.tryAcquire(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">tryLock</span><span class="params">(<span class="keyword">long</span> time, TimeUnit unit)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sync.tryAcquireNanos(<span class="number">1</span>, unit.toNanos(time));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        sync.tryRelease(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Condition <span class="title">newCondition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sync.newCondition();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isLocked</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sync.isHeldExclusively();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasQueuedThreads</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sync.hasQueuedThreads();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Sync</span> <span class="keyword">extends</span> <span class="title">AbstractQueuedSynchronizer</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 是否处于占用状态</span></span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isHeldExclusively</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> getState() == <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">tryAcquire</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 当状态为0时获取锁</span></span><br><span class="line">            <span class="keyword">if</span> (compareAndSetState(<span class="number">0</span>, <span class="number">1</span>)) &#123;</span><br><span class="line">                setExclusiveOwnerThread(Thread.currentThread());</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">tryRelease</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (getState() == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 释放锁,将状态设置为0</span></span><br><span class="line">            setExclusiveOwnerThread(<span class="keyword">null</span>);</span><br><span class="line">            setState(<span class="number">0</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 返回一个Condition, 每个condition都包含了一个condition队列</span></span><br><span class="line">        <span class="function">Condition <span class="title">newCondition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ConditionObject();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>同步器依赖内部的同步队列来完成同步状态的管理，当前线程获取同步状态失败时，同步器会将当前线程以及等待状态等信息构造成一个节点通过CAS加入到队列中，同时阻塞当前线程，当同步状态释放时，会把首节点的线程唤醒使其再次尝试获取同步状态。</p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>《Java并发编程的艺术》读书笔记</p>]]>
